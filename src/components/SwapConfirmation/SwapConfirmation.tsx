@@ -9,11 +9,15 @@ import { SwapDetailsData } from "types/swap";
 import { Token } from "types/token";
 import { Button, Icon, Modal } from "ui";
 
-import { SwapBoxDetails } from "components/SwapBox/SwapBoxDetails";
+// import { SwapBoxDetails } from "components/SwapBox/SwapBoxDetails";
 import { SwapSettings } from "components/SwapSettings/useSwapSettings";
 import { TokenOrNetworkRenderer } from "components/TokenOrNetworkRenderer/TokenOrNetworkRenderer";
 
 import styles from "./SwapConfirmation.module.scss";
+import Big from "big.js";
+import { useAccount, useProvider, useSigner } from "ethylene/hooks";
+import { constants, ethers } from "ethers";
+import { ERC20 } from "ethylene/constants/abi";
 
 type SwapConfirmationModal = {
   swapSettings: SwapSettings;
@@ -40,9 +44,40 @@ const SwapConfirmation = ({
 }: SwapConfirmationModal) => {
   const { theme } = useTheme();
   const [isConfirmed, setIsConfirmed] = useState<boolean>(false);
+  const { address: accountAddress } = useAccount();
+  const { provider } = useProvider();
+  const signer = useSigner();
 
-  const _handleSwap = () => {
+  const _handleSwap = async () => {
     console.log(data);
+    console.log(from);
+    const fromAmount = new Big(from.amount).mul(new Big(10).pow(from.token.decimal)).toFixed(0);
+    const r = await fetch("https://api.cashmere.exchange/swapParams?" + new URLSearchParams({
+      fromAmount,
+      fromChain: parseInt(from.network.chainId, 16).toString(),
+      fromToken: from.token.addresses[from.network.chainId],
+      toChain: parseInt(to.network.chainId, 16).toString(),
+      toToken: to.token.addresses[to.network.chainId],
+    }));
+    const resp = await r.json();
+    console.log(resp);
+    const tx = {
+      ...resp,
+      from: accountAddress,
+      gasPrice: await provider?.getGasPrice(),
+    };
+
+    const fromToken = new ethers.Contract(from.token.addresses[from.network.chainId], ERC20, signer);
+    if ((await fromToken.allowance(accountAddress, resp.to)).lt(fromAmount)) {
+      const tx = await fromToken.approve(resp.to, constants.MaxUint256);
+      await tx.wait();
+    }
+
+    console.log("beforeEstimate", tx);
+    tx.gasLimit = await provider?.estimateGas(tx);
+    console.log("afterEstimate", tx);
+    await signer?.sendTransaction(tx);
+
     setIsConfirmed(true);
   };
 
@@ -113,10 +148,10 @@ const SwapConfirmation = ({
           }
         />
       </Row>
-      <SwapBoxDetails data={data} />
+      {/*<SwapBoxDetails data={data} />*/}
       <Button
         onClick={_handleSwap}
-        style={{ marginTop: "2rem", marginBottom: "1.5rem" }}
+        style={{ marginBottom: "1.5rem", marginTop: "2rem" }}
         height="56px"
         width="100%"
         color={theme === "dark" ? "white" : "black"}

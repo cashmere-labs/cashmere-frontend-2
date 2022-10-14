@@ -2,7 +2,7 @@ import { Footer, Navbar, SwapBox } from "components";
 import { GasEstimatorModal } from "components";
 import { getMockEstimations } from "constants/mockEstimateData";
 import { ARBITRUM, POLYGON } from "constants/networks";
-import { Dai, Tetherus } from "constants/tokens";
+import { Sushi, Uniswap } from "constants/tokens";
 import { useModal } from "hooks";
 import { useTitle } from "hooks/useTitle";
 import { useState } from "react";
@@ -19,6 +19,8 @@ export type SwapState = {
   fromto: Token;
   tofrom: Network;
   toto: Token;
+  fromamount: string;
+  toamount: string;
 };
 
 const Swap = () => {
@@ -26,11 +28,13 @@ const Swap = () => {
   console.log("Coded by Ethylene Blockchain Studio!");
 
   const swapSettings = useSwapSettings();
-  const [state, setState] = useState({
+  const [state, setState] = useState<SwapState>({
+    fromamount: "",
     fromfrom: ARBITRUM,
-    fromto: Tetherus,
+    fromto: Sushi,
+    toamount: "",
     tofrom: POLYGON,
-    toto: Dai,
+    toto: Uniswap,
   });
 
   const estimateModal = useModal();

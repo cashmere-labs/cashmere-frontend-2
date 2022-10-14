@@ -34,7 +34,7 @@ export const AURORA: Network = {
 };
 
 export const POLYGON: Network = {
-  chainId: "",
+  chainId: "0x89",
   imageUrl: POLYGON_IMAGE,
   name: "Polygon",
   nativeCurrency: {
@@ -42,7 +42,11 @@ export const POLYGON: Network = {
     name: "MATIC",
     symbol: "",
   },
-  rpcUrls: [""],
+  explorer: {
+    url: "https://polygonscan.com",
+    name: "Polygonscan",
+  },
+  rpcUrls: ["https://polygon-rpc.com"]
 };
 
 export const AVALANCHE: Network = {
@@ -94,7 +98,7 @@ export const FANTOM: Network = {
 };
 
 export const ARBITRUM: Network = {
-  chainId: "",
+  chainId: "0xa4b1",
   imageUrl: ARBITRUM_IMAGE,
   name: "Arbitrum",
   nativeCurrency: {
@@ -102,7 +106,11 @@ export const ARBITRUM: Network = {
     name: "AETH",
     symbol: "",
   },
-  rpcUrls: [""],
+  explorer: {
+    url: "https://arbiscan.io",
+    name: "Arbiscan",
+  },
+  rpcUrls: ["https://arb1.arbitrum.io/rpc"]
 };
 
 export const ETHEREUM: Network = {

@@ -8,4 +8,8 @@ export interface Network {
     symbol?: string;
   };
   imageUrl?: string;
+  explorer?: {
+    url: string;
+    name: string;
+  };
 }

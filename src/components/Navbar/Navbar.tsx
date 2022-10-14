@@ -1,11 +1,10 @@
 import { AccountModal, Logo } from "components";
 import { PATHS } from "constants/paths";
-import { AVAX_FUJI_C_CHAIN } from "ethylene/constants";
 import {
   useAccount,
   useAuth,
   useConnection,
-  useRightNetwork,
+  // useRightNetwork,
 } from "ethylene/hooks";
 import { useModal, useTheme } from "hooks";
 import { useMemo, useRef, useState } from "react";
@@ -17,6 +16,7 @@ import { clsnm } from "utils/clsnm";
 import { formatAddress } from "utils/formatAddress";
 
 import styles from "./Navbar.module.scss";
+// import { ARBITRUM } from "../../constants/networks";
 
 const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
   const { pathname } = useLocation();
@@ -24,7 +24,7 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
   const { connect, disconnect } = useConnection();
   const { address } = useAccount();
   const { theme, toggleTheme } = useTheme();
-  const { switchTo, isRightNetwork } = useRightNetwork(AVAX_FUJI_C_CHAIN);
+  // const { switchTo, isRightNetwork } = useRightNetwork(ARBITRUM);
 
   const LINKS = useMemo(() => {
     return [
@@ -82,11 +82,7 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
         height="40px"
         onClick={() => {
           if (!auth) connect();
-          if (!isRightNetwork) {
-            switchTo();
-          } else {
-            modal.open();
-          }
+          modal.open();
         }}
         color={theme === "light" ? "black" : "black"}
         className={clsnm(
@@ -94,9 +90,7 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
           styles.accountButton,
         )}
       >
-        {!isRightNetwork && auth
-          ? "Switch network"
-          : auth && address
+        {auth && address
           ? formatAddress(address)
           : "Connect Wallet"}
       </Button>

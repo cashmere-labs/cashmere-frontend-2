@@ -55,8 +55,8 @@ const SwapNetworkSelector = ({
     } else {
       return options.data.filter(
         (item: Token) =>
-          item.name.toUpperCase().includes(text.toUpperCase()) ||
-          item.address.toUpperCase().includes(text.toUpperCase()),
+          item.name.toUpperCase().includes(text.toUpperCase())
+            // || item.addresses[.toUpperCase().includes(text.toUpperCase()),
       );
     }
   }, [options, text]);

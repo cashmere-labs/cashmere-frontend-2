@@ -1,5 +1,7 @@
 import { PATHS } from "constants/paths";
-import { useOnAccountsChange, useOnNetworkChange } from "ethylene/hooks";
+import { useOnAccountsChange,
+  // useOnNetworkChange
+} from "ethylene/hooks";
 import { useInitialTheme, useTheme } from "hooks";
 import { DAO, ManagePage, Pool, Swap, VeCSM } from "pages";
 import { NotFound } from "pages/NotFound/NotFound";
@@ -17,7 +19,7 @@ import "react-toastify/dist/ReactToastify.css";
 const Main = () => {
   useInitialTheme();
   useOnAccountsChange(() => window.location.reload(), { interval: 1000 });
-  useOnNetworkChange(() => window.location.reload());
+  // useOnNetworkChange(() => window.location.reload());
   return null;
 };
 

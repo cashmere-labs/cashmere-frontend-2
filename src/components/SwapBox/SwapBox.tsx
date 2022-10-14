@@ -2,23 +2,65 @@ import { RotateIcon, SettingsIcon } from "assets/icons";
 import { Row } from "components";
 import { SwapConfirmation, TokenOrNetworkRenderer } from "components";
 import { networkOptions } from "constants/networkOptions";
-import { ETHEREUM, POLYGON } from "constants/networks";
+// import { ETHEREUM, POLYGON } from "constants/networks";
 import { tokenOptions } from "constants/tokenOptions";
-import { useAccount, useConnection } from "ethylene/hooks";
+import { useAccount, useConnection, useOnNetworkChange, useProvider, useRightNetwork } from "ethylene/hooks";
 import { useModal, useTheme } from "hooks";
 import { SwapState } from "pages/Swap/Swap";
-import { ReactElement, useEffect, useRef, useState } from "react";
+import { ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { FaChevronRight } from "react-icons/fa";
 import { Network } from "types/network";
 import { Token } from "types/token";
 import { Button, Icon, Input, Select } from "ui";
 
-import { SwapBoxDetails } from "components/SwapBox/SwapBoxDetails";
+// import { SwapBoxDetails } from "components/SwapBox/SwapBoxDetails";
 import { SwapNetworkSelector } from "components/SwapBox/SwapNetworkSelector";
 import { SwapSettings } from "components/SwapSettings/SwapSettings";
 import { SwapSettings as SwapSettingType } from "components/SwapSettings/useSwapSettings";
 
 import styles from "./SwapBox.module.scss";
+import { ethers } from "ethers";
+import { ERC20 as ERC20_ABI } from "ethylene/constants/abi";
+import Big from "big.js";
+import { EthyleneNetwork } from "ethylene/types/app";
+import { useNetwork } from "../../store/hooks/networkHooks";
+
+const switchNetwork = function (network: EthyleneNetwork) {
+    const fn = async () => {
+        try {
+            // @ts-ignore
+            await window.ethereum.request({
+                method: "wallet_switchEthereumChain",
+                params: [{ chainId: network.chainId }],
+            });
+        } catch (error: any) {
+            const WALLET_ERROR_CODE = 4902;
+
+            if (error.code === WALLET_ERROR_CODE) {
+                try {
+                    // @ts-ignore
+                    await window.ethereum.request({
+                        method: "wallet_addEthereumChain",
+                        params: [
+                            {
+                                chainId: network.chainId,
+                                rpcUrls: network.rpcUrls,
+                                nativeCurrency: network.nativeCurrency,
+                                chainName: network.name,
+                            },
+                        ],
+                    });
+                } catch (addError) {
+                    console.log("[DEBUG] Network Add error", addError);
+                    return;
+                }
+            }
+            console.log("[DEBUG] Switch Network Error");
+            return;
+        }
+    };
+    fn().then().catch();
+};
 
 const SwapBox = ({
   state,
@@ -29,13 +71,44 @@ const SwapBox = ({
   setState: (to: SwapState) => void;
   swapSettings: SwapSettingType;
 }) => {
-  const { auth } = useAccount();
-  const { connect } = useConnection();
+  const { auth, address: accountAddress } = useAccount();
+  const { connect, disconnect } = useConnection();
+  const { provider } = useProvider();
+  const network = useNetwork();
+  const { isRightNetwork, switchTo } = useRightNetwork(state.fromfrom);
   const [method, setMethod] = useState<"stable" | "aggregator">("stable");
+
+  const [ networkId, setNetworkId ] = useState<number | undefined>();
+
+  useEffect(() => {
+      setNetworkId(provider?.network.chainId);
+  }, [provider]);
+
+  useOnNetworkChange(() => {
+      setNetworkId(provider?.network.chainId);
+  });
+
+  console.log(network, `${provider?.network.chainId.toString()}, ${state.fromfrom.chainId}`);
 
   const swapSettingsModal = useModal();
   const swapConfirmationModal = useModal();
   const { theme } = useTheme();
+
+  const rightNetwork = useMemo(() => networkId === parseInt(state.fromfrom.chainId, 16), [networkId, state]);
+
+  const [ fromBalance, setFromBalance ] = useState<Big>();
+  const [ toBalance, setToBalance ] = useState<Big>();
+  useEffect(() => void (async () => {
+      if (!accountAddress) {
+          setFromBalance(undefined);
+          setToBalance(undefined);
+          return;
+      }
+      const fromContract = new ethers.Contract(state.fromto.addresses[state.fromfrom.chainId], ERC20_ABI, new ethers.providers.JsonRpcProvider(state.fromfrom.rpcUrls[0]));
+      const toContract = new ethers.Contract(state.toto.addresses[state.tofrom.chainId], ERC20_ABI, new ethers.providers.JsonRpcProvider(state.tofrom.rpcUrls[0]));
+      setFromBalance(new Big((await fromContract.balanceOf(accountAddress)).toString()).div(new Big(10).pow(state.fromto.decimal)));
+      setToBalance(new Big((await toContract.balanceOf(accountAddress)).toString()).div(new Big(10).pow(state.toto.decimal)));
+  })(), [accountAddress, state.fromfrom, state.fromto, state.tofrom, state.toto]);
 
   const onNetworkSelect = useRef<(item: Network | Token) => void>(
     () => undefined,
@@ -62,9 +135,13 @@ const SwapBox = ({
   /**
    * @dev Handles swap action
    */
-  const handleSwap = () => {
+  const handleSwap = async () => {
     if (!auth) {
       connect();
+      return;
+    }
+    if (!rightNetwork) {
+      switchNetwork(state.fromfrom);
       return;
     }
     swapConfirmationModal.open();
@@ -75,6 +152,7 @@ const SwapBox = ({
    */
   const getSwapButtonContent = () => {
     if (!auth) return "Connect Wallet";
+    if (!rightNetwork) return "Switch network";
     return "Swap";
   };
 
@@ -129,12 +207,12 @@ const SwapBox = ({
         modalController={swapConfirmationModal}
         swapSettings={swapSettings}
         from={{
-          amount: "0",
+          amount: state.fromamount,
           network: state.fromfrom,
           token: state.fromto,
         }}
         to={{
-          amount: "0",
+          amount: state.toamount,
           network: state.tofrom,
           token: state.toto,
         }}
@@ -180,7 +258,7 @@ const SwapBox = ({
         justifyContent="space-between"
       >
         <span>From</span>
-        <span>BALANCE: 124124</span>
+        <span>BALANCE: {fromBalance?.toString()}</span>
       </Row>
       <Row>
         <Select
@@ -191,7 +269,14 @@ const SwapBox = ({
               if (item instanceof Token) {
                 return;
               }
-              setState({ ...state, fromfrom: item });
+                if (state.fromfrom !== item) {
+                    disconnect();
+                }
+              setState({
+                  ...state,
+                  fromfrom: item,
+                  tofrom: item === state.tofrom ? networkOptions.filter(n => n !== item)[0] : state.tofrom
+              });
             };
           }}
           containerClassName={styles.select}
@@ -231,8 +316,10 @@ const SwapBox = ({
           className={styles.input}
           extendLeft
           hideLeftBorder
+          value={state.fromamount}
+          onChange={e => setState({ ...state, fromamount: e.target.value, toamount: e.target.value })}
           rightEl={
-            <Button width="18px" color="white">
+            <Button width="18px" color="white" onClick={() => setState({ ...state, fromamount: fromBalance?.toString() || "", toamount: fromBalance?.toString() || "" })}>
               Max
             </Button>
           }
@@ -259,7 +346,7 @@ const SwapBox = ({
         justifyContent="space-between"
       >
         <span>To</span>
-        <span>BALANCE: 124124</span>
+        <span>BALANCE: {toBalance?.toString()}</span>
       </Row>
       <Row marginBottom={12}>
         <Select
@@ -279,7 +366,14 @@ const SwapBox = ({
               if (item instanceof Token) {
                 return;
               }
-              setState({ ...state, tofrom: item });
+              if (state.tofrom !== item) {
+                  disconnect();
+              }
+                setState({
+                    ...state,
+                    fromfrom: item === state.fromfrom ? networkOptions.filter(n => n !== item)[0] : state.fromfrom,
+                    tofrom: item
+                });
             };
           }}
         />
@@ -308,22 +402,24 @@ const SwapBox = ({
           className={styles.input}
           extendLeft
           hideLeftBorder
+          value={state.toamount}
+          onChange={e => setState({ ...state, fromamount: e.target.value, toamount: e.target.value })}
           rightEl={
-            <Button width="18px" color="white">
+            <Button width="18px" color="white" onClick={() => setState({ ...state, fromamount: fromBalance?.toString() || "", toamount: fromBalance?.toString() || "" })}>
               Max
             </Button>
           }
         />
       </Row>
       {/* TO ENDS */}
-      <SwapBoxDetails
+      {/*<SwapBoxDetails
         data={{
           fee: "24.169.287 USDT",
           minimumReceived: "15.6235 USDT",
           priceImpact: "0.05%",
           rataAfterFee: "1 UST = 1.017 USDT",
         }}
-      />
+      />*/}
       <Button
         onClick={handleSwap}
         style={{ marginBottom: "1.5rem", marginTop: "2rem" }}
@@ -333,7 +429,7 @@ const SwapBox = ({
       >
         {getSwapButtonContent()}
       </Button>
-      <PathRenderer path={[ETHEREUM, POLYGON]} />
+      <PathRenderer path={[state.fromfrom, state.tofrom]} />
     </div>
   );
 };

@@ -31,6 +31,7 @@ module.exports = {
     "react-hooks/exhaustive-deps": "error",
     "react/react-in-jsx-scope": "off",
     semi: ["error", "always"],
+    "@typescript-eslint/ban-ts-comment": 1,
     "sort-keys-fix/sort-keys-fix": "warn",
     "unused-imports/no-unused-imports": "error",
     "unused-imports/no-unused-vars": [
@@ -41,6 +42,6 @@ module.exports = {
         vars: "all",
         varsIgnorePattern: "^_",
       },
-    ],
+    ]
   },
 };

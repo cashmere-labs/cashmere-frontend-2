@@ -35,7 +35,7 @@ type SwapConfirmationModal = {
   modalController: ModalController;
 };
 
-const apiAddress = process.env.NODE_ENV === "test" ? "/swapParamsL0?" : "http://localhost:3001/swapParamsL0?";
+const apiAddress = process.env.LOCATION === "test" ? "/swapParamsL0?" : "http://localhost:3001/swapParamsL0?";
 
 const SwapConfirmation = ({
   modalController,
@@ -52,6 +52,7 @@ const SwapConfirmation = ({
   const signer = useSigner();
 
   const _handleSwap = async () => {
+    console.log(`location: ${process.env.LOCATION}`);
     console.log(data);
     console.log(from);
     const fromAmount = new Big(from.amount).mul(new Big(10).pow(from.token.decimals)).toFixed(0);

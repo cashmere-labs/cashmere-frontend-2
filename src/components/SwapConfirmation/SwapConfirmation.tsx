@@ -35,6 +35,8 @@ type SwapConfirmationModal = {
   modalController: ModalController;
 };
 
+const apiAddress = process.env.NODE_ENV === "test" ? "/swapParamsL0?" : "http://localhost:3001/swapParamsL0?";
+
 const SwapConfirmation = ({
   modalController,
   swapSettings,
@@ -44,6 +46,7 @@ const SwapConfirmation = ({
 }: SwapConfirmationModal) => {
   const { theme } = useTheme();
   const [isConfirmed, setIsConfirmed] = useState<boolean>(false);
+  const [ transactionHash, setTransactionHash ] = useState<string>();
   const { address: accountAddress } = useAccount();
   const { provider } = useProvider();
   const signer = useSigner();
@@ -51,13 +54,13 @@ const SwapConfirmation = ({
   const _handleSwap = async () => {
     console.log(data);
     console.log(from);
-    const fromAmount = new Big(from.amount).mul(new Big(10).pow(from.token.decimal)).toFixed(0);
-    const r = await fetch("https://api.cashmere.exchange/swapParams?" + new URLSearchParams({
+    const fromAmount = new Big(from.amount).mul(new Big(10).pow(from.token.decimals)).toFixed(0);
+    const r = await fetch(apiAddress + new URLSearchParams({
       fromAmount,
       fromChain: parseInt(from.network.chainId, 16).toString(),
-      fromToken: from.token.addresses[from.network.chainId],
+      fromToken: from.token.address,
       toChain: parseInt(to.network.chainId, 16).toString(),
-      toToken: to.token.addresses[to.network.chainId],
+      toToken: to.token.address,
     }));
     const resp = await r.json();
     console.log(resp);
@@ -67,7 +70,7 @@ const SwapConfirmation = ({
       gasPrice: await provider?.getGasPrice(),
     };
 
-    const fromToken = new ethers.Contract(from.token.addresses[from.network.chainId], ERC20, signer);
+    const fromToken = new ethers.Contract(from.token.address, ERC20, signer);
     if ((await fromToken.allowance(accountAddress, resp.to)).lt(fromAmount)) {
       const tx = await fromToken.approve(resp.to, constants.MaxUint256);
       await tx.wait();
@@ -76,8 +79,9 @@ const SwapConfirmation = ({
     console.log("beforeEstimate", tx);
     tx.gasLimit = await provider?.estimateGas(tx);
     console.log("afterEstimate", tx);
-    await signer?.sendTransaction(tx);
+    const receipt = await signer?.sendTransaction(tx);
 
+    setTransactionHash(receipt?.hash);
     setIsConfirmed(true);
   };
 
@@ -92,7 +96,11 @@ const SwapConfirmation = ({
 
   return isConfirmed ? (
     modalController.isOpen ? (
-      <Done onDone={modalController.close} />
+      <Done
+          onDone={modalController.close}
+          link={`${from.network.explorer?.url}tx/${transactionHash}`}
+          explorer={from.network.explorer?.name}
+      />
     ) : null
   ) : (
     <Modal

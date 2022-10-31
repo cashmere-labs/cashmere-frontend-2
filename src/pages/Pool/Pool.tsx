@@ -6,7 +6,7 @@ import {
   Pools,
 } from "components";
 import { networkOptions } from "constants/networkOptions";
-import { tokenOptions } from "constants/tokenOptions";
+// import { tokenOptions } from "constants/tokenOptions";
 import { useTitle } from "hooks/useTitle";
 import { useState } from "react";
 import { Network } from "types/network";
@@ -46,7 +46,7 @@ const Pool = () => {
             setPoolTab={setPoolTab}
             filter={filter}
             setFilter={setFilter}
-            tokenOptions={tokenOptions}
+            tokenOptions={[] /*tokenOptions*/}
             networkOptions={networkOptions}
           />
           <Pools filter={filter} poolTab={poolTab} />

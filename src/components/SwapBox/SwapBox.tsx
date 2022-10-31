@@ -3,7 +3,7 @@ import { Row } from "components";
 import { SwapConfirmation, TokenOrNetworkRenderer } from "components";
 import { networkOptions } from "constants/networkOptions";
 // import { ETHEREUM, POLYGON } from "constants/networks";
-import { tokenOptions } from "constants/tokenOptions";
+// import { tokenOptions } from "constants/tokenOptions";
 import { useAccount, useConnection, useOnNetworkChange, useProvider, useRightNetwork } from "ethylene/hooks";
 import { useModal, useTheme } from "hooks";
 import { SwapState } from "pages/Swap/Swap";
@@ -88,8 +88,6 @@ const SwapBox = ({
       setNetworkId(provider?.network.chainId);
   });
 
-  console.log(network, `${provider?.network.chainId.toString()}, ${state.fromfrom.chainId}`);
-
   const swapSettingsModal = useModal();
   const swapConfirmationModal = useModal();
   const { theme } = useTheme();
@@ -104,10 +102,10 @@ const SwapBox = ({
           setToBalance(undefined);
           return;
       }
-      const fromContract = new ethers.Contract(state.fromto.addresses[state.fromfrom.chainId], ERC20_ABI, new ethers.providers.JsonRpcProvider(state.fromfrom.rpcUrls[0]));
-      const toContract = new ethers.Contract(state.toto.addresses[state.tofrom.chainId], ERC20_ABI, new ethers.providers.JsonRpcProvider(state.tofrom.rpcUrls[0]));
-      setFromBalance(new Big((await fromContract.balanceOf(accountAddress)).toString()).div(new Big(10).pow(state.fromto.decimal)));
-      setToBalance(new Big((await toContract.balanceOf(accountAddress)).toString()).div(new Big(10).pow(state.toto.decimal)));
+      const fromContract = new ethers.Contract(state.fromto.address, ERC20_ABI, new ethers.providers.JsonRpcProvider(state.fromfrom.rpcUrls[0]));
+      const toContract = new ethers.Contract(state.toto.address, ERC20_ABI, new ethers.providers.JsonRpcProvider(state.tofrom.rpcUrls[0]));
+      setFromBalance(new Big((await fromContract.balanceOf(accountAddress)).toString()).div(new Big(10).pow(state.fromto.decimals)));
+      setToBalance(new Big((await toContract.balanceOf(accountAddress)).toString()).div(new Big(10).pow(state.toto.decimals)));
   })(), [accountAddress, state.fromfrom, state.fromto, state.tofrom, state.toto]);
 
   const onNetworkSelect = useRef<(item: Network | Token) => void>(
@@ -118,6 +116,8 @@ const SwapBox = ({
   );
   const networkSelectorModal = useModal();
   const tokenSelectorModal = useModal();
+  const tokenList = useRef<Token[]>([]);
+  const tokenSelectorNetwork = useRef<Network>();
 
   /**
    * @dev Reverse the from and to positions
@@ -191,8 +191,9 @@ const SwapBox = ({
           onSelect={onTokenSelect.current}
           modalController={tokenSelectorModal}
           options={{
-            data: tokenOptions,
+            data: tokenList.current /*tokenOptions*/,
             type: "token",
+              network: tokenSelectorNetwork.current!,
           }}
         />
       )}
@@ -272,10 +273,15 @@ const SwapBox = ({
                 if (state.fromfrom !== item) {
                     disconnect();
                 }
-              setState({
+                const toNetwork = item === state.tofrom ? networkOptions.filter(n => n !== item)[0] : state.tofrom;
+                const matchingTokenFrom = item.tokenList.filter(t => t.symbol === state.fromto.symbol)[0];
+                const matchingTokenTo = item === state.tofrom ? toNetwork.tokenList.filter(t => t.symbol === state.toto.symbol)[0] : state.toto;
+                setState({
                   ...state,
                   fromfrom: item,
-                  tofrom: item === state.tofrom ? networkOptions.filter(n => n !== item)[0] : state.tofrom
+                  tofrom: toNetwork,
+                    fromto: matchingTokenFrom || item.tokenList[0],
+                    toto: matchingTokenTo || toNetwork.tokenList[0],
               });
             };
           }}
@@ -301,8 +307,10 @@ const SwapBox = ({
           )}
           value={state.fromto}
           setValue={() => undefined}
-          options={tokenOptions}
+          options={state.fromfrom.tokenList /*tokenOptions*/}
           onClick={() => {
+              tokenList.current = state.fromfrom.tokenList;
+              tokenSelectorNetwork.current = state.fromfrom;
             tokenSelectorModal.open();
             onTokenSelect.current = (item: Network | Token) => {
               if (item instanceof Token) {
@@ -369,10 +377,15 @@ const SwapBox = ({
               if (state.tofrom !== item) {
                   disconnect();
               }
+                const fromNetwork = item === state.fromfrom ? networkOptions.filter(n => n !== item)[0] : state.fromfrom;
+                const matchingTokenFrom = item === state.fromfrom ? fromNetwork.tokenList.filter(t => t.symbol === state.toto.symbol)[0] : state.fromto;
+                const matchingTokenTo = item.tokenList.filter(t => t.symbol === state.toto.symbol)[0];
                 setState({
                     ...state,
-                    fromfrom: item === state.fromfrom ? networkOptions.filter(n => n !== item)[0] : state.fromfrom,
-                    tofrom: item
+                    fromfrom: fromNetwork,
+                    tofrom: item,
+                    fromto: matchingTokenFrom || fromNetwork.tokenList[0],
+                    toto: matchingTokenTo || item.tokenList[0],
                 });
             };
           }}
@@ -387,8 +400,10 @@ const SwapBox = ({
           menuRenderer={() => (
             <TokenOrNetworkRenderer tokenOrNetwork={state.toto} />
           )}
-          options={tokenOptions}
+          options={state.fromfrom.tokenList /*tokenOptions*/}
           onClick={() => {
+              tokenList.current = state.tofrom.tokenList;
+              tokenSelectorNetwork.current = state.tofrom;
             tokenSelectorModal.open();
             onTokenSelect.current = (item: Network | Token) => {
               if (item instanceof Token) {

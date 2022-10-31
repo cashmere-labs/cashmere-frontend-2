@@ -5,36 +5,24 @@ import ETHEREUM_IMAGE from "assets/images/networks/ethereum.svg";
 import OPTIMISM_IMAGE from "assets/images/networks/optimism.png";
 import FANTOM_IMAGE from "assets/images/networks/phantom.png";
 import POLYGON_IMAGE from "assets/images/networks/polygon.png";
-import AuroraImage from "assets/images/tokens/aurora.png";
-import { EthyleneNetwork } from "ethylene/types/app";
 import { Network } from "types/network";
 import { NetworkTypes } from "ui/NetworkBadge/utils";
 
-export const GOERLI: EthyleneNetwork = {
-  chainId: "0x5",
-  name: "Goerly Testnet",
-  nativeCurrency: {
-    decimals: 18,
-    name: "Ether",
-    symbol: "ETH",
-  },
-  rpcUrls: ["https://rpc.goerli.mudit.blog/"],
-};
-
-export const AURORA: Network = {
-  chainId: "",
-  imageUrl: AuroraImage,
-  name: "Aurora",
-  nativeCurrency: {
-    decimals: 18,
-    name: "ADTX",
-    symbol: "",
-  },
-  rpcUrls: [""],
-};
+import arbitrumTokenList from "./assets/blockchains/arbitrum/tokenlist.json";
+import avalancheTokenList from "./assets/blockchains/avalanchec/tokenlist.json";
+import bscTokenList from "./assets/blockchains/binance/tokenlist.json";
+import ethereumTokenList from "./assets/blockchains/ethereum/tokenlist.json";
+import fantomTokenList from "./assets/blockchains/fantom/tokenlist.json";
+import optimismTokenList from "./assets/blockchains/optimism/tokenlist.json";
+import polygonTokenList from "./assets/blockchains/polygon/tokenlist.json";
+import { Token } from "../types/token";
 
 export const POLYGON: Network = {
   chainId: "0x89",
+  explorer: {
+    name: "Polygonscan",
+    url: "https://polygonscan.com",
+  },
   imageUrl: POLYGON_IMAGE,
   name: "Polygon",
   nativeCurrency: {
@@ -42,87 +30,110 @@ export const POLYGON: Network = {
     name: "MATIC",
     symbol: "",
   },
-  explorer: {
-    url: "https://polygonscan.com",
-    name: "Polygonscan",
-  },
-  rpcUrls: ["https://polygon-rpc.com"]
+  rpcUrls: ["https://polygon-rpc.com"],
+  tokenList: polygonTokenList.tokens.map(t => new Token(t)),
 };
 
 export const AVALANCHE: Network = {
-  chainId: "",
+  chainId: "0xa86a",
+  explorer: {
+    name: "SnowTrace",
+    url: "https://snowtrace.io/",
+  },
   imageUrl: AVALANCHE_IMAGE,
   name: "Avalance",
   nativeCurrency: {
     decimals: 18,
     name: "AVAX",
-    symbol: "",
+    symbol: "AVAX",
   },
-  rpcUrls: [""],
+  rpcUrls: ["https://api.avax.network/ext/bc/C/rpc"],
+  tokenList: avalancheTokenList.tokens.map(t => new Token(t)),
 };
 
-export const BNB: Network = {
-  chainId: "",
+export const BSC: Network = {
+  chainId: "0x38",
+  explorer: {
+    name: "BSCScan",
+    url: "https://bscscan.com/",
+  },
   imageUrl: BNB_IMAGE,
-  name: "BNB",
+  name: "BNB Smart Chain",
   nativeCurrency: {
     decimals: 18,
     name: "BNB",
-    symbol: "",
+    symbol: "BNB",
   },
-  rpcUrls: [""],
+  rpcUrls: ["https://bsc-dataseed.binance.org/"],
+  tokenList: bscTokenList.tokens.map(t => new Token(t)),
 };
 
 export const OPTIMISM: Network = {
-  chainId: "",
+  chainId: "0xa",
+  explorer: {
+    name: "The Optimism Explorer",
+    url: "https://optimistic.etherscan.io/",
+  },
   imageUrl: OPTIMISM_IMAGE,
   name: "Optimism",
   nativeCurrency: {
     decimals: 18,
-    name: "OP",
-    symbol: "",
+    name: "ETH",
+    symbol: "ETH",
   },
-  rpcUrls: [""],
+  rpcUrls: ["https://mainnet.optimism.io/"],
+  tokenList: optimismTokenList.tokens.map(t => new Token(t)),
 };
 
 export const FANTOM: Network = {
-  chainId: "",
+  chainId: "0xfa",
+  explorer: {
+    name: "FTMScan",
+    url: "https://ftmscan.com/",
+  },
   imageUrl: FANTOM_IMAGE,
   name: "Fantom",
   nativeCurrency: {
     decimals: 18,
     name: "FTM",
-    symbol: "",
+    symbol: "FTM",
   },
-  rpcUrls: [""],
+  rpcUrls: ["https://rpc.ankr.com/fantom/"],
+  tokenList: fantomTokenList.tokens.map(t => new Token(t)),
 };
 
 export const ARBITRUM: Network = {
   chainId: "0xa4b1",
+  explorer: {
+    name: "Arbiscan",
+    url: "https://arbiscan.io",
+  },
   imageUrl: ARBITRUM_IMAGE,
   name: "Arbitrum",
   nativeCurrency: {
     decimals: 18,
     name: "AETH",
-    symbol: "",
+    symbol: "AETH",
   },
-  explorer: {
-    url: "https://arbiscan.io",
-    name: "Arbiscan",
-  },
-  rpcUrls: ["https://arb1.arbitrum.io/rpc"]
+  rpcUrls: ["https://arb1.arbitrum.io/rpc"],
+  tokenList: arbitrumTokenList.tokens.map(t => new Token(t)),
 };
 
 export const ETHEREUM: Network = {
-  chainId: "",
+  chainId: "0x1",
+  explorer: {
+    name: "Etherscan",
+    url: "https://etherscan.io",
+  },
   imageUrl: ETHEREUM_IMAGE,
   name: "Ethereum",
   nativeCurrency: {
     decimals: 18,
-    name: "ETH",
-    symbol: "",
+    name: "Ethereum",
+    symbol: "ETH",
   },
   rpcUrls: [""],
+  tokenList: ethereumTokenList.tokens.map(t => new Token(t)),
 };
 
 export const networkTypes = [

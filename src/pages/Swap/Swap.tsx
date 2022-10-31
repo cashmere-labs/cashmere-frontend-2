@@ -2,7 +2,6 @@ import { Footer, Navbar, SwapBox } from "components";
 import { GasEstimatorModal } from "components";
 import { getMockEstimations } from "constants/mockEstimateData";
 import { ARBITRUM, POLYGON } from "constants/networks";
-import { Sushi, Uniswap } from "constants/tokens";
 import { useModal } from "hooks";
 import { useTitle } from "hooks/useTitle";
 import { useState } from "react";
@@ -31,10 +30,10 @@ const Swap = () => {
   const [state, setState] = useState<SwapState>({
     fromamount: "",
     fromfrom: ARBITRUM,
-    fromto: Sushi,
+    fromto: ARBITRUM.tokenList[0],
     toamount: "",
     tofrom: POLYGON,
-    toto: Uniswap,
+    toto: POLYGON.tokenList[0],
   });
 
   const estimateModal = useModal();

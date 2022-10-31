@@ -12,9 +12,11 @@ import styles from "./Done.module.scss";
 
 const Done = ({
   onDone,
-  link = "#",
+  explorer,
+  link = "#"
 }: {
   onDone: () => void;
+  explorer?: string;
   link?: string;
 }) => {
   const isPhoneOrPC = useMediaQuery({
@@ -54,7 +56,7 @@ const Done = ({
           color={theme === "light" ? "transparentWhite" : "transparentBlack"}
           className={styles.button1}
         >
-          View on AuroraScan
+          View on {explorer}
         </Button>
         <Button
           onClick={onDone}

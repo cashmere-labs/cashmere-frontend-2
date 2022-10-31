@@ -1,35 +1,29 @@
-import { networkOptions } from "../constants/networkOptions";
-
-export interface ITokenInterface {
+export class Token {
+  asset: string;
+  type: string;
+  address: string;
   name: string;
-  decimal: number;
-  addresses: {
-    [k: typeof networkOptions[number]["chainId"]]: string;
-  };
-  imageUrl?: string;
+  symbol: string;
+  decimals: number;
+  imageUrl: string;
+
+  constructor({ asset, type, address, name, symbol, decimals, logoURI }: TrustToken) {
+    this.asset = asset;
+    this.type = type;
+    this.address = address;
+    this.name = name;
+    this.symbol = symbol;
+    this.decimals = decimals;
+    this.imageUrl = logoURI;
+  }
 }
 
-type TokenParams = {
+export interface TrustToken {
+  asset: string;
+  type: string;
+  address: string;
   name: string;
-  decimal: number;
-  addresses: {
-    [k: typeof networkOptions[number]["chainId"]]: string;
-  };
-  imageUrl?: string;
-};
-
-export class Token implements ITokenInterface {
-  name: string;
-  decimal: number;
-  addresses: {
-    [k: typeof networkOptions[number]["chainId"]]: string;
-  };
-  imageUrl?: string;
-
-  constructor({ name, decimal, addresses, imageUrl }: TokenParams) {
-    this.addresses = addresses;
-    this.name = name;
-    this.decimal = decimal;
-    this.imageUrl = imageUrl;
-  }
+  symbol: string;
+  decimals: number;
+  logoURI: string;
 }

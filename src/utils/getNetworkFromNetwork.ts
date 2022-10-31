@@ -1,7 +1,7 @@
 import {
   ARBITRUM,
   AVALANCHE,
-  BNB,
+  BSC,
   ETHEREUM,
   FANTOM,
   OPTIMISM,
@@ -16,7 +16,7 @@ export const networkMap = new Map([
   [NetworkTypes.FANTOM, FANTOM],
   [NetworkTypes.POLYGON, POLYGON],
   [NetworkTypes.OPTIMISM, OPTIMISM],
-  [NetworkTypes.BNB, BNB],
+  [NetworkTypes.BNB, BSC],
 ]);
 
 export const getNetworkFromNetwork = (network: NetworkTypes) => {

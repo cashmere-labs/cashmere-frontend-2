@@ -6,13 +6,15 @@ import { Token } from "types/token";
 import { Icon, Input } from "ui";
 
 import styles from "./SwapBox.module.scss";
+import { ethers } from "ethers";
+import { ERC20 } from "ethylene/constants/abi";
 
 type SwapNetworkSelectorProps = {
   modalController: ModalController;
   onSelect?: (item: Network | Token) => void;
   options:
-    | { data: Token[]; type: "token" }
-    | { data: Network[]; type: "network" };
+    | { data: Token[]; type: "token"; network: Network }
+    | { data: Network[]; type: "network"; network?: never };
 };
 
 const selectorShowKeyframes = [
@@ -56,10 +58,44 @@ const SwapNetworkSelector = ({
       return options.data.filter(
         (item: Token) =>
           item.name.toUpperCase().includes(text.toUpperCase())
-            // || item.addresses[.toUpperCase().includes(text.toUpperCase()),
+            || item.address.toUpperCase().includes(text.toUpperCase())
       );
     }
   }, [options, text]);
+
+  const [ dynamicToken, setDynamicToken ] = useState<Token>();
+  const [ dynamicTokenLoading, setDynamicTokenLoading ] = useState<boolean>(false);
+  useEffect(() => {
+    setDynamicToken(undefined);
+    if (options.type === "token" && ethers.utils.isAddress(text)) {
+      setDynamicTokenLoading(true);
+      const address = ethers.utils.getAddress(text);
+      const tokenContract = new ethers.Contract(
+          address,
+          ERC20,
+          new ethers.providers.JsonRpcProvider(options.network.rpcUrls[0]),
+      );
+      Promise.all([
+          tokenContract.name(),
+          tokenContract.symbol(),
+          tokenContract.decimals(),
+      ]).then(([ name, symbol, decimals ]) => {
+        setDynamicToken(new Token({
+          address,
+          asset: address,
+          decimals,
+          logoURI: "",
+          name,
+          symbol,
+          type: "",
+        }));
+      }).catch(() => {
+        console.log("not erc20?");
+      }).finally(() => {
+        setDynamicTokenLoading(false);
+      });
+    }
+  }, [filteredOptions, options.network?.rpcUrls, options.type, text]);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -91,6 +127,19 @@ const SwapNetworkSelector = ({
 
       <div>
         <div className={styles.options}>
+          {dynamicToken && (
+              <div
+                  onClick={() => {
+                    options.network?.tokenList.push(dynamicToken);
+                    modalController.close();
+                    onSelect?.(dynamicToken);
+                  }}
+                  className={styles.option}
+              >
+                <img src={""} />
+                <span>{dynamicToken.name}</span>
+              </div>
+          )}
           {filteredOptions.map((item, i) => (
             <div
               key={i}
@@ -104,6 +153,14 @@ const SwapNetworkSelector = ({
               <span>{item.name}</span>
             </div>
           ))}
+          {dynamicTokenLoading && (
+            <div
+              className={styles.option}
+            >
+              <img src={""} />
+              <span>Loading...</span>
+            </div>
+          )}
         </div>
       </div>
     </div>

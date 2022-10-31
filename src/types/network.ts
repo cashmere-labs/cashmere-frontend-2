@@ -1,3 +1,5 @@
+import { Token } from "./token";
+
 export interface Network {
   chainId: string;
   name: string;
@@ -12,4 +14,5 @@ export interface Network {
     url: string;
     name: string;
   };
+  tokenList: Token[],
 }

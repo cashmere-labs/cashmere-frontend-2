@@ -1,7 +1,7 @@
 import {
   ARBITRUM,
   AVALANCHE,
-  BNB,
+  BSC,
   ETHEREUM,
   FANTOM,
   OPTIMISM,
@@ -12,7 +12,7 @@ import { EstimateMapping } from "components/Modals/GasEstimatorModal/GasEstimato
 
 export const mockEstimateNetworks = [
   ETHEREUM,
-  BNB,
+  BSC,
   AVALANCHE,
   OPTIMISM,
   POLYGON,

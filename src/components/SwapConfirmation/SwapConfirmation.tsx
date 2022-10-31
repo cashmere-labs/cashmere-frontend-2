@@ -35,7 +35,7 @@ type SwapConfirmationModal = {
   modalController: ModalController;
 };
 
-const apiAddress = process.env.LOCATION === "test" ? "/swapParamsL0?" : "http://localhost:3001/swapParamsL0?";
+const apiAddress = process.env.REACT_APP_LOCATION === "test" ? "/swapParamsL0?" : "http://localhost:3001/swapParamsL0?";
 
 const SwapConfirmation = ({
   modalController,

@@ -2,7 +2,7 @@ import {
   ARBITRUM,
   AVALANCHE,
   BSC,
-  // ETHEREUM,
+  ETHEREUM,
   FANTOM,
   OPTIMISM,
   POLYGON,
@@ -13,7 +13,7 @@ export const networkOptions = [
   ARBITRUM,
   FANTOM,
   AVALANCHE,
-  // ETHEREUM,
+  ETHEREUM,
   OPTIMISM,
   BSC,
 ];

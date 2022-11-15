@@ -8,6 +8,7 @@ import { Network } from "types/network";
 import { SwapDetailsData } from "types/swap";
 import { Token } from "types/token";
 import { Button, Icon, Modal } from "ui";
+import { TransactionRequest } from "@ethersproject/abstract-provider";
 
 // import { SwapBoxDetails } from "components/SwapBox/SwapBoxDetails";
 import { SwapSettings } from "components/SwapSettings/useSwapSettings";
@@ -16,8 +17,10 @@ import { TokenOrNetworkRenderer } from "components/TokenOrNetworkRenderer/TokenO
 import styles from "./SwapConfirmation.module.scss";
 import Big from "big.js";
 import { useAccount, useProvider, useSigner } from "ethylene/hooks";
-import { constants, ethers } from "ethers";
+import { BigNumber, constants, ethers } from "ethers";
 import { ERC20 } from "ethylene/constants/abi";
+import { ContractContext as CashmereRouter2L0Context } from "../../abi/CashmereRouter2L0";
+import CashmereRouter2L0ABI from "../../abi/CashmereRouter2L0.abi.json";
 
 type SwapConfirmationModal = {
   swapSettings: SwapSettings;
@@ -55,6 +58,12 @@ const SwapConfirmation = ({
     console.log(`location: ${process.env.LOCATION}`);
     console.log(data);
     console.log(from);
+
+    // const signature = await signer?.signMessage(ethers.utils.defaultAbiCoder.encode(
+    //     ['address', 'address', 'address', 'address', 'uint256'],
+    //     [accountAddress, ]
+    // ));
+
     const fromAmount = new Big(from.amount).mul(new Big(10).pow(from.token.decimals)).toFixed(0);
     const r = await fetch(apiAddress + new URLSearchParams({
       fromAmount,
@@ -65,10 +74,39 @@ const SwapConfirmation = ({
     }));
     const resp = await r.json();
     console.log(resp);
-    const tx = {
-      ...resp,
+    const signature = await signer?.signMessage(ethers.utils.defaultAbiCoder.encode(
+        ["address", "address", "address", "address", "uint256"],
+        [
+          accountAddress,
+          resp.args.lwsToken,
+          resp.args.hgsToken,
+          resp.args.dstToken,
+          BigNumber.from(resp.args.hgsEstimate).mul(".9")
+        ]
+    ));
+    const aggRouter: CashmereRouter2L0Context = new ethers.Contract(resp.to, CashmereRouter2L0ABI, signer) as unknown as CashmereRouter2L0Context;
+    const txData = aggRouter.interface.encodeFunctionData(
+      aggRouter.interface.functions["startSwap((address,uint256,address,address,bytes,address,uint256,address,uint16,uint256,bytes))"],
+      [{
+        data: resp.args.oneInchData,
+        dstChain: resp.args.dstChainId,
+        dstToken: resp.args.dstToken,
+        hgsAssetId: resp.args.hgsAssetId,
+        hgsToken: resp.args.hgsToken,
+        lwsToken: resp.args.lwsToken,
+        minHgsAmount: BigNumber.from(resp.args.hgsEstimate).mul(".9"),
+        router1Inch: resp.args.oneInchAddress,
+        srcAmount: resp.args.srcAmount,
+        signature: signature!,
+        srcToken: resp.args.srcToken,
+      }]
+    );
+    const tx: TransactionRequest = {
+      data: txData,
       from: accountAddress,
       gasPrice: await provider?.getGasPrice(),
+      to: resp.to,
+      value: resp.value,
     };
 
     const fromToken = new ethers.Contract(from.token.address, ERC20, signer);

@@ -10,7 +10,7 @@ import { NetworkTypes } from "ui/NetworkBadge/utils";
 
 import arbitrumTokenList from "./assets/blockchains/arbitrum/tokenlist.json";
 import avalancheTokenList from "./assets/blockchains/avalanchec/tokenlist.json";
-import bscTokenList from "./assets/blockchains/binance/tokenlist.json";
+import bscTokenList from "./assets/blockchains/smartchain/tokenlist.json";
 import ethereumTokenList from "./assets/blockchains/ethereum/tokenlist.json";
 import fantomTokenList from "./assets/blockchains/fantom/tokenlist.json";
 import optimismTokenList from "./assets/blockchains/optimism/tokenlist.json";

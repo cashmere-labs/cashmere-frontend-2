@@ -132,7 +132,7 @@ export const ETHEREUM: Network = {
     name: "Ethereum",
     symbol: "ETH",
   },
-  rpcUrls: [""],
+  rpcUrls: ["https://eth-mainnet.g.alchemy.com/v2/dcp_zwzQ14lWcfuLy3tGJxz1MV0VtRY4"],
   tokenList: ethereumTokenList.tokens.map(t => new Token(t)),
 };
 

@@ -24,14 +24,14 @@ module.exports = {
     "sort-keys-fix",
   ],
   rules: {
+    "@typescript-eslint/ban-ts-comment": "warn",
     "@typescript-eslint/no-empty-interface": "warn",
+    "@typescript-eslint/no-non-null-assertion": "off",
     "linebreak-style": ["error", "unix"],
     "no-unused-vars": "off",
-    quotes: ["error", "double"],
     "react-hooks/exhaustive-deps": "error",
     "react/react-in-jsx-scope": "off",
     semi: ["error", "always"],
-    "@typescript-eslint/ban-ts-comment": 1,
     "sort-keys-fix/sort-keys-fix": "warn",
     "unused-imports/no-unused-imports": "error",
     "unused-imports/no-unused-vars": [

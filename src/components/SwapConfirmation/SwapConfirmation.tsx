@@ -74,16 +74,63 @@ const SwapConfirmation = ({
     }));
     const resp = await r.json();
     console.log(resp);
-    const signature = await signer?.signMessage(ethers.utils.defaultAbiCoder.encode(
-        ["address", "address", "address", "address", "uint256"],
-        [
-          accountAddress,
-          resp.args.lwsToken,
-          resp.args.hgsToken,
-          resp.args.dstToken,
-          BigNumber.from(resp.args.hgsEstimate).mul(".9")
+    console.log({
+          name: "Cashmere Swap",
+          version: "0.0.1",
+          chainId: from.network.chainId,
+          verifyingContract: resp.to,
+        },
+        {
+          Parameters: [
+            { name: 'receiver', type: 'address' },
+            { name: 'lwsToken', type: 'address' },
+            { name: 'hgsToken', type: 'address' },
+            { name: 'dstToken', type: 'address' },
+            { name: 'minHgsAmount', type: 'uint256' },
+          ]
+        },
+        {
+          receiver: accountAddress,
+          lwsToken: resp.args.lwsToken,
+          hgsToken: resp.args.hgsToken,
+          dstToken: resp.args.dstToken,
+          minHgsAmount: BigNumber.from(resp.args.hgsEstimate).mul("9").div("10")
+        });
+    const signature = await signer?._signTypedData(
+      {
+        name: "Cashmere Swap",
+        version: "0.0.1",
+        chainId: from.network.chainId,
+        verifyingContract: resp.to,
+      },
+      {
+        Parameters: [
+          { name: 'receiver', type: 'address' },
+          { name: 'lwsToken', type: 'address' },
+          { name: 'hgsToken', type: 'address' },
+          { name: 'dstToken', type: 'address' },
+          { name: 'minHgsAmount', type: 'uint256' },
         ]
-    ));
+      },
+      {
+        receiver: accountAddress,
+        lwsToken: resp.args.lwsToken,
+        hgsToken: resp.args.hgsToken,
+        dstToken: resp.args.dstToken,
+        minHgsAmount: BigNumber.from(resp.args.hgsEstimate).mul("9").div("10")
+      }
+    );
+
+    // const signature = await signer?._signTypedData(ethers.utils.arrayify(ethers.utils.keccak256(ethers.utils.defaultAbiCoder.encode(
+    //     ["address", "address", "address", "address", "uint256"],
+    //     [
+    //       accountAddress,
+    //       resp.args.lwsToken,
+    //       resp.args.hgsToken,
+    //       resp.args.dstToken,
+    //       BigNumber.from(resp.args.hgsEstimate).mul("9").div("10"),
+    //     ]
+    // ))));
     const aggRouter: CashmereRouter2L0Context = new ethers.Contract(resp.to, CashmereRouter2L0ABI, signer) as unknown as CashmereRouter2L0Context;
     const txData = aggRouter.interface.encodeFunctionData(
       aggRouter.interface.functions["startSwap((address,uint256,address,address,bytes,address,uint256,address,uint16,uint256,bytes))"],
@@ -94,10 +141,10 @@ const SwapConfirmation = ({
         hgsAssetId: resp.args.hgsAssetId,
         hgsToken: resp.args.hgsToken,
         lwsToken: resp.args.lwsToken,
-        minHgsAmount: BigNumber.from(resp.args.hgsEstimate).mul(".9"),
+        minHgsAmount: BigNumber.from(resp.args.hgsEstimate).mul("9").div('10'),
         router1Inch: resp.args.oneInchAddress,
-        srcAmount: resp.args.srcAmount,
         signature: signature!,
+        srcAmount: resp.args.srcAmount,
         srcToken: resp.args.srcToken,
       }]
     );
@@ -137,7 +184,7 @@ const SwapConfirmation = ({
     modalController.isOpen ? (
       <Done
           onDone={modalController.close}
-          link={`${from.network.explorer?.url}tx/${transactionHash}`}
+          link={`${from.network.explorer?.url}/tx/${transactionHash}`}
           explorer={from.network.explorer?.name}
       />
     ) : null

@@ -99,7 +99,7 @@ const SwapConfirmation = ({
     modalController.isOpen ? (
       <Done
           onDone={modalController.close}
-          link={`${from.network.explorer?.url}tx/${transactionHash}`}
+          link={`${from.network.explorer?.url}/tx/${transactionHash}`}
           explorer={from.network.explorer?.name}
       />
     ) : null

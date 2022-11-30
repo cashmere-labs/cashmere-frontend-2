@@ -21,7 +21,7 @@ export const POLYGON: Network = {
   chainId: "0x89",
   explorer: {
     name: "Polygonscan",
-    url: "https://polygonscan.com",
+    url: "https://polygonscan.com/",
   },
   imageUrl: POLYGON_IMAGE,
   name: "Polygon",
@@ -106,7 +106,7 @@ export const ARBITRUM: Network = {
   chainId: "0xa4b1",
   explorer: {
     name: "Arbiscan",
-    url: "https://arbiscan.io",
+    url: "https://arbiscan.io/",
   },
   imageUrl: ARBITRUM_IMAGE,
   name: "Arbitrum",
@@ -123,7 +123,7 @@ export const ETHEREUM: Network = {
   chainId: "0x1",
   explorer: {
     name: "Etherscan",
-    url: "https://etherscan.io",
+    url: "https://etherscan.io/",
   },
   imageUrl: ETHEREUM_IMAGE,
   name: "Ethereum",

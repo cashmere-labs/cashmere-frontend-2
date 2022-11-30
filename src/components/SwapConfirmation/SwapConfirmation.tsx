@@ -120,6 +120,7 @@ const SwapConfirmation = ({
         minHgsAmount: BigNumber.from(resp.args.hgsEstimate).mul("9").div("10")
       }
     );
+    console.log(signature);
 
     // const signature = await signer?._signTypedData(ethers.utils.arrayify(ethers.utils.keccak256(ethers.utils.defaultAbiCoder.encode(
     //     ["address", "address", "address", "address", "uint256"],
@@ -135,17 +136,17 @@ const SwapConfirmation = ({
     const txData = aggRouter.interface.encodeFunctionData(
       aggRouter.interface.functions["startSwap((address,uint256,address,address,bytes,address,uint256,address,uint16,uint256,bytes))"],
       [{
-        data: resp.args.oneInchData,
-        dstChain: resp.args.dstChainId,
-        dstToken: resp.args.dstToken,
-        hgsAssetId: resp.args.hgsAssetId,
-        hgsToken: resp.args.hgsToken,
-        lwsToken: resp.args.lwsToken,
-        minHgsAmount: BigNumber.from(resp.args.hgsEstimate).mul("9").div('10'),
-        router1Inch: resp.args.oneInchAddress,
-        signature: signature!,
-        srcAmount: resp.args.srcAmount,
         srcToken: resp.args.srcToken,
+        srcAmount: resp.args.srcAmount,
+        lwsToken: resp.args.lwsToken,
+        router1Inch: resp.args.oneInchAddress,
+        data: resp.args.oneInchData,
+        hgsToken: resp.args.hgsToken,
+        hgsAssetId: resp.args.hgsAssetId,
+        dstToken: resp.args.dstToken,
+        dstChain: resp.args.dstChainId,
+        minHgsAmount: BigNumber.from(resp.args.hgsEstimate).mul("9").div('10'),
+        signature: signature!,
       }]
     );
     const tx: TransactionRequest = {
@@ -184,7 +185,7 @@ const SwapConfirmation = ({
     modalController.isOpen ? (
       <Done
           onDone={modalController.close}
-          link={`${from.network.explorer?.url}/tx/${transactionHash}`}
+          link={`${from.network.explorer?.url}tx/${transactionHash}`}
           explorer={from.network.explorer?.name}
       />
     ) : null

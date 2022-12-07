@@ -19,7 +19,6 @@ export type SwapState = {
   tofrom: Network;
   toto: Token;
   fromamount: string;
-  toamount: string;
 };
 
 const Swap = () => {
@@ -31,7 +30,6 @@ const Swap = () => {
     fromamount: "",
     fromfrom: ARBITRUM,
     fromto: ARBITRUM.tokenList[0],
-    toamount: "",
     tofrom: POLYGON,
     toto: POLYGON.tokenList[0],
   });

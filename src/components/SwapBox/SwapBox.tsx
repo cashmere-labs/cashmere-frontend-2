@@ -5,9 +5,9 @@ import { networkOptions } from "constants/networkOptions";
 // import { ETHEREUM, POLYGON } from "constants/networks";
 // import { tokenOptions } from "constants/tokenOptions";
 import { useAccount, useConnection, useOnNetworkChange, useProvider, useRightNetwork } from "ethylene/hooks";
-import { useModal, useTheme } from "hooks";
+import { useDebounce, useModal, useTheme } from 'hooks';
 import { SwapState } from "pages/Swap/Swap";
-import { ReactElement, useEffect, useMemo, useRef, useState } from "react";
+import { ReactElement, useEffect, useMemo, useRef, useState } from 'react';
 import { FaChevronRight } from "react-icons/fa";
 import { Network } from "types/network";
 import { Token } from "types/token";
@@ -24,6 +24,8 @@ import { ERC20 as ERC20_ABI } from "ethylene/constants/abi";
 import Big from "big.js";
 import { EthyleneNetwork } from "ethylene/types/app";
 import { useNetwork } from "../../store/hooks/networkHooks";
+import { apiAddress } from '../../constants/utils';
+import { SwapBoxDetails } from "./SwapBoxDetails";
 
 const switchNetwork = function (network: EthyleneNetwork) {
     const fn = async () => {
@@ -77,6 +79,8 @@ const SwapBox = ({
   const network = useNetwork();
   const { isRightNetwork, switchTo } = useRightNetwork(state.fromfrom);
   const [method, setMethod] = useState<"stable" | "aggregator">("stable");
+  const [ toAmount, setToAmount ] = useState('');
+  const [ minReceiveAmount, setMinReceiveAmount ] = useState('');
 
   const [ networkId, setNetworkId ] = useState<number | undefined>();
 
@@ -156,6 +160,29 @@ const SwapBox = ({
     return "Swap";
   };
 
+  const estimateAmount = useMemo(() => async () => {
+      if (!parseFloat(state.fromamount))
+          return;
+      const r = await fetch(apiAddress + '/swapEstimateL0?' + new URLSearchParams({
+          fromAmount: Big(state.fromamount).mul(Big(10).pow(state.fromto.decimals)).toString(),
+          fromChain: parseInt(state.fromfrom.chainId, 16).toString(),
+          fromToken: state.fromto.address,
+          toChain: parseInt(state.tofrom.chainId, 16).toString(),
+          toToken: state.toto.address,
+      }));
+      const resp = await r.json();
+      setToAmount(Big(resp.dstAmount).div(Big(10).pow(state.toto.decimals)).toString());
+      setMinReceiveAmount(Big(await resp.minReceivedDst).div(Big(10).pow(state.toto.decimals)).toString());
+  }, [state]);
+  const estimateAmountDebounced = useDebounce(estimateAmount);
+
+    const { fromamount, fromto, fromfrom, toto, tofrom } = state;
+  useEffect(() => {
+      setToAmount('...');
+      setMinReceiveAmount('...');
+      estimateAmountDebounced();
+  }, [fromamount, fromto, fromfrom, toto, tofrom, estimateAmountDebounced]);
+
   /**
    * @dev erc20Balance can be acquired a hook that is inside ethylene/hooks
    *
@@ -213,7 +240,7 @@ const SwapBox = ({
           token: state.fromto,
         }}
         to={{
-          amount: state.toamount,
+          amount: toAmount,
           network: state.tofrom,
           token: state.toto,
         }}
@@ -325,9 +352,9 @@ const SwapBox = ({
           extendLeft
           hideLeftBorder
           value={state.fromamount}
-          onChange={e => setState({ ...state, fromamount: e.target.value, toamount: e.target.value })}
+          onChange={e => setState({ ...state, fromamount: e.target.value })}
           rightEl={
-            <Button width="18px" color="white" onClick={() => setState({ ...state, fromamount: fromBalance?.toString() || "", toamount: fromBalance?.toString() || "" })}>
+            <Button width="18px" color="white" onClick={() => setState({ ...state, fromamount: fromBalance?.toString() || "" })}>
               Max
             </Button>
           }
@@ -413,28 +440,30 @@ const SwapBox = ({
           }}
         />
         <Input
-          placeholder="Enter amount"
+          // placeholder="Enter amount"
           className={styles.input}
           extendLeft
           hideLeftBorder
-          value={state.toamount}
-          onChange={e => setState({ ...state, fromamount: e.target.value, toamount: e.target.value })}
-          rightEl={
-            <Button width="18px" color="white" onClick={() => setState({ ...state, fromamount: fromBalance?.toString() || "", toamount: fromBalance?.toString() || "" })}>
-              Max
-            </Button>
-          }
+          // value={state.toamount}
+            value={toAmount}
+          disabled
+          // onChange={e => setState({ ...state, fromamount: e.target.value, toamount: e.target.value })}
+          // rightEl={
+          //   <Button width="18px" color="white" onClick={() => setState({ ...state, fromamount: fromBalance?.toString() || "", toamount: fromBalance?.toString() || "" })}>
+          //     Max
+          //   </Button>
+          // }
         />
       </Row>
       {/* TO ENDS */}
-      {/*<SwapBoxDetails
+      <SwapBoxDetails
         data={{
           fee: "24.169.287 USDT",
-          minimumReceived: "15.6235 USDT",
+          minimumReceived: `${minReceiveAmount} ${state.toto.symbol}`,
           priceImpact: "0.05%",
-          rataAfterFee: "1 UST = 1.017 USDT",
+          rataAfterFee: `1 ${state.fromto.symbol} = 1.017 ${state.toto.symbol}`,
         }}
-      />*/}
+      />
       <Button
         onClick={handleSwap}
         style={{ marginBottom: "1.5rem", marginTop: "2rem" }}

@@ -21,6 +21,7 @@ import { BigNumber, constants, ethers } from "ethers";
 import { ERC20 } from "ethylene/constants/abi";
 import { ContractContext as CashmereRouter2L0Context } from "../../abi/CashmereRouter2L0";
 import CashmereRouter2L0ABI from "../../abi/CashmereRouter2L0.abi.json";
+import { apiAddress } from '../../constants/utils';
 
 type SwapConfirmationModal = {
   swapSettings: SwapSettings;
@@ -37,8 +38,6 @@ type SwapConfirmationModal = {
   data: SwapDetailsData;
   modalController: ModalController;
 };
-
-const apiAddress = process.env.REACT_APP_LOCATION === "test" ? "/swapParamsL0?" : "http://localhost:3001/swapParamsL0?";
 
 const SwapConfirmation = ({
   modalController,
@@ -65,7 +64,7 @@ const SwapConfirmation = ({
     // ));
 
     const fromAmount = new Big(from.amount).mul(new Big(10).pow(from.token.decimals)).toFixed(0);
-    const r = await fetch(apiAddress + new URLSearchParams({
+    const r = await fetch(apiAddress + '/swapParamsL0?' + new URLSearchParams({
       fromAmount,
       fromChain: parseInt(from.network.chainId, 16).toString(),
       fromToken: from.token.address,
@@ -74,28 +73,6 @@ const SwapConfirmation = ({
     }));
     const resp = await r.json();
     console.log(resp);
-    console.log({
-          name: "Cashmere Swap",
-          version: "0.0.1",
-          chainId: from.network.chainId,
-          verifyingContract: resp.to,
-        },
-        {
-          Parameters: [
-            { name: 'receiver', type: 'address' },
-            { name: 'lwsToken', type: 'address' },
-            { name: 'hgsToken', type: 'address' },
-            { name: 'dstToken', type: 'address' },
-            { name: 'minHgsAmount', type: 'uint256' },
-          ]
-        },
-        {
-          receiver: accountAddress,
-          lwsToken: resp.args.lwsToken,
-          hgsToken: resp.args.hgsToken,
-          dstToken: resp.args.dstToken,
-          minHgsAmount: BigNumber.from(resp.args.hgsEstimate).mul("9").div("10")
-        });
     const signature = await signer?._signTypedData(
       {
         name: "Cashmere Swap",

@@ -1,7 +1,7 @@
 import { Footer, Navbar, SwapBox } from "components";
 import { GasEstimatorModal } from "components";
 import { getMockEstimations } from "constants/mockEstimateData";
-import { ARBITRUM, POLYGON } from "constants/networks";
+import { ARBITRUM, BSC } from 'constants/networks';
 import { useModal } from "hooks";
 import { useTitle } from "hooks/useTitle";
 import { useState } from "react";
@@ -30,8 +30,8 @@ const Swap = () => {
     fromamount: "",
     fromfrom: ARBITRUM,
     fromto: ARBITRUM.tokenList[0],
-    tofrom: POLYGON,
-    toto: POLYGON.tokenList[0],
+    tofrom: BSC,
+    toto: BSC.tokenList[0],
   });
 
   const estimateModal = useModal();

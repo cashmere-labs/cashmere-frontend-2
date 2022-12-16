@@ -52,8 +52,14 @@ const SwapConfirmation = ({
   const { address: accountAddress } = useAccount();
   const { provider } = useProvider();
   const signer = useSigner();
+  const [ l0Link, setL0Link ] = useState('');
+
+  useEffect(() => {
+    setL0Link('');
+  }, [modalController.isOpen]);
 
   const _handleSwap = async () => {
+    setL0Link('');
     console.log(`location: ${process.env.LOCATION}`);
     console.log(data);
     console.log(from);
@@ -147,6 +153,16 @@ const SwapConfirmation = ({
 
     setTransactionHash(receipt?.hash);
     setIsConfirmed(true);
+
+    const l0Interval = setInterval(async () => {
+      const r = await fetch(`https://api-mainnet.layerzero-scan.com/tx/${receipt?.hash}`);
+      const data = await r.json();
+      if (data?.messages?.length) {
+        const m = data.messages[0];
+        setL0Link(`https://layerzeroscan.com/${m.srcChainId}/address/${m.srcUaAddress}/message/${m.dstChainId}/address/${m.dstUaAddress}/nonce/${m.srcUaNonce}`);
+        clearInterval(l0Interval);
+      }
+    }, 1000);
   };
 
   useEffect(() => {
@@ -163,6 +179,7 @@ const SwapConfirmation = ({
       <Done
           onDone={modalController.close}
           link={`${from.network.explorer?.url}tx/${transactionHash}`}
+          l0Link={l0Link}
           explorer={from.network.explorer?.name}
       />
     ) : null

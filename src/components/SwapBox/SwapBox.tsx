@@ -81,6 +81,8 @@ const SwapBox = ({
   const [method, setMethod] = useState<"stable" | "aggregator">("stable");
   const [ toAmount, setToAmount ] = useState('');
   const [ minReceiveAmount, setMinReceiveAmount ] = useState('');
+  const [ fee, setFee ] = useState('');
+  const [ priceImpact, setPriceImpact ] = useState('');
 
   const [ networkId, setNetworkId ] = useState<number | undefined>();
 
@@ -172,7 +174,9 @@ const SwapBox = ({
       }));
       const resp = await r.json();
       setToAmount(Big(resp.dstAmount).div(Big(10).pow(state.toto.decimals)).toString());
-      setMinReceiveAmount(Big(await resp.minReceivedDst).div(Big(10).pow(state.toto.decimals)).toString());
+      setMinReceiveAmount(Big(resp.minReceivedDst).div(Big(10).pow(state.toto.decimals)).toString());
+      setFee(resp.fee);
+      setPriceImpact(resp.priceImpact);
   }, [state]);
   const estimateAmountDebounced = useDebounce(estimateAmount);
 
@@ -458,10 +462,10 @@ const SwapBox = ({
       {/* TO ENDS */}
       <SwapBoxDetails
         data={{
-          fee: "24.169.287 USDT",
+          fee,
           minimumReceived: `${minReceiveAmount} ${state.toto.symbol}`,
-          priceImpact: "0.05%",
-          rataAfterFee: `1 ${state.fromto.symbol} = 1.017 ${state.toto.symbol}`,
+          priceImpact: `${priceImpact}%`,
+          rataAfterFee: `1 ${state.fromto.symbol} = ${parseFloat(toAmount) && parseFloat(state.fromamount) && new Big(toAmount).div(state.fromamount).toString()} ${state.toto.symbol}`,
         }}
       />
       <Button

@@ -13,11 +13,13 @@ import styles from "./Done.module.scss";
 const Done = ({
   onDone,
   explorer,
-  link = "#"
+  l0Link,
+  link = "#",
 }: {
   onDone: () => void;
   explorer?: string;
   link?: string;
+  l0Link: string;
 }) => {
   const isPhoneOrPC = useMediaQuery({
     query: "(max-width: 700px)",
@@ -58,6 +60,15 @@ const Done = ({
         >
           View on {explorer}
         </Button>
+        {l0Link && <Button
+          onClick={() => window.open(l0Link, "_blank")}
+          height={isPhoneOrPC ? "45px" : "71px"}
+          width={isPhoneOrPC ? (minWidth ? "260px" : "325px") : "524px"}
+          color={theme === "light" ? "transparentWhite" : "transparentBlack"}
+          className={styles.button1}
+        >
+          View on LayerZeroScan
+        </Button>}
         <Button
           onClick={onDone}
           height={isPhoneOrPC ? "34px" : "56px"}

@@ -1,19 +1,19 @@
 import {
   ARBITRUM,
-  AVALANCHE,
+  // AVALANCHE,
   BSC,
-  ETHEREUM,
-  FANTOM,
-  OPTIMISM,
-  POLYGON,
+  // ETHEREUM,
+  // FANTOM,
+  // OPTIMISM,
+  // POLYGON,
 } from "constants/networks";
 
 export const networkOptions = [
-  POLYGON,
+  // POLYGON,
   ARBITRUM,
-  FANTOM,
-  AVALANCHE,
-  ETHEREUM,
-  OPTIMISM,
+  // FANTOM,
+  // AVALANCHE,
+  // ETHEREUM,
+  // OPTIMISM,
   BSC,
 ];

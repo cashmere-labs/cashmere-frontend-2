@@ -108,10 +108,20 @@ const SwapBox = ({
           setToBalance(undefined);
           return;
       }
-      const fromContract = new ethers.Contract(state.fromto.address, ERC20_ABI, new ethers.providers.JsonRpcProvider(state.fromfrom.rpcUrls[0]));
-      const toContract = new ethers.Contract(state.toto.address, ERC20_ABI, new ethers.providers.JsonRpcProvider(state.tofrom.rpcUrls[0]));
-      setFromBalance(new Big((await fromContract.balanceOf(accountAddress)).toString()).div(new Big(10).pow(state.fromto.decimals)));
-      setToBalance(new Big((await toContract.balanceOf(accountAddress)).toString()).div(new Big(10).pow(state.toto.decimals)));
+      const fromProvider = new ethers.providers.JsonRpcProvider(state.fromfrom.rpcUrls[0]);
+      const toProvider = new ethers.providers.JsonRpcProvider(state.tofrom.rpcUrls[0]);
+      if (state.fromto.address.toLowerCase() !== '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'.toLowerCase()) {
+          const fromContract = new ethers.Contract(state.fromto.address, ERC20_ABI, fromProvider);
+          setFromBalance(new Big((await fromContract.balanceOf(accountAddress)).toString()).div(new Big(10).pow(state.fromto.decimals)));
+      } else {
+          setFromBalance(new Big((await fromProvider.getBalance(accountAddress)).toString()).div(new Big(10).pow(state.fromto.decimals)));
+      }
+      if (state.toto.address.toLowerCase() !== '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'.toLowerCase()) {
+          const toContract = new ethers.Contract(state.toto.address, ERC20_ABI, toProvider);
+          setToBalance(new Big((await toContract.balanceOf(accountAddress)).toString()).div(new Big(10).pow(state.toto.decimals)));
+      } else {
+          setToBalance(new Big((await toProvider.getBalance(accountAddress)).toString()).div(new Big(10).pow(state.toto.decimals)));
+      }
   })(), [accountAddress, state.fromfrom, state.fromto, state.tofrom, state.toto]);
 
   const onNetworkSelect = useRef<(item: Network | Token) => void>(

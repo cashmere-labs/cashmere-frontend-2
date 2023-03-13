@@ -19,8 +19,10 @@ import Big from "big.js";
 import { useAccount, useProvider, useSigner } from "ethylene/hooks";
 import { BigNumber, constants, ethers } from "ethers";
 import { ERC20 } from "ethylene/constants/abi";
-import { ContractContext as CashmereRouter2L0Context } from "../../abi/CashmereRouter2L0";
-import CashmereRouter2L0ABI from "../../abi/CashmereRouter2L0.abi.json";
+// import { ContractContext as CashmereRouter2L0Context } from "../../abi/CashmereRouter2L0";
+// import CashmereRouter2L0ABI from "../../abi/CashmereRouter2L0.abi.json";
+import { ContractContext as CashmereAggregatorUniswapContext } from "../../abi/CashmereAggregatorUniswap";
+import CashmereAggregatorUniswapABI from "../../abi/CashmereAggregatorUniswap.json";
 import { apiAddress } from '../../constants/utils';
 
 type SwapConfirmationModal = {
@@ -79,28 +81,37 @@ const SwapConfirmation = ({
     }));
     const resp = await r.json();
     console.log(resp);
+
+    if (from.token.address !== '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE') {
+      const fromToken = new ethers.Contract(from.token.address, ERC20, signer);
+      if ((await fromToken.allowance(accountAddress, resp.to)).lt(fromAmount)) {
+        const tx = await fromToken.approve(resp.to, constants.MaxUint256);
+        await tx.wait();
+      }
+    }
+
     const signature = await signer?._signTypedData(
       {
         name: "Cashmere Swap",
-        version: "0.0.1",
+        version: "0.0.2",
         chainId: from.network.chainId,
         verifyingContract: resp.to,
       },
       {
         Parameters: [
           { name: 'receiver', type: 'address' },
-          { name: 'lwsToken', type: 'address' },
-          { name: 'hgsToken', type: 'address' },
+          { name: 'lwsPoolId', type: 'uint16' },
+          { name: 'hgsPoolId', type: 'uint16' },
           { name: 'dstToken', type: 'address' },
           { name: 'minHgsAmount', type: 'uint256' },
         ]
       },
       {
         receiver: accountAddress,
-        lwsToken: resp.args.lwsToken,
-        hgsToken: resp.args.hgsToken,
+        lwsPoolId: resp.args.lwsPoolId,
+        hgsPoolId: resp.args.hgsPoolId,
         dstToken: resp.args.dstToken,
-        minHgsAmount: BigNumber.from(resp.args.hgsEstimate).mul("9").div("10")
+        minHgsAmount: BigNumber.from(resp.args.minHgsAmount).mul("9").div("10")
       }
     );
     console.log(signature);
@@ -115,20 +126,29 @@ const SwapConfirmation = ({
     //       BigNumber.from(resp.args.hgsEstimate).mul("9").div("10"),
     //     ]
     // ))));
-    const aggRouter: CashmereRouter2L0Context = new ethers.Contract(resp.to, CashmereRouter2L0ABI, signer) as unknown as CashmereRouter2L0Context;
+    const aggRouter: CashmereAggregatorUniswapContext = new ethers.Contract(resp.to, CashmereAggregatorUniswapABI, signer) as unknown as CashmereAggregatorUniswapContext;
+    console.log({
+      srcToken: resp.args.srcToken,
+      srcAmount: resp.args.srcAmount,
+      lwsPoolId: resp.args.lwsPoolId,
+      hgsPoolId: resp.args.hgsPoolId,
+      dstToken: resp.args.dstToken,
+      dstChain: resp.args.dstChain,
+      dstAggregatorAddress: resp.args.dstAggregatorAddress,
+      minHgsAmount: BigNumber.from(resp.args.minHgsAmount).mul("9").div('10'),
+      signature: signature!,
+    });
     const txData = aggRouter.interface.encodeFunctionData(
-      aggRouter.interface.functions["startSwap((address,uint256,address,address,bytes,address,uint256,address,uint16,uint256,bytes))"],
+      aggRouter.interface.functions["startSwap((address,uint256,uint16,uint16,address,uint16,address,uint256,bytes))"],
       [{
         srcToken: resp.args.srcToken,
         srcAmount: resp.args.srcAmount,
-        lwsToken: resp.args.lwsToken,
-        router1Inch: resp.args.oneInchAddress,
-        data: resp.args.oneInchData,
-        hgsToken: resp.args.hgsToken,
-        hgsAssetId: resp.args.hgsAssetId,
+        lwsPoolId: resp.args.lwsPoolId,
+        hgsPoolId: resp.args.hgsPoolId,
         dstToken: resp.args.dstToken,
-        dstChain: resp.args.dstChainId,
-        minHgsAmount: BigNumber.from(resp.args.hgsEstimate).mul("9").div('10'),
+        dstChain: resp.args.dstChain,
+        dstAggregatorAddress: resp.args.dstAggregatorAddress,
+        minHgsAmount: BigNumber.from(resp.args.minHgsAmount).mul("9").div('10'),
         signature: signature!,
       }]
     );
@@ -140,12 +160,6 @@ const SwapConfirmation = ({
       value: resp.value,
     };
 
-    const fromToken = new ethers.Contract(from.token.address, ERC20, signer);
-    if ((await fromToken.allowance(accountAddress, resp.to)).lt(fromAmount)) {
-      const tx = await fromToken.approve(resp.to, constants.MaxUint256);
-      await tx.wait();
-    }
-
     console.log("beforeEstimate", tx);
     tx.gasLimit = await provider?.estimateGas(tx);
     console.log("afterEstimate", tx);
@@ -155,11 +169,11 @@ const SwapConfirmation = ({
     setIsConfirmed(true);
 
     const l0Interval = setInterval(async () => {
-      const r = await fetch(`https://api-mainnet.layerzero-scan.com/tx/${receipt?.hash}`);
+      const r = await fetch(`https://api-testnet.layerzero-scan.com/tx/${receipt?.hash}`);
       const data = await r.json();
       if (data?.messages?.length) {
         const m = data.messages[0];
-        setL0Link(`https://layerzeroscan.com/${m.srcChainId}/address/${m.srcUaAddress}/message/${m.dstChainId}/address/${m.dstUaAddress}/nonce/${m.srcUaNonce}`);
+        setL0Link(`https://testnet.layerzeroscan.com/${m.srcChainId}/address/${m.srcUaAddress}/message/${m.dstChainId}/address/${m.dstUaAddress}/nonce/${m.srcUaNonce}`);
         clearInterval(l0Interval);
       }
     }, 1000);

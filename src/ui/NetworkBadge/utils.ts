@@ -15,6 +15,8 @@ export enum NetworkTypes {
   "ARBITRUM",
   "OPTIMISM",
   "FANTOM",
+  'GOERLI',
+  'MUMBAI',
 }
 
 export const getBadgeProps = (label: NetworkTypes | string) => {

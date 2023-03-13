@@ -17,6 +17,66 @@ import optimismTokenList from "./assets/blockchains/optimism/tokenlist.json";
 import polygonTokenList from "./assets/blockchains/polygon/tokenlist.json";
 import { Token } from "../types/token";
 
+const mumbaiTokenList = [
+  {
+    asset: '0',
+    type: 'MUMBAI',
+    address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+    name: 'MATIC',
+    symbol: 'MATIC',
+    decimals: 18,
+    logoURI: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619/logo.png",
+  },
+  {
+    asset: '1',
+    type: 'MUMBAI',
+    address: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889',
+    name: 'Wrapped MATIC',
+    symbol: 'WMATIC',
+    decimals: 18,
+    logoURI: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619/logo.png",
+  },
+  {
+    asset: '2',
+    type: 'MUMBAI',
+    address: '0x9F2bdc7c63D9CAD3Af1C5902d7fbCa297E0fc2Df',
+    name: 'USDC',
+    symbol: 'USDC',
+    decimals: 18,
+    logoURI: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
+  },
+];
+
+const goerliTokenList = [
+  {
+    asset: '0',
+    type: 'GOERLI',
+    address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+    name: 'ETH',
+    symbol: 'ETH',
+    decimals: 18,
+    logoURI: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
+  {
+    asset: '1',
+    type: 'GOERLI',
+    address: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
+    name: 'Wrapped ETH',
+    symbol: 'WETH',
+    decimals: 18,
+    logoURI: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
+  {
+    asset: '2',
+    type: 'GOERLI',
+    address: '0x9B2660A7BEcd0Bf3d90401D1C214d2CD36317da5',
+    name: 'USDC',
+    symbol: 'USDC',
+    decimals: 18,
+    logoURI: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
+  },
+];
+
 export const POLYGON: Network = {
   chainId: "0x89",
   explorer: {
@@ -32,6 +92,23 @@ export const POLYGON: Network = {
   },
   rpcUrls: ["https://polygon-rpc.com"],
   tokenList: polygonTokenList.tokens.map(t => new Token(t)),
+};
+
+export const MUMBAI: Network = {
+  chainId: "0x13881",
+  explorer: {
+    name: "Polygonscan",
+    url: "https://mumbai.polygonscan.com/",
+  },
+  imageUrl: POLYGON_IMAGE,
+  name: "Mumbai",
+  nativeCurrency: {
+    decimals: 18,
+    name: "MATIC",
+    symbol: "",
+  },
+  rpcUrls: ["https://matic-mumbai.chainstacklabs.com"],
+  tokenList: mumbaiTokenList.map(t => new Token(t)),
 };
 
 export const AVALANCHE: Network = {
@@ -136,6 +213,23 @@ export const ETHEREUM: Network = {
   tokenList: ethereumTokenList.tokens.map(t => new Token(t)),
 };
 
+export const GOERLI: Network = {
+  chainId: "0x5",
+  explorer: {
+    name: "Etherscan",
+    url: "https://goerli.etherscan.io/",
+  },
+  imageUrl: ETHEREUM_IMAGE,
+  name: "Goerli",
+  nativeCurrency: {
+    decimals: 18,
+    name: "Ethereum",
+    symbol: "ETH",
+  },
+  rpcUrls: ["https://goerli.blockpi.network/v1/rpc/public"],
+  tokenList: goerliTokenList.map(t => new Token(t)),
+};
+
 export const networkTypes = [
   NetworkTypes.ARBITRUM,
   NetworkTypes.AVALANCE,
@@ -144,4 +238,6 @@ export const networkTypes = [
   NetworkTypes.FANTOM,
   NetworkTypes.OPTIMISM,
   NetworkTypes.POLYGON,
+  NetworkTypes.MUMBAI,
+  NetworkTypes.GOERLI,
 ];

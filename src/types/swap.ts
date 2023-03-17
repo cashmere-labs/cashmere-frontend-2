@@ -1,5 +1,5 @@
 export type SwapDetailsData = Readonly<{
-  rataAfterFee: string;
+  rateAfterFee: string;
   priceImpact: string;
   fee: string;
   minimumReceived: string;

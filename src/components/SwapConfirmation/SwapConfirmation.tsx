@@ -62,7 +62,7 @@ const SwapConfirmation = ({
 
   const _handleSwap = async () => {
     setL0Link('');
-    console.log(`location: ${process.env.LOCATION}`);
+    console.log(`dev: ${import.meta.env.DEV}`);
     console.log(data);
     console.log(from);
 

@@ -52,7 +52,7 @@ const SwapBoxDetails = ({ data }: { data: SwapDetailsData }) => {
               justifyContent: "flex-end",
             }}
           >
-            <span>{data.rataAfterFee}</span>
+            <span>{data.rateAfterFee}</span>
             <Icon
               style={{ color: "var(--icon-dark)", marginLeft: "8px" }}
               hoverable

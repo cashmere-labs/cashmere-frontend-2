@@ -1,14 +1,17 @@
 import { BigNumberish, ethers } from "ethers";
 import { IS_PROD } from "ethylene/constants";
+import Big from 'big.js';
 
 export const formatBalance = (
-  balance: BigNumberish,
-  decimals: number = 4,
+  balance: BigNumberish | Big | undefined,
+  decimals = 4,
   tokenDecimal = 18,
 ) => {
   if (!balance) {
     return "0";
   }
+
+  balance = balance.toString();
 
   try {
     const _balance = ethers.utils

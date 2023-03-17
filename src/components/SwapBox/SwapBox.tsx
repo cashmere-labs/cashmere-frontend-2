@@ -26,6 +26,7 @@ import { EthyleneNetwork } from "ethylene/types/app";
 import { useNetwork } from "../../store/hooks/networkHooks";
 import { apiAddress } from '../../constants/utils';
 import { SwapBoxDetails } from "./SwapBoxDetails";
+import { formatValue } from '../../utils/formatValue';
 
 const switchNetwork = function (network: EthyleneNetwork) {
     const fn = async () => {
@@ -244,7 +245,7 @@ const SwapBox = ({
           fee: "24.169.287 USDT",
           minimumReceived: "15.6235 USDT",
           priceImpact: "0.05%",
-          rataAfterFee: "1 UST = 1.017 USDT",
+          rateAfterFee: "1 UST = 1.017 USDT",
         }}
         modalController={swapConfirmationModal}
         swapSettings={swapSettings}
@@ -300,7 +301,7 @@ const SwapBox = ({
         justifyContent="space-between"
       >
         <span>From</span>
-        <span>BALANCE: {fromBalance?.toString()}</span>
+        <span>BALANCE: {formatValue(fromBalance?.toString(), 4)}</span>
       </Row>
       <Row>
         <Select
@@ -395,7 +396,7 @@ const SwapBox = ({
         justifyContent="space-between"
       >
         <span>To</span>
-        <span>BALANCE: {toBalance?.toString()}</span>
+        <span>BALANCE: {formatValue(toBalance?.toString(), 4)}</span>
       </Row>
       <Row marginBottom={12}>
         <Select
@@ -412,12 +413,12 @@ const SwapBox = ({
           onClick={() => {
             networkSelectorModal.open();
             onNetworkSelect.current = (item: Network | Token) => {
-              if (item instanceof Token) {
-                return;
-              }
-              if (state.tofrom !== item) {
-                  disconnect();
-              }
+                if (item instanceof Token) {
+                    return;
+                }
+                if (state.tofrom !== item) {
+                    disconnect();
+                }
                 const fromNetwork = item === state.fromfrom ? networkOptions.filter(n => n !== item)[0] : state.fromfrom;
                 const matchingTokenFrom = item === state.fromfrom ? fromNetwork.tokenList.filter(t => t.symbol === state.toto.symbol)[0] : state.fromto;
                 const matchingTokenTo = item.tokenList.filter(t => t.symbol === state.toto.symbol)[0];
@@ -459,7 +460,7 @@ const SwapBox = ({
           extendLeft
           hideLeftBorder
           // value={state.toamount}
-            value={toAmount}
+          value={formatValue(toAmount, 4)}
           disabled
           // onChange={e => setState({ ...state, fromamount: e.target.value, toamount: e.target.value })}
           // rightEl={
@@ -473,9 +474,9 @@ const SwapBox = ({
       <SwapBoxDetails
         data={{
           fee,
-          minimumReceived: `${minReceiveAmount} ${state.toto.symbol}`,
-          priceImpact: `${priceImpact}%`,
-          rataAfterFee: `1 ${state.fromto.symbol} = ${parseFloat(toAmount) && parseFloat(state.fromamount) && new Big(toAmount).div(state.fromamount).toString()} ${state.toto.symbol}`,
+          minimumReceived: `${formatValue(minReceiveAmount, 4)} ${state.toto.symbol}`,
+          priceImpact: `${formatValue(priceImpact, 4)}%`,
+          rateAfterFee: `1 ${state.fromto.symbol} = ${parseFloat(toAmount) && parseFloat(state.fromamount) && formatValue(new Big(toAmount).div(state.fromamount).toString(), 4)} ${state.toto.symbol}`,
         }}
       />
       <Button

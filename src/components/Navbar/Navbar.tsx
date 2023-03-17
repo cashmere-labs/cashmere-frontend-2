@@ -6,7 +6,7 @@ import {
   useConnection,
   // useRightNetwork,
 } from "ethylene/hooks";
-import { useModal, useTheme } from "../../hooks";
+import { useModal } from "../../hooks";
 import { useMemo, useRef, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { IoMdMoon, IoMdSunny } from "react-icons/io";
@@ -16,6 +16,9 @@ import { clsnm } from "../../utils/clsnm";
 import { formatAddress } from "../../utils/formatAddress";
 
 import styles from "./Navbar.module.scss";
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../store/ThemeStore';
+import { observer } from 'mobx-react-lite';
 // import { ARBITRUM } from "../../constants/networks";
 
 const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
@@ -23,7 +26,7 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
   const auth = useAuth();
   const { connect, disconnect } = useConnection();
   const { address } = useAccount();
-  const { theme, toggleTheme } = useTheme();
+  const themeStore = useInjection(ThemeStore);
   // const { switchTo, isRightNetwork } = useRightNetwork(ARBITRUM);
 
   const LINKS = useMemo(() => {
@@ -76,7 +79,7 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
     }
   };
 
-  const ConnectWalletButton = ({ mobile }: { mobile: boolean }) => {
+  const ConnectWalletButton = observer(({ mobile }: { mobile: boolean }) => {
     return (
       <Button
         height="40px"
@@ -84,7 +87,7 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
           if (!auth) connect();
           modal.open();
         }}
-        color={theme === "light" ? "black" : "black"}
+        color={themeStore.theme === "light" ? "black" : "black"}
         className={clsnm(
           !mobile ? styles.themeChanger : styles.themeChangerMobile,
           styles.accountButton,
@@ -95,21 +98,21 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
           : "Connect Wallet"}
       </Button>
     );
-  };
+  });
 
-  const ThemeChangerButton = ({ mobile }: { mobile: boolean }) => {
+  const ThemeChangerButton = observer(({ mobile }: { mobile: boolean }) => {
     return (
       <Icon
-        onClick={toggleTheme}
+        onClick={() => themeStore.toggle()}
         className={mobile ? styles.themeChangerMobile : styles.themeChanger}
         borderRadius="12px"
         hoverSize={36}
         hoverable
       >
-        {theme === "dark" ? <IoMdMoon /> : <IoMdSunny />}
+        {themeStore.theme === "dark" ? <IoMdMoon /> : <IoMdSunny />}
       </Icon>
     );
-  };
+  });
 
   return (
     <header

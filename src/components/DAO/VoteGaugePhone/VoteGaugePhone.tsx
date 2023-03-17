@@ -1,12 +1,14 @@
 import DOWNBLACK from "../../../assets/pool/down-icon-black.png";
 import DOWNWHITE from "../../../assets/pool/down-icon-white.png";
-import { useTheme } from "../../../hooks";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Button, NetworkBadge } from "../../../ui";
 import { clsnm } from "../../../utils/clsnm";
 
 import styles from "./VoteGaugePhone.module.scss";
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../../store/ThemeStore';
+import { observer } from 'mobx-react-lite';
 
 interface Table {
   datas: any;
@@ -24,7 +26,7 @@ const VoteGaugePhoneTitle = () => {
   );
 };
 
-const VoteGaugePhoneTable = ({
+const VoteGaugePhoneTable = observer(({
   datas,
   open,
   setWhichNetwork,
@@ -58,7 +60,7 @@ const VoteGaugePhoneTable = ({
     });
   };
 
-  const { theme } = useTheme();
+  const themeStore = useInjection(ThemeStore);
   return (
     <>
       {datas.map((data: any, i: number) => {
@@ -98,7 +100,7 @@ const VoteGaugePhoneTable = ({
                   styles.modalKey,
                   bodyOpenGlobal[i] && styles.reverse,
                 )}
-                src={theme === "light" ? DOWNBLACK : DOWNWHITE}
+                src={themeStore.theme === "light" ? DOWNBLACK : DOWNWHITE}
                 alt="Down button"
               ></img>
             </div>
@@ -127,7 +129,7 @@ const VoteGaugePhoneTable = ({
                       height="36px"
                       width="100%"
                       color={
-                        theme === "light"
+                        themeStore.theme === "light"
                           ? "transparentWhite"
                           : "transparentBlack"
                       }
@@ -149,6 +151,6 @@ const VoteGaugePhoneTable = ({
       })}
     </>
   );
-};
+});
 
 export { VoteGaugePhoneTitle, VoteGaugePhoneTable };

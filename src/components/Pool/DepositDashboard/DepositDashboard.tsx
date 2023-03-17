@@ -1,13 +1,16 @@
 import { Waiting } from "../../../components";
-import { useModal, useTheme } from "../../../hooks";
+import { useModal } from "../../../hooks";
 import { Button, Modal, SelectNetwork } from "../../../ui";
 import { clsnm } from "../../../utils/clsnm";
 
 import styles from "./DepositDashboard.module.scss";
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../../store/ThemeStore';
+import { observer } from 'mobx-react-lite';
 
-const DepositDashboard = () => {
+const DepositDashboard = observer(() => {
   const claimModal = useModal();
-  const { theme } = useTheme();
+  const themeStore = useInjection(ThemeStore);
   return (
     <div className={styles.wrapper}>
       <div className={styles.rewardWrapper}>
@@ -31,7 +34,7 @@ const DepositDashboard = () => {
             width="156px"
             fontSize="fs16"
             onClick={() => claimModal.open()}
-            color={theme === "light" ? "black" : "white"}
+            color={themeStore.theme === "light" ? "black" : "white"}
             className={clsnm(styles.claimAll)}
           >
             Claim All
@@ -56,6 +59,6 @@ const DepositDashboard = () => {
       </div>
     </div>
   );
-};
+});
 
 export { DepositDashboard };

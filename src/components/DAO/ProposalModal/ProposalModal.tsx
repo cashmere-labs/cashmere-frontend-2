@@ -2,7 +2,6 @@ import LOGO from "../../../assets/images/cashmere.png";
 import TICK from "../../../assets/images/tick.png";
 import { Row } from "../../../components";
 import { ethers } from "ethers";
-import { useTheme } from "../../../hooks";
 import { useFormValidator } from "../../../hooks/useFormValidator";
 import { ModalController } from "../../../hooks/useModal";
 import { useState } from "react";
@@ -12,15 +11,18 @@ import { Button, Input, Modal, Option, Select } from "../../../ui";
 import { isValidNumberInput } from "../../../utils/isValidNumberInput";
 
 import styles from "./ProposalModal.module.scss";
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../../store/ThemeStore';
+import { observer } from 'mobx-react-lite';
 
-const ProposalModal = ({
+const ProposalModal = observer(({
   modal,
   onSuccess,
 }: {
   modal: ModalController;
   onSuccess: () => void;
 }) => {
-  const { theme } = useTheme();
+  const themeStore = useInjection(ThemeStore);
   const isPhoneOrLaptop = useMediaQuery({
     query: "(max-width: 600px)",
   });
@@ -131,7 +133,7 @@ const ProposalModal = ({
           <Button
             width="45px"
             height="25px"
-            color={theme === "light" ? "white" : "black"}
+            color={themeStore.theme === "light" ? "white" : "black"}
           >
             Max
           </Button>
@@ -220,13 +222,13 @@ const ProposalModal = ({
           disabled={isDisabled()}
           width={"100%"}
           height={isPhoneOrLaptop ? "34px" : "56px"}
-          color={theme === "light" ? "black" : "white"}
+          color={themeStore.theme === "light" ? "black" : "white"}
         >
           Submit
         </Button>
       </div>
     </Modal>
   );
-};
+});
 
 export { ProposalModal };

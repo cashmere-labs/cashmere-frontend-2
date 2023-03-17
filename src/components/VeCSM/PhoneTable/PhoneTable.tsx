@@ -1,7 +1,6 @@
 import DOWNBLACK from "../../../assets/pool/down-icon-black.png";
 import DOWNWHITE from "../../../assets/pool/down-icon-white.png";
 import { PATHS } from "../../../constants/paths";
-import { useTheme } from "../../../hooks";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
@@ -9,6 +8,9 @@ import { Button, NetworkBadge } from "../../../ui";
 import { clsnm } from "../../../utils/clsnm";
 
 import styles from "./PhoneTable.module.scss";
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../../store/ThemeStore';
+import { observer } from 'mobx-react-lite';
 
 interface Table {
   whichLocker?: boolean;
@@ -30,7 +32,7 @@ const VeCSMPhoneTitle = ({ whichLockers }: { whichLockers: boolean }) => {
   );
 };
 
-const VeCSMPhoneTable = ({ whichLocker, bodyCount, datas }: Table) => {
+const VeCSMPhoneTable = observer(({ whichLocker, bodyCount, datas }: Table) => {
   const miniPhone = useMediaQuery({
     query: "(max-width: 340px)",
   });
@@ -58,7 +60,7 @@ const VeCSMPhoneTable = ({ whichLocker, bodyCount, datas }: Table) => {
       });
     });
   };
-  const { theme } = useTheme();
+  const themeStore = useInjection(ThemeStore);
   return (
     <>
       {datas.map((data: any, i: number) => {
@@ -113,7 +115,7 @@ const VeCSMPhoneTable = ({ whichLocker, bodyCount, datas }: Table) => {
                     styles.modalKey,
                     bodyOpenGlobal[i] && styles.reverse,
                   )}
-                  src={theme === "light" ? DOWNBLACK : DOWNWHITE}
+                  src={themeStore.theme === "light" ? DOWNBLACK : DOWNWHITE}
                   alt="Down button"
                 ></img>
               </div>
@@ -131,7 +133,7 @@ const VeCSMPhoneTable = ({ whichLocker, bodyCount, datas }: Table) => {
                             height="36px"
                             width="100%"
                             color={
-                              theme === "light"
+                              themeStore.theme === "light"
                                 ? "transparentWhite"
                                 : "transparentBlack"
                             }
@@ -163,7 +165,7 @@ const VeCSMPhoneTable = ({ whichLocker, bodyCount, datas }: Table) => {
                             height="36px"
                             width="100%"
                             color={
-                              theme === "light"
+                              themeStore.theme === "light"
                                 ? "transparentWhite"
                                 : "transparentBlack"
                             }
@@ -183,6 +185,6 @@ const VeCSMPhoneTable = ({ whichLocker, bodyCount, datas }: Table) => {
       })}
     </>
   );
-};
+});
 
 export { VeCSMPhoneTitle, VeCSMPhoneTable };

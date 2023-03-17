@@ -1,22 +1,29 @@
-import { EthyleneProvider } from "ethylene/utils";
-import React from "react";
-import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
-import { store } from "./store";
-import "./styles/index.scss";
+import { EthyleneProvider } from 'ethylene/utils';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider as ReduxProvider } from 'react-redux';
+import { Provider as InversifyProvider } from 'inversify-react';
+import { store } from './store';
+import './styles/index.scss';
 
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+import RootStore from './store/RootStore';
+
+export const rootStore = new RootStore();
+const container = rootStore.container;
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <EthyleneProvider>
-        <App />
-      </EthyleneProvider>
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById("root"),
+    <React.StrictMode>
+        <ReduxProvider store={store}>
+            <InversifyProvider container={container}>
+                <EthyleneProvider>
+                    <App/>
+                </EthyleneProvider>
+            </InversifyProvider>
+        </ReduxProvider>
+    </React.StrictMode>,
+    document.getElementById('root'),
 );
 
 reportWebVitals();

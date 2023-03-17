@@ -1,21 +1,22 @@
 import { InfoIcon } from "../../../assets/icons";
-import { useTheme } from "../../../hooks";
 import { ModalController } from "../../../hooks/useModal";
 import { useMediaQuery } from "react-responsive";
 import { Button, Icon, Modal, Tooltip } from "../../../ui";
 import { NetworkTypes } from "../../../ui/NetworkBadge/utils";
 
 import styles from "./ExecutingModal.module.scss";
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../../store/ThemeStore';
+import { observer } from 'mobx-react-lite';
 
-const ExecutingModal = ({
+const ExecutingModal = observer(({
   modalController,
   network,
 }: {
   modalController: ModalController;
   network: NetworkTypes | string;
 }) => {
-  const { theme } = useTheme();
-  // const {ref} = useRef();
+  const themeStore = useInjection(ThemeStore);
 
   const isPhoneOrLaptop = useMediaQuery({
     query: "(max-width: 750px)",
@@ -125,7 +126,7 @@ const ExecutingModal = ({
               fontSize={"fs16"}
               fontWeight="fw600"
               onClick={onSubmit}
-              color={theme === "light" ? "black" : "white"}
+              color={themeStore.theme === "light" ? "black" : "white"}
             >
               Yes
             </Button>
@@ -136,7 +137,7 @@ const ExecutingModal = ({
               fontWeight="fw600"
               onClick={() => undefined}
               color={
-                theme === "light" ? "transparentWhite" : "transparentBlack"
+                themeStore.theme === "light" ? "transparentWhite" : "transparentBlack"
               }
             >
               No
@@ -146,6 +147,6 @@ const ExecutingModal = ({
       </div>
     </Modal>
   );
-};
+});
 
 export { ExecutingModal };

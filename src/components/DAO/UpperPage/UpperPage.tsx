@@ -1,13 +1,16 @@
 import { InfoIcon } from "../../../assets/icons";
 import { Logo, Waiting } from "../../../components";
-import { useModal, useTheme } from "../../../hooks";
+import { useModal } from "../../../hooks";
 import { useState } from "react";
 import { Button, Icon, Modal, Tooltip } from "../../../ui";
 
 import styles from "./UpperPage.module.scss";
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../../store/ThemeStore';
+import { observer } from 'mobx-react-lite';
 
-const UpperPage = () => {
-  const { theme } = useTheme();
+const UpperPage = observer(() => {
+  const themeStore = useInjection(ThemeStore);
 
   const waitingModal = useModal();
 
@@ -89,7 +92,7 @@ const UpperPage = () => {
           <Button
             width="45px"
             height="40px"
-            color={theme === "light" ? "black" : "white"}
+            color={themeStore.theme === "light" ? "black" : "white"}
             onClick={() => {
               setWhichModal(0);
               setFunctionName("Claim");
@@ -118,7 +121,7 @@ const UpperPage = () => {
           <Button
             width="45px"
             height="40px"
-            color={theme === "light" ? "black" : "white"}
+            color={themeStore.theme === "light" ? "black" : "white"}
             onClick={() => {
               setWhichModal(1);
               setFunctionName("Farm");
@@ -144,6 +147,6 @@ const UpperPage = () => {
       </Modal>
     </div>
   );
-};
+});
 
 export { UpperPage };

@@ -1,13 +1,15 @@
 import { Row } from "../../../components";
-import { useTheme } from "../../../hooks";
 import { ModalController } from "../../../hooks/useModal";
 import { useState } from "react";
 import { Button, Input, Modal, Option, Select } from "../../../ui";
 
 import styles from "./Gauge.module.scss";
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../../store/ThemeStore';
+import { observer } from 'mobx-react-lite';
 
-const Gauge = ({ modal }: { modal: ModalController }) => {
-  const { theme } = useTheme();
+const Gauge = observer(({ modal }: { modal: ModalController }) => {
+  const themeStore = useInjection(ThemeStore);
   const [state, setState] = useState({
     from: "Select a gauge",
     duration: "1 year",
@@ -138,7 +140,7 @@ const Gauge = ({ modal }: { modal: ModalController }) => {
           <Button
             width="100%"
             height="40px"
-            color={theme === "light" ? "black" : "white"}
+            color={themeStore.theme === "light" ? "black" : "white"}
           >
             Calculate
           </Button>
@@ -190,6 +192,6 @@ const Gauge = ({ modal }: { modal: ModalController }) => {
       </div>
     </Modal>
   );
-};
+});
 
 export { Gauge };

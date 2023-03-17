@@ -1,21 +1,23 @@
 import LOGOBLACK from "../../../assets/images/cashmere.png";
 import LOGOWHITE from "../../../assets/images/cashmereWhite.png";
 import { Warning } from "../../../components";
-import { useTheme } from "../../../hooks";
 import { ModalController } from "../../../hooks/useModal";
 import { useMediaQuery } from "react-responsive";
 import { Button, Input, Modal } from "../../../ui";
 
 import styles from "./UnlockModal.module.scss";
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../../store/ThemeStore';
+import { observer } from 'mobx-react-lite';
 
-const UnlockModal = ({
+const UnlockModal = observer(({
   modal,
   onSuccess,
 }: {
   modal: ModalController;
   onSuccess: () => void;
 }) => {
-  const { theme } = useTheme();
+  const themeStore = useInjection(ThemeStore);
 
   const isPhoneOrLaptop = useMediaQuery({
     query: "(max-width: 500px)",
@@ -28,7 +30,7 @@ const UnlockModal = ({
         <div className={styles.balance}>BALANCE 24689.905</div>
         <div className={styles.box}>
           <div className={styles.logo}>
-            <img src={theme === "light" ? LOGOBLACK : LOGOWHITE}></img>
+            <img src={themeStore.theme === "light" ? LOGOBLACK : LOGOWHITE}></img>
             <span>veCSM</span>
           </div>
           <div className={styles.input}>
@@ -38,7 +40,7 @@ const UnlockModal = ({
             <Button
               width="45px"
               height="25px"
-              color={theme === "light" ? "transparentWhite" : "white"}
+              color={themeStore.theme === "light" ? "transparentWhite" : "white"}
             >
               Max
             </Button>
@@ -53,7 +55,7 @@ const UnlockModal = ({
         <Button
           width={"100%"}
           height={isPhoneOrLaptop ? "34px" : "56px"}
-          color={theme === "light" ? "black" : "white"}
+          color={themeStore.theme === "light" ? "black" : "white"}
           onClick={() => onSuccess()}
         >
           Unlock
@@ -61,6 +63,6 @@ const UnlockModal = ({
       </div>
     </Modal>
   );
-};
+});
 
 export { UnlockModal };

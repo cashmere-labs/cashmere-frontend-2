@@ -1,7 +1,6 @@
 import { InfoIcon } from "../../../assets/icons";
 import DOWNBLACK from "../../../assets/pool/down-icon-black.png";
 import DOWNWHITE from "../../../assets/pool/down-icon-white.png";
-import { useTheme } from "../../../hooks";
 import { ModalController } from "../../../hooks/useModal";
 import { FilterType } from "../../../pages/Pool/Pool";
 import { useEffect, useState } from "react";
@@ -13,6 +12,9 @@ import { clsnm } from "../../../utils/clsnm";
 import { getNetworkFromNetwork } from "../../../utils/getNetworkFromNetwork";
 
 import styles from "./PhoneTable.module.scss";
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../../store/ThemeStore';
+import { observer } from 'mobx-react-lite';
 
 interface Table {
   whichPool?: boolean;
@@ -40,7 +42,7 @@ const PoolPhoneTitle = () => {
   );
 };
 
-const PoolPhoneTable = ({
+const PoolPhoneTable = observer(({
   whichPool,
   bodyCount,
   modal,
@@ -71,7 +73,7 @@ const PoolPhoneTable = ({
       });
     });
   };
-  const { theme } = useTheme();
+  const themeStore = useInjection(ThemeStore);
   const dispatch = useDispatch();
   return (
     <>
@@ -133,7 +135,7 @@ const PoolPhoneTable = ({
                     styles.modalKey,
                     bodyOpenGlobal[i] && styles.reverse,
                   )}
-                  src={theme === "light" ? DOWNBLACK : DOWNWHITE}
+                  src={themeStore.theme === "light" ? DOWNBLACK : DOWNWHITE}
                   alt="Down button"
                 ></img>
               </div>
@@ -235,7 +237,7 @@ const PoolPhoneTable = ({
                     styles.modalKey,
                     bodyOpenGlobal[i] && styles.reverse,
                   )}
-                  src={theme === "light" ? DOWNBLACK : DOWNWHITE}
+                  src={themeStore.theme === "light" ? DOWNBLACK : DOWNWHITE}
                   alt="Down button"
                 ></img>
               </div>
@@ -281,7 +283,7 @@ const PoolPhoneTable = ({
       })}
     </>
   );
-};
+});
 
 interface Row {
   whichPool?: boolean;
@@ -293,7 +295,7 @@ interface Row {
   updateMyArray: any;
 }
 
-const Row = ({
+const Row = observer(({
   whichPool,
   modal,
   data,
@@ -303,7 +305,7 @@ const Row = ({
   updateMyArray,
 }: Row) => {
   const dispatch = useDispatch();
-  const { theme } = useTheme();
+  const themeStore = useInjection(ThemeStore);
   return (
     <div
       className={clsnm(
@@ -359,7 +361,7 @@ const Row = ({
             styles.modalKey,
             bodyOpenGlobal[index] && styles.reverse,
           )}
-          src={theme === "light" ? DOWNBLACK : DOWNWHITE}
+          src={themeStore.theme === "light" ? DOWNBLACK : DOWNWHITE}
           alt="Down button"
         ></img>
       </div>
@@ -401,7 +403,7 @@ const Row = ({
       )}
     </div>
   );
-};
+});
 export { PoolPhoneTitle, PoolPhoneTable };
 {
   /* <Row

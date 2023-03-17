@@ -2,7 +2,6 @@ import { PATHS } from "./constants/paths";
 import { useOnAccountsChange,
   // useOnNetworkChange
 } from "ethylene/hooks";
-import { useInitialTheme, useTheme } from "./hooks";
 import { DAO, ManagePage, Pool, Swap, VeCSM } from "./pages";
 import { NotFound } from "./pages/NotFound/NotFound";
 import { useEffect } from "react";
@@ -15,16 +14,18 @@ import {
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { observer } from 'mobx-react-lite';
+import { useInjection } from 'inversify-react';
+import ThemeStore from './store/ThemeStore';
 
 const Main = () => {
-  useInitialTheme();
   useOnAccountsChange(() => window.location.reload(), { interval: 1000 });
   // useOnNetworkChange(() => window.location.reload());
   return null;
 };
 
-function App() {
-  const { theme } = useTheme();
+const App = observer(() => {
+  const themeStore = useInjection(ThemeStore);
 
   return (
     <>
@@ -42,11 +43,11 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
         <NavigationAnimator />
-        <ToastContainer pauseOnHover={false} theme={theme} />
+        <ToastContainer pauseOnHover={false} theme={themeStore.theme} />
       </BrowserRouter>
     </>
   );
-}
+});
 
 const NavigationAnimator = () => {
   const { pathname } = useLocation();

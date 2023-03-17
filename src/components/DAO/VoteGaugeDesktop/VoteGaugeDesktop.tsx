@@ -1,8 +1,10 @@
-import { useTheme } from "../../../hooks";
 import { Button, NetworkBadge } from "../../../ui";
 
 import { VOTEGAUGE } from "../VoteGauge/datas";
 import styles from "./VoteGaugeDesktop.module.scss";
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../../store/ThemeStore';
+import { observer } from 'mobx-react-lite';
 
 interface Table {
   datas: any;
@@ -25,7 +27,7 @@ const VoteGaugeDesktopTitle = () => {
   );
 };
 
-const Row = ({
+const Row = observer(({
   data,
   i,
   open,
@@ -38,7 +40,7 @@ const Row = ({
   setWhichNetwork: any;
   setWhichToken: any;
 }) => {
-  const { theme } = useTheme();
+  const themeStore = useInjection(ThemeStore);
 
   return (
     <div
@@ -71,7 +73,7 @@ const Row = ({
           <Button
             height="40px"
             width="156px"
-            color={theme === "light" ? "transparentWhite" : "transparentBlack"}
+            color={themeStore.theme === "light" ? "transparentWhite" : "transparentBlack"}
             fontWeight="fw600"
             onClick={() => {
               open();
@@ -85,7 +87,7 @@ const Row = ({
       </div>
     </div>
   );
-};
+});
 
 const VoteGaugeDesktopTable = ({
   datas,

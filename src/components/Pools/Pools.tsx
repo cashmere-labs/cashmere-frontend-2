@@ -1,13 +1,15 @@
-import { useModal, useTheme } from "hooks";
 import { useState } from "react";
 import { Button } from "ui";
 import { clsnm } from "utils/clsnm";
 
 import styles from "./Pools.module.scss";
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../store/ThemeStore';
+import { observer } from 'mobx-react-lite';
 
-const Pools = () => {
+const Pools = observer(() => {
   const [whichPool, setWhichPool] = useState(false);
-  const { theme } = useTheme();
+  const themeStore = useInjection(ThemeStore);
   return (
     <div className={styles.wrapper}>
       <div className={styles.titleWrapper}>
@@ -16,7 +18,7 @@ const Pools = () => {
             height="46px"
             width="162px"
             onClick={() => setWhichPool(false)}
-            color={theme === "light" ? "neutral" : "neutral"}
+            color={themeStore.theme === "light" ? "neutral" : "neutral"}
             className={clsnm(
               whichPool ? styles.poolButtonOff : styles.poolButtonOn,
             )}
@@ -27,7 +29,7 @@ const Pools = () => {
             height="46px"
             width="162px"
             onClick={() => setWhichPool(true)}
-            color={theme === "light" ? "neutral" : "neutral"}
+            color={themeStore.theme === "light" ? "neutral" : "neutral"}
             className={clsnm(
               !whichPool ? styles.poolButtonOff : styles.poolButtonOn,
             )}
@@ -44,6 +46,6 @@ const Pools = () => {
       <div className={styles.bodyWrapper}></div>
     </div>
   );
-};
+});
 
 export { Pools };

@@ -1,12 +1,9 @@
 import WARNING from "../../../assets/icons/warning.png";
-import { useTheme } from "../../../hooks";
 import { useMediaQuery } from "react-responsive";
 
 import styles from "./Warning.module.scss";
 
 const Warning = () => {
-  const { theme } = useTheme();
-
   const isPhoneOrLaptop = useMediaQuery({
     query: "(max-width: 500px)",
   });

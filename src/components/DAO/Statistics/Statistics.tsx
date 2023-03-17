@@ -1,16 +1,18 @@
 import { ResponsivePie } from "@nivo/pie";
 import { InfoIcon } from "../../../assets/icons";
 import { mockStatistics } from "../../../constants/mockPollData";
-import { useTheme } from "../../../hooks";
 import { useTabModal } from "../../../hooks/useTabModal";
 import { useMediaQuery } from "react-responsive";
 import { Icon, Tab, Tooltip } from "../../../ui";
 
 import styles from "./Statistics.module.scss";
 import { WEEKLYFEES } from "./WeeklyFeesDatas";
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../../store/ThemeStore';
+import { observer } from 'mobx-react-lite';
 
-const Statistics = () => {
-  const { theme } = useTheme();
+const Statistics = observer(() => {
+  const themeStore = useInjection(ThemeStore);
   const isSmall = useMediaQuery({
     query: "(max-width: 540px)",
   });
@@ -49,7 +51,7 @@ const Statistics = () => {
                 animate={false}
                 arcLinkLabelsSkipAngle={1}
                 arcLinkLabelsTextOffset={5}
-                arcLinkLabelsTextColor={theme === "dark" ? "white" : "black"}
+                arcLinkLabelsTextColor={themeStore.theme === "dark" ? "white" : "black"}
                 arcLinkLabelsOffset={isSmall ? 2 : 10}
                 arcLinkLabelsDiagonalLength={12}
                 arcLinkLabelsStraightLength={isSmall ? 5 : 24}
@@ -98,6 +100,6 @@ const Statistics = () => {
       </div>
     </div>
   );
-};
+});
 
 export { Statistics };

@@ -1,13 +1,16 @@
 import { Waiting } from "../../../components";
-import { useModal, useTheme } from "../../../hooks";
+import { useModal } from "../../../hooks";
 import { useMediaQuery } from "react-responsive";
 import { Button, Modal, SelectNetwork } from "../../../ui";
 import { clsnm } from "../../../utils/clsnm";
 
 import styles from "./ClaimDashboard.module.scss";
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../../store/ThemeStore';
+import { observer } from 'mobx-react-lite';
 
-const ClaimDashboard = () => {
-  const { theme } = useTheme();
+const ClaimDashboard = observer(() => {
+  const themeStore = useInjection(ThemeStore);
   const isPhoneOrLaptop = useMediaQuery({
     query: "(max-width: 800px)",
   });
@@ -48,7 +51,7 @@ const ClaimDashboard = () => {
             fontSize={isPhoneOrLaptop ? "fs14" : "fs16"}
             fontWeight="fw600"
             onClick={() => claimModal.open()}
-            color={theme === "light" ? "black" : "white"}
+            color={themeStore.theme === "light" ? "black" : "white"}
             className={clsnm(styles.claimAll)}
           >
             Claim
@@ -73,6 +76,6 @@ const ClaimDashboard = () => {
       </div>
     </div>
   );
-};
+});
 
 export { ClaimDashboard };

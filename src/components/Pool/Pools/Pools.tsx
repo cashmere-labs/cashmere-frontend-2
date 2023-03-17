@@ -6,7 +6,7 @@ import {
   PoolPhoneTitle,
   Waiting,
 } from "../../../components";
-import { useModal, useTheme } from "../../../hooks";
+import { useModal } from "../../../hooks";
 import { usePoolStates } from "../../../hooks";
 import { FilterType, PoolTab } from "../../../pages/Pool/Pool";
 import { useState } from "react";
@@ -17,6 +17,9 @@ import { clsnm } from "../../../utils/clsnm";
 
 import { GlobalData, PersonalData } from "../datas";
 import styles from "./Pools.module.scss";
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../../store/ThemeStore';
+import { observer } from 'mobx-react-lite';
 
 enum Page {
   "FORM",
@@ -28,7 +31,7 @@ type PoolsProps = {
   poolTab: PoolTab;
 };
 
-const Pools = ({ filter, poolTab }: PoolsProps) => {
+const Pools = observer(({ filter, poolTab }: PoolsProps) => {
   const poolCount = useTypedSelector((state) => state.pool.poolCount);
   const functionName = useTypedSelector((state) => state.pool.functionName);
   const value = useTypedSelector((state) => state.pool.value);
@@ -41,7 +44,7 @@ const Pools = ({ filter, poolTab }: PoolsProps) => {
   const isPhoneOrLaptop = useMediaQuery({
     query: "(max-width: 850px)",
   });
-  const { theme } = useTheme();
+  const themeStore = useInjection(ThemeStore);
   const whichData = poolTab === PoolTab.MY ? PersonalData : GlobalData;
 
   return (
@@ -82,10 +85,10 @@ const Pools = ({ filter, poolTab }: PoolsProps) => {
                 height="40px"
                 width="156px"
                 onClick={() => increasePoolCount()}
-                color={theme === "light" ? "black" : "white"}
+                color={themeStore.theme === "light" ? "black" : "white"}
                 className={clsnm(
                   styles.moreButton,
-                  theme === "light" ? styles.white : styles.black,
+                  themeStore.theme === "light" ? styles.white : styles.black,
                 )}
               >
                 more
@@ -99,10 +102,10 @@ const Pools = ({ filter, poolTab }: PoolsProps) => {
                 width="156px"
                 fontSize="fs16"
                 onClick={() => increasePoolCount()}
-                color={theme === "light" ? "black" : "white"}
+                color={themeStore.theme === "light" ? "black" : "white"}
                 className={clsnm(
                   styles.moreButton,
-                  theme === "light" ? styles.white : styles.black,
+                  themeStore.theme === "light" ? styles.white : styles.black,
                 )}
               >
                 more
@@ -133,6 +136,6 @@ const Pools = ({ filter, poolTab }: PoolsProps) => {
       )}
     </div>
   );
-};
+});
 
 export { Pools };

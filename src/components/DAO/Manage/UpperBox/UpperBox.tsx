@@ -2,7 +2,7 @@ import { InfoIcon } from "../../../../assets/icons";
 import LOGOBLACK from "../../../../assets/images/cashmere.png";
 import LOGOWHITE from "../../../../assets/images/cashmereWhite.png";
 import { LockModal, UnlockModal, UnstakeWarning, Waiting } from "../../../../components";
-import { useModal, useTheme } from "../../../../hooks";
+import { useModal } from "../../../../hooks";
 import { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import DatePicker, { DayValue } from "react-modern-calendar-datepicker";
@@ -12,6 +12,9 @@ import { Button, Icon, Input, Modal, Tooltip } from "../../../../ui";
 import { clsnm } from "../../../../utils/clsnm";
 
 import styles from "./UpperBox.module.scss";
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../../../store/ThemeStore';
+import { observer } from 'mobx-react-lite';
 
 enum LOCK {
   "WARNING",
@@ -24,8 +27,8 @@ enum WITHDRAW {
   "SUCCESS",
 }
 
-const UpperBox = () => {
-  const { theme } = useTheme();
+const UpperBox = observer(() => {
+  const themeStore = useInjection(ThemeStore);
   const [csmValue, setCSMValue] = useState("0");
   const [veCSMValue, setveCSMValue] = useState("0");
 
@@ -65,7 +68,7 @@ const UpperBox = () => {
             <div className={styles.pattern}>
               <img
                 className={styles.image}
-                src={theme === "light" ? LOGOBLACK : LOGOWHITE}
+                src={themeStore.theme === "light" ? LOGOBLACK : LOGOWHITE}
               ></img>
               <div className={styles.text}>CSM</div>
             </div>
@@ -75,7 +78,7 @@ const UpperBox = () => {
                 height="25px"
                 fontSize="fs12"
                 fontWeight="fw600"
-                color={theme === "light" ? "white" : "white"}
+                color={themeStore.theme === "light" ? "white" : "white"}
               >
                 MAX
               </Button>
@@ -96,7 +99,7 @@ const UpperBox = () => {
             <div className={styles.pattern}>
               <img
                 className={styles.image}
-                src={theme === "light" ? LOGOBLACK : LOGOWHITE}
+                src={themeStore.theme === "light" ? LOGOBLACK : LOGOWHITE}
               ></img>
               <div className={styles.text}>veCSM</div>
             </div>
@@ -106,7 +109,7 @@ const UpperBox = () => {
                 height="25px"
                 fontSize="fs12"
                 fontWeight="fw600"
-                color={theme === "light" ? "white" : "white"}
+                color={themeStore.theme === "light" ? "white" : "white"}
               >
                 MAX
               </Button>
@@ -131,7 +134,7 @@ const UpperBox = () => {
               height="40px"
               fontWeight="fw600"
               color={
-                theme === "light" ? "transparentWhite" : "transparentBlack"
+                themeStore.theme === "light" ? "transparentWhite" : "transparentBlack"
               }
               onClick={() => {
                 lockModal.open();
@@ -144,7 +147,7 @@ const UpperBox = () => {
               height="40px"
               fontWeight="fw600"
               color={
-                theme === "light" ? "transparentWhite" : "transparentBlack"
+                themeStore.theme === "light" ? "transparentWhite" : "transparentBlack"
               }
               onClick={() => {
                 withdrawModal.open();
@@ -245,7 +248,7 @@ const UpperBox = () => {
       )}
     </div>
   );
-};
+});
 
 const Calender = ({ day, setDay }: { day: any; setDay: any }) => {
   const currentDate =

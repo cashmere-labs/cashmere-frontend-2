@@ -20,6 +20,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    "experimentalDecorators": true,
     "types": [
       "@svgx/vite-plugin-react", "node", "vite/client"
     ]

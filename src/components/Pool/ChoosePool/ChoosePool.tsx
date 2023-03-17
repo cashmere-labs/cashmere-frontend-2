@@ -1,5 +1,4 @@
 import { Row } from "../../../components";
-import { useTheme } from "../../../hooks";
 import { usePoolStates } from "../../../hooks";
 import { FilterType, PoolTab } from "../../../pages/Pool/Pool";
 import useDimensions from "react-cool-dimensions";
@@ -10,6 +9,9 @@ import { Button, Option, Select } from "../../../ui";
 import { clsnm } from "../../../utils/clsnm";
 
 import styles from "./ChoosePool.module.scss";
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../../store/ThemeStore';
+import { observer } from 'mobx-react-lite';
 
 interface ChoosePool {
   poolTab: PoolTab;
@@ -20,7 +22,7 @@ interface ChoosePool {
   networkOptions: Network[];
 }
 
-const ChoosePool = ({
+const ChoosePool = observer(({
   poolTab,
   setPoolTab,
   filter,
@@ -46,7 +48,7 @@ const ChoosePool = ({
     query: "(max-width: 350px)",
   });
   const { resetPoolCount } = usePoolStates();
-  const { theme } = useTheme();
+  const themeStore = useInjection(ThemeStore);
 
   return (
     <div className={styles.whichPoolWrapper} ref={observe}>
@@ -79,7 +81,7 @@ const ChoosePool = ({
               setPoolTab(PoolTab.MY);
               resetPoolCount();
             }}
-            color={theme === "light" ? "white" : "white"}
+            color={themeStore.theme === "light" ? "white" : "white"}
             className={clsnm(
               poolTab === PoolTab.ALL
                 ? styles.poolButtonOff
@@ -183,6 +185,6 @@ const ChoosePool = ({
       </div>
     </div>
   );
-};
+});
 
 export { ChoosePool };

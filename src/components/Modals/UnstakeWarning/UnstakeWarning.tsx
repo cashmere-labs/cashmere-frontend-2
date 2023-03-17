@@ -1,19 +1,21 @@
 import WARNING from "../../../assets/icons/warning.png";
-import { useTheme } from "../../../hooks";
 import { ModalController } from "../../../hooks/useModal";
 import { useMediaQuery } from "react-responsive";
 import { Button, Modal } from "../../../ui";
 
 import styles from "./UnstakeWarning.module.scss";
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../../store/ThemeStore';
+import { observer } from 'mobx-react-lite';
 
-const UnstakeWarning = ({
+const UnstakeWarning = observer(({
   modal,
   onSuccess,
 }: {
   modal: ModalController;
   onSuccess: () => void;
 }) => {
-  const { theme } = useTheme();
+    const themeStore = useInjection(ThemeStore);
   const isPhoneOrPC = useMediaQuery({
     query: "(max-width: 550px)",
   });
@@ -35,7 +37,7 @@ const UnstakeWarning = ({
       <Button
         height={isPhoneOrPC ? "34px" : "56px"}
         width={"100%"}
-        color={theme === "light" ? "black" : "white"}
+        color={themeStore.theme === "light" ? "black" : "white"}
         className={styles.button1}
         onClick={() => onSuccess()}
       >
@@ -43,6 +45,6 @@ const UnstakeWarning = ({
       </Button>
     </Modal>
   );
-};
+});
 
 export { UnstakeWarning };

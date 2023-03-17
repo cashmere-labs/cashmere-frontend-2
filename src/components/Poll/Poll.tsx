@@ -1,11 +1,14 @@
 import { ResponsivePie } from "@nivo/pie";
 import { Column, ExecutingModal, Row } from "../../components";
-import { useModal, useTheme } from "../../hooks";
+import { useModal } from "../../hooks";
 import { useMediaQuery } from "react-responsive";
 import { useNetwork } from "../../store/hooks/networkHooks";
 import { clsnm } from "../../utils/clsnm";
 
 import styles from "./Poll.module.scss";
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../store/ThemeStore';
+import { observer } from 'mobx-react-lite';
 
 type PollData = {
   id: string;
@@ -22,14 +25,14 @@ type PollProps = Readonly<{
   votes: PollData;
 }>;
 
-const Poll = ({
+const Poll = observer(({
   id,
   title,
   isExecuted,
   estimatedEndTime,
   votes,
 }: PollProps) => {
-  const { theme } = useTheme();
+  const themeStore = useInjection(ThemeStore);
   const isSmall = useMediaQuery({
     query: "(max-width: 540px)",
   });
@@ -82,7 +85,7 @@ const Poll = ({
             animate={false}
             arcLinkLabelsSkipAngle={10}
             arcLinkLabelsTextOffset={5}
-            arcLinkLabelsTextColor={theme === "dark" ? "white" : "black"}
+            arcLinkLabelsTextColor={themeStore.theme === "dark" ? "white" : "black"}
             arcLinkLabelsOffset={isSmall ? 2 : 10}
             arcLinkLabelsDiagonalLength={12}
             arcLinkLabelsStraightLength={isSmall ? 5 : 24}
@@ -104,6 +107,6 @@ const Poll = ({
       </div>
     </>
   );
-};
+});
 
 export { Poll };

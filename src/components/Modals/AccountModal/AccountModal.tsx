@@ -1,6 +1,5 @@
 import { Row } from "../../../components";
 import { useAccount } from "ethylene/hooks";
-import { useTheme } from "../../../hooks";
 import { ModalController } from "../../../hooks/useModal";
 import React, { useMemo, useState } from "react";
 import { BiLinkExternal } from "react-icons/bi";
@@ -26,7 +25,6 @@ const AccountModal: React.FC<AccountModalProps> = ({
 }: AccountModalProps) => {
   const [page, setPage] = useState<Page>(Page.ACCOUNT);
   const { address } = useAccount();
-  const { theme } = useTheme();
 
   const getTabColor = (type: Page) => {
     if (type === Page.ACCOUNT) {

@@ -3,7 +3,6 @@ import GRAYPLUS from "../../../assets/icons/grayPlus.png";
 import MINUS from "../../../assets/icons/minus.png";
 import WHITEPLUS from "../../../assets/icons/whitePlus.png";
 import DAI from "../../../assets/pool/dai.png";
-import { useTheme } from "../../../hooks";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useMediaQuery } from "react-responsive";
@@ -12,9 +11,12 @@ import { Button, Input } from "../../../ui";
 import { Icon, Tooltip } from "../../../ui";
 
 import styles from "./Stake.module.scss";
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../../store/ThemeStore';
+import { observer } from 'mobx-react-lite';
 
-const Stake = ({ onSuccess }: { onSuccess: () => void }) => {
-  const { theme } = useTheme();
+const Stake = observer(({ onSuccess }: { onSuccess: () => void }) => {
+    const themeStore = useInjection(ThemeStore);
   const dispatch = useDispatch();
 
   const [isPlus, setIsPlus] = useState(true);
@@ -30,7 +32,7 @@ const Stake = ({ onSuccess }: { onSuccess: () => void }) => {
         <div className={isPlus ? styles.bgPlus : styles.bgMinus}>
           <div className={styles.dot} onClick={() => setIsPlus(!isPlus)}>
             {isPlus ? (
-              theme === "light" ? (
+              themeStore.theme === "light" ? (
                 <img src={WHITEPLUS}></img>
               ) : (
                 <img src={GRAYPLUS}></img>
@@ -46,28 +48,28 @@ const Stake = ({ onSuccess }: { onSuccess: () => void }) => {
           <Button
             width={isPhoneOrPC ? "46px" : "65px"}
             height="34px"
-            color={theme === "light" ? "transparentWhite" : "transparentBlack"}
+            color={themeStore.theme === "light" ? "transparentWhite" : "transparentBlack"}
           >
             25%
           </Button>{" "}
           <Button
             width={isPhoneOrPC ? "46px" : "65px"}
             height="34px"
-            color={theme === "light" ? "transparentWhite" : "transparentBlack"}
+            color={themeStore.theme === "light" ? "transparentWhite" : "transparentBlack"}
           >
             50%
           </Button>{" "}
           <Button
             width={isPhoneOrPC ? "46px" : "65px"}
             height="34px"
-            color={theme === "light" ? "transparentWhite" : "transparentBlack"}
+            color={themeStore.theme === "light" ? "transparentWhite" : "transparentBlack"}
           >
             75%
           </Button>
           <Button
             width={isPhoneOrPC ? "46px" : "65px"}
             height="34px"
-            color={theme === "light" ? "transparentWhite" : "transparentBlack"}
+            color={themeStore.theme === "light" ? "transparentWhite" : "transparentBlack"}
             // style={{backgroundColor: ""}}
           >
             MAX
@@ -115,7 +117,7 @@ const Stake = ({ onSuccess }: { onSuccess: () => void }) => {
           width="100%"
           height={isPhoneOrPC ? "34px" : "56px"}
           fontWeight="fw600"
-          color={theme === "light" ? "black" : "white"}
+          color={themeStore.theme === "light" ? "black" : "white"}
           onClick={() => {
             onSuccess();
             if (isPlus) {
@@ -130,6 +132,6 @@ const Stake = ({ onSuccess }: { onSuccess: () => void }) => {
       </div>
     </div>
   );
-};
+});
 
 export { Stake };

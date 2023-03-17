@@ -1,7 +1,9 @@
-import { useTheme } from "../../../../hooks";
 import SkewLoader from "react-spinners/SkewLoader";
 
 import styles from "./Waiting.module.scss";
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../../../store/ThemeStore';
+import { observer } from 'mobx-react-lite';
 
 interface WaitingProps {
   functionName: string;
@@ -10,13 +12,13 @@ interface WaitingProps {
   icon?: any;
 }
 
-const Waiting = ({ functionName, iconName, value, icon }: WaitingProps) => {
-  const { theme } = useTheme();
+const Waiting = observer(({ functionName, iconName, value, icon }: WaitingProps) => {
+    const themeStore = useInjection(ThemeStore);
   return (
     <div className={styles.wrapper}>
       <SkewLoader
         className={styles.loader}
-        color={theme === "light" ? "black" : "#fff"}
+        color={themeStore.theme === "light" ? "black" : "#fff"}
       />
       <div className={styles.text1}>Waiting For Confirmation</div>
 
@@ -32,6 +34,6 @@ const Waiting = ({ functionName, iconName, value, icon }: WaitingProps) => {
       </div>
     </div>
   );
-};
+});
 
 export { Waiting };

@@ -1,9 +1,11 @@
-import { useTheme } from "../../hooks";
 import { ComponentPropsWithoutRef } from "react";
 import { Spinner } from "../../ui/Spinner/Spinner";
 import { clsnm } from "../../utils/clsnm";
 
 import styles from "./Button.module.scss";
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../store/ThemeStore';
+import { observer } from 'mobx-react-lite';
 
 interface ButtonProps extends ComponentPropsWithoutRef<"button"> {
   color?:
@@ -28,7 +30,7 @@ interface ButtonProps extends ComponentPropsWithoutRef<"button"> {
   lineHeight?: "lhNormal" | "lh22";
 }
 
-const Button = ({
+const Button = observer(({
   className,
   children,
   color = "blue",
@@ -44,7 +46,7 @@ const Button = ({
   lineHeight = "lh22",
   ...props
 }: ButtonProps) => {
-  const { theme } = useTheme();
+  const themeStore = useInjection(ThemeStore);
 
   return (
     <button
@@ -53,7 +55,7 @@ const Button = ({
         styles.wrapper,
         styles[color],
         styles[textPosition],
-        styles[theme],
+        styles[themeStore.theme],
         disabled && styles.disabled,
         loading && styles.loading,
         className,
@@ -81,6 +83,6 @@ const Button = ({
       </span>
     </button>
   );
-};
+});
 
 export { Button };

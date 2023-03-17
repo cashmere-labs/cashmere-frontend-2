@@ -1,5 +1,5 @@
 import { BecomeValidator, Waiting } from "../../../components";
-import { useModal, useTheme, useVeCSMStates } from "../../../hooks";
+import { useModal, useVeCSMStates } from "../../../hooks";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
@@ -7,6 +7,8 @@ import { Button, Modal } from "../../../ui";
 import { clsnm } from "../../../utils/clsnm";
 
 import styles from "./ChooseValidator.module.scss";
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../../store/ThemeStore';
 
 enum PAGE {
   "FORM",
@@ -22,7 +24,6 @@ const ChooseValidator = () => {
   });
   const { resetValidatorCount, changeIsActive } = useVeCSMStates();
   const isActive = useSelector((state: any) => state.veCSM.isActive);
-  const { theme } = useTheme();
 
   const [becomeValidatorPage, setBecomeValidatorPage] = useState<PAGE>(
     PAGE.FORM,

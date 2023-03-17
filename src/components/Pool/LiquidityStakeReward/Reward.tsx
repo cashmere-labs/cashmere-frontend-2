@@ -1,13 +1,15 @@
-import { useTheme } from "../../../hooks";
 import { useDispatch } from "react-redux";
 import { useMediaQuery } from "react-responsive";
 import { setFunctionName, setValue } from "../../../store/slicers/pool";
 import { Button } from "../../../ui";
 
 import styles from "./Reward.module.scss";
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../../store/ThemeStore';
+import { observer } from 'mobx-react-lite';
 
-const Reward = ({ onSuccess }: { onSuccess: () => void }) => {
-  const { theme } = useTheme();
+const Reward = observer(({ onSuccess }: { onSuccess: () => void }) => {
+    const themeStore = useInjection(ThemeStore);
 
   const dispatch = useDispatch();
 
@@ -31,7 +33,7 @@ const Reward = ({ onSuccess }: { onSuccess: () => void }) => {
           width="100%"
           height={isPhoneOrPC ? "34px" : "56px"}
           fontWeight="fw600"
-          color={theme === "light" ? "black" : "white"}
+          color={themeStore.theme === "light" ? "black" : "white"}
           onClick={() => {
             onSuccess();
             dispatch(setValue("145.67"));
@@ -43,6 +45,6 @@ const Reward = ({ onSuccess }: { onSuccess: () => void }) => {
       </div>
     </div>
   );
-};
+});
 
 export { Reward };

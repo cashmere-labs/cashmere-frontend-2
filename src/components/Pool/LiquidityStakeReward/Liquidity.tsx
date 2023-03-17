@@ -4,7 +4,6 @@ import MINUS from "../../../assets/icons/minus.png";
 import WHITEPLUS from "../../../assets/icons/whitePlus.png";
 import LOGOBLACK from "../../../assets/images/cashmere.png";
 import LOGOWHITE from "../../../assets/images/cashmereWhite.png";
-import { useTheme } from "../../../hooks";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useMediaQuery } from "react-responsive";
@@ -13,9 +12,12 @@ import { Button, Input } from "../../../ui";
 import { Icon, Tooltip } from "../../../ui";
 
 import styles from "./Liquidity.module.scss";
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../../store/ThemeStore';
+import { observer } from 'mobx-react-lite';
 
-const Liquidity = ({ onSuccess }: { onSuccess: () => void }) => {
-  const { theme } = useTheme();
+const Liquidity = observer(({ onSuccess }: { onSuccess: () => void }) => {
+    const themeStore = useInjection(ThemeStore);
   const dispatch = useDispatch();
 
   const [isPlus, setIsPlus] = useState(true);
@@ -31,7 +33,7 @@ const Liquidity = ({ onSuccess }: { onSuccess: () => void }) => {
         <div className={isPlus ? styles.bgPlus : styles.bgMinus}>
           <div className={styles.dot} onClick={() => setIsPlus(!isPlus)}>
             {isPlus ? (
-              theme === "light" ? (
+              themeStore.theme === "light" ? (
                 <img src={WHITEPLUS}></img>
               ) : (
                 <img src={GRAYPLUS}></img>
@@ -47,28 +49,28 @@ const Liquidity = ({ onSuccess }: { onSuccess: () => void }) => {
           <Button
             width={isPhoneOrPC ? "46px" : "65px"}
             height="34px"
-            color={theme === "light" ? "transparentWhite" : "transparentBlack"}
+            color={themeStore.theme === "light" ? "transparentWhite" : "transparentBlack"}
           >
             25%
           </Button>{" "}
           <Button
             width={isPhoneOrPC ? "46px" : "65px"}
             height="34px"
-            color={theme === "light" ? "transparentWhite" : "transparentBlack"}
+            color={themeStore.theme === "light" ? "transparentWhite" : "transparentBlack"}
           >
             50%
           </Button>{" "}
           <Button
             width={isPhoneOrPC ? "46px" : "65px"}
             height="34px"
-            color={theme === "light" ? "transparentWhite" : "transparentBlack"}
+            color={themeStore.theme === "light" ? "transparentWhite" : "transparentBlack"}
           >
             75%
           </Button>
           <Button
             width={isPhoneOrPC ? "46px" : "65px"}
             height="34px"
-            color={theme === "light" ? "transparentWhite" : "transparentBlack"}
+            color={themeStore.theme === "light" ? "transparentWhite" : "transparentBlack"}
           >
             MAX
           </Button>
@@ -79,7 +81,7 @@ const Liquidity = ({ onSuccess }: { onSuccess: () => void }) => {
         <div className={styles.pattern}>
           <img
             className={styles.image}
-            src={theme === "light" ? LOGOBLACK : LOGOWHITE}
+            src={themeStore.theme === "light" ? LOGOBLACK : LOGOWHITE}
           ></img>
           <div className={styles.text}>CSM</div>
         </div>
@@ -142,7 +144,7 @@ const Liquidity = ({ onSuccess }: { onSuccess: () => void }) => {
           width="100%"
           height={isPhoneOrPC ? "34px" : "56px"}
           fontWeight="fw600"
-          color={theme === "light" ? "black" : "white"}
+          color={themeStore.theme === "light" ? "black" : "white"}
           onClick={() => {
             onSuccess();
             if (isPlus) {
@@ -157,6 +159,6 @@ const Liquidity = ({ onSuccess }: { onSuccess: () => void }) => {
       </div>
     </div>
   );
-};
+});
 
 export { Liquidity };

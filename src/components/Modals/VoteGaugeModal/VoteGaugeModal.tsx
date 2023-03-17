@@ -2,14 +2,16 @@ import { InfoIcon } from "../../../assets/icons";
 import CALENDER from "../../../assets/icons/calender.png";
 import LOGOBLACK from "../../../assets/images/cashmere.png";
 import LOGOWHITE from "../../../assets/images/cashmereWhite.png";
-import { useTheme } from "../../../hooks";
 import { ModalController } from "../../../hooks/useModal";
 import { useMediaQuery } from "react-responsive";
 import { Button, Icon, Input, Modal, Token, Tooltip } from "../../../ui";
 
 import styles from "./VoteGaugeModal.module.scss";
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../../store/ThemeStore';
+import { observer } from 'mobx-react-lite';
 
-const VoteGaugeModal = ({
+const VoteGaugeModal = observer(({
   modal,
   onSuccess,
   whichNetwork,
@@ -23,7 +25,7 @@ const VoteGaugeModal = ({
   const isPhoneOrPC = useMediaQuery({
     query: "(max-width: 500px)",
   });
-  const { theme } = useTheme();
+  const themeStore = useInjection(ThemeStore);
   const currentDate = new Date();
   return (
     <Modal
@@ -57,7 +59,7 @@ const VoteGaugeModal = ({
         <div className={styles.pattern}>
           <img
             className={styles.image}
-            src={theme === "light" ? LOGOBLACK : LOGOWHITE}
+            src={themeStore.theme === "light" ? LOGOBLACK : LOGOWHITE}
           ></img>
           <div className={styles.text}>CSM</div>
         </div>
@@ -70,7 +72,7 @@ const VoteGaugeModal = ({
         <Button
           width="65px"
           height="34px"
-          color={theme === "light" ? "gray" : "white"}
+          color={themeStore.theme === "light" ? "gray" : "white"}
         >
           Max
         </Button>
@@ -126,7 +128,7 @@ const VoteGaugeModal = ({
       <Button
         height={isPhoneOrPC ? "34px" : "56px"}
         width={"100%"}
-        color={theme === "light" ? "black" : "white"}
+        color={themeStore.theme === "light" ? "black" : "white"}
         className={styles.button}
         onClick={() => onSuccess()}
       >
@@ -134,6 +136,6 @@ const VoteGaugeModal = ({
       </Button>
     </Modal>
   );
-};
+});
 
 export { VoteGaugeModal };

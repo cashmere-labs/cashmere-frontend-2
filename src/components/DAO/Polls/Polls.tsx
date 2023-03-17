@@ -1,19 +1,22 @@
 import { Poll, ProposalModal, Row, Waiting } from "../../../components";
 import { mockPollData } from "../../../constants/mockPollData";
-import { useModal, useTheme } from "../../../hooks";
+import { useModal } from "../../../hooks";
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { Button, Container, Icon, Input, Modal, Select } from "../../../ui";
 
 import styles from "./Polls.module.scss";
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../../store/ThemeStore';
+import { observer } from 'mobx-react-lite';
 
 enum PAGE {
   "FORM",
   "SUCCESS",
 }
 
-const Polls = () => {
-  const { theme } = useTheme();
+const Polls = observer(() => {
+  const themeStore = useInjection(ThemeStore);
   const proposalModal = useModal();
   const [page, setPage] = useState<PAGE>(PAGE.FORM);
   const [search, setSearch] = useState("");
@@ -49,7 +52,7 @@ const Polls = () => {
           <Button
             onClick={proposalModal.open}
             height="40px"
-            color={theme === "dark" ? "white" : "black"}
+            color={themeStore.theme === "dark" ? "white" : "black"}
             style={{ marginLeft: "8px", whiteSpace: "nowrap" }}
           >
             Create Poll
@@ -96,6 +99,6 @@ const Polls = () => {
       )}
     </Container>
   );
-};
+});
 
 export { Polls };

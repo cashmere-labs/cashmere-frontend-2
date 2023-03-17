@@ -2,7 +2,6 @@ import { InfoIcon } from "../../../assets/icons";
 import LOGOBLACK from "../../../assets/images/cashmere.png";
 import LOGOWHITE from "../../../assets/images/cashmereWhite.png";
 import { ethers } from "ethers";
-import { useTheme } from "../../../hooks";
 import { useFormValidator } from "../../../hooks/useFormValidator";
 import { ModalController } from "../../../hooks/useModal";
 import { useState } from "react";
@@ -11,15 +10,18 @@ import { Button, Icon, Input, Modal, Tooltip } from "../../../ui";
 import { isValidNumberInput } from "../../../utils/isValidNumberInput";
 
 import styles from "./BecomeValidator.module.scss";
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../../store/ThemeStore';
+import { observer } from 'mobx-react-lite';
 
-const BecomeValidator = ({
+const BecomeValidator = observer(({
   modal,
   onSuccess,
 }: {
   modal: ModalController;
   onSuccess: () => void;
 }) => {
-  const { theme } = useTheme();
+  const themeStore = useInjection(ThemeStore);
   const isPhoneOrLaptop = useMediaQuery({
     query: "(max-width: 950px)",
   });
@@ -120,7 +122,7 @@ const BecomeValidator = ({
               <div className={styles.insideBox}>
                 <div className={styles.logo}>
                   <img
-                    src={theme === "light" ? LOGOBLACK : LOGOWHITE}
+                    src={themeStore.theme === "light" ? LOGOBLACK : LOGOWHITE}
                     style={{ width: "24px", height: "24px" }}
                   ></img>
                   <span style={{ marginLeft: "9px", marginRight: "5px" }}>
@@ -146,7 +148,7 @@ const BecomeValidator = ({
                   <Button
                     width="45px"
                     height="25px"
-                    color={theme === "light" ? "transparentWhite" : "white"}
+                    color={themeStore.theme === "light" ? "transparentWhite" : "white"}
                   >
                     Max
                   </Button>
@@ -158,7 +160,7 @@ const BecomeValidator = ({
               <div className={styles.insideBox}>
                 <div className={styles.logo}>
                   <img
-                    src={theme === "light" ? LOGOBLACK : LOGOWHITE}
+                    src={themeStore.theme === "light" ? LOGOBLACK : LOGOWHITE}
                     style={{ width: "24px", height: "24px" }}
                   ></img>{" "}
                   <span style={{ marginLeft: "9px", marginRight: "5px" }}>
@@ -184,7 +186,7 @@ const BecomeValidator = ({
                   <Button
                     width="45px"
                     height="25px"
-                    color={theme === "light" ? "transparentWhite" : "white"}
+                    color={themeStore.theme === "light" ? "transparentWhite" : "white"}
                   >
                     Max
                   </Button>
@@ -196,7 +198,7 @@ const BecomeValidator = ({
                 width={"100%"}
                 style={{ maxWidth: "355px", minWidth: "250px" }}
                 height={"40px"}
-                color={theme === "light" ? "gray" : "transparentBlack"}
+                color={themeStore.theme === "light" ? "gray" : "transparentBlack"}
               >
                 LOCK {"&"} BECOME VALIDATOR
               </Button>
@@ -218,7 +220,7 @@ const BecomeValidator = ({
                   width="110px"
                   height="46px"
                   color={
-                    theme === "light" ? "transparentWhite" : "transparentBlack"
+                    themeStore.theme === "light" ? "transparentWhite" : "transparentBlack"
                   }
                   onClick={() => setWhichDuration(i)}
                   className={i === whichDuration ? styles.active : styles.none}
@@ -236,7 +238,7 @@ const BecomeValidator = ({
             <div className={styles.inputBox}>
               <div className={styles.logo}>
                 <img
-                  src={theme === "light" ? LOGOBLACK : LOGOWHITE}
+                  src={themeStore.theme === "light" ? LOGOBLACK : LOGOWHITE}
                   style={{ width: "22px", height: "22px" }}
                 ></img>
                 <span>CSM</span>
@@ -260,7 +262,7 @@ const BecomeValidator = ({
                 <Button
                   width="45px"
                   height="25px"
-                  color={theme === "light" ? "transparentWhite" : "white"}
+                  color={themeStore.theme === "light" ? "transparentWhite" : "white"}
                 >
                   Max
                 </Button>
@@ -272,7 +274,7 @@ const BecomeValidator = ({
             <div className={styles.inputBox}>
               <div className={styles.logo}>
                 <img
-                  src={theme === "light" ? LOGOBLACK : LOGOWHITE}
+                  src={themeStore.theme === "light" ? LOGOBLACK : LOGOWHITE}
                   style={{ width: "24px", height: "24px" }}
                 ></img>
                 <span>veCSM</span>
@@ -296,7 +298,7 @@ const BecomeValidator = ({
                 <Button
                   width="45px"
                   height="25px"
-                  color={theme === "light" ? "transparentWhite" : "white"}
+                  color={themeStore.theme === "light" ? "transparentWhite" : "white"}
                 >
                   Max
                 </Button>
@@ -314,7 +316,7 @@ const BecomeValidator = ({
               width={"100%"}
               style={{ maxWidth: "885px" }}
               height={"48px"}
-              color={theme === "light" ? "gray" : "transparentBlack"}
+              color={themeStore.theme === "light" ? "gray" : "transparentBlack"}
             >
               LOCK {"&"} BECOME VALIDATOR
             </Button>
@@ -328,7 +330,7 @@ const BecomeValidator = ({
                   width="86px"
                   height="46px"
                   color={
-                    theme === "light" ? "transparentWhite" : "transparentBlack"
+                    themeStore.theme === "light" ? "transparentWhite" : "transparentBlack"
                   }
                   onClick={() => setWhichDuration(i)}
                   className={i === whichDuration ? styles.active : styles.none}
@@ -345,13 +347,13 @@ const BecomeValidator = ({
           onClick={onSubmit}
           width={"100%"}
           height={isPhoneOrLaptop ? "34px" : "56px"}
-          color={theme === "light" ? "black" : "white"}
+          color={themeStore.theme === "light" ? "black" : "white"}
         >
           Submit
         </Button>
       </div>
     </Modal>
   );
-};
+});
 
 export { BecomeValidator };

@@ -1,5 +1,4 @@
 import { InfoIcon } from "../../../assets/icons";
-import { useTheme } from "../../../hooks";
 import { ModalController } from "../../../hooks/useModal";
 import { useMediaQuery } from "react-responsive";
 import { Icon, Modal, Tooltip } from "../../../ui";
@@ -13,8 +12,6 @@ type ExecutedModalProps = {
 };
 
 const ExecutedModal = ({ modalController, network }: ExecutedModalProps) => {
-  const { theme } = useTheme();
-
   const isPhoneOrLaptop = useMediaQuery({
     query: "(max-width: 750px)",
   });

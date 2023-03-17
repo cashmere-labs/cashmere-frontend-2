@@ -1,5 +1,4 @@
 import WARNING from "../../../assets/icons/warning.png";
-import { useTheme } from "../../../hooks";
 import { ModalController } from "../../../hooks/useModal";
 import { useMediaQuery } from "react-responsive";
 import { Modal } from "../../../ui";
@@ -7,7 +6,6 @@ import { Modal } from "../../../ui";
 import styles from "./BecomeValidatorError.module.scss";
 
 const BecomeValidatorError = ({ modal }: { modal: ModalController }) => {
-  const { theme } = useTheme();
   const isPhoneOrPC = useMediaQuery({
     query: "(max-width: 550px)",
   });

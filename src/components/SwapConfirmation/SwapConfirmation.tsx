@@ -1,6 +1,5 @@
 import { RotateIcon } from "../../assets/icons";
 import { Done, Row } from "../../components";
-import { useTheme } from "../../hooks";
 import { ModalController } from "../../hooks/useModal";
 import { ReactNode, useEffect, useState } from "react";
 import { FaChevronRight } from "react-icons/fa";
@@ -24,6 +23,9 @@ import { ERC20 } from "ethylene/constants/abi";
 import { ContractContext as CashmereAggregatorUniswapContext } from "../../abi/CashmereAggregatorUniswap";
 import CashmereAggregatorUniswapABI from "../../abi/CashmereAggregatorUniswap.json";
 import { apiAddress } from '../../constants/utils';
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../store/ThemeStore';
+import { observer } from 'mobx-react-lite';
 
 type SwapConfirmationModal = {
   swapSettings: SwapSettings;
@@ -41,14 +43,14 @@ type SwapConfirmationModal = {
   modalController: ModalController;
 };
 
-const SwapConfirmation = ({
+const SwapConfirmation = observer(({
   modalController,
   swapSettings,
   from,
   to,
   data,
 }: SwapConfirmationModal) => {
-  const { theme } = useTheme();
+  const themeStore = useInjection(ThemeStore);
   const [isConfirmed, setIsConfirmed] = useState<boolean>(false);
   const [ transactionHash, setTransactionHash ] = useState<string>();
   const { address: accountAddress } = useAccount();
@@ -257,13 +259,13 @@ const SwapConfirmation = ({
         style={{ marginBottom: "1.5rem", marginTop: "2rem" }}
         height="56px"
         width="100%"
-        color={theme === "dark" ? "white" : "black"}
+        color={themeStore.theme === "dark" ? "white" : "black"}
       >
         Swap
       </Button>
     </Modal>
   );
-};
+});
 
 const SwapConfirmationContentRenderer = ({
   left,

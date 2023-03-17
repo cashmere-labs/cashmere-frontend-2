@@ -1,11 +1,13 @@
 import { PATHS } from "../../../constants/paths";
-import { useTheme } from "../../../hooks";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Lockers, MyLocks } from "../../../types/app";
 import { Button, NetworkBadge } from "../../../ui";
 
 import styles from "./DesktopTable.module.scss";
+import { useInjection } from 'inversify-react';
+import ThemeStore from '../../../store/ThemeStore';
+import { observer } from 'mobx-react-lite';
 
 interface Table {
   whichValidator: boolean;
@@ -50,7 +52,7 @@ const VeCSMTitle = ({ whichLockers }: Title) => {
   );
 };
 
-const Row = ({
+const Row = observer(({
   whichOne,
   data,
   i,
@@ -59,7 +61,7 @@ const Row = ({
   data: any;
   i: number;
 }) => {
-  const { theme } = useTheme();
+  const themeStore = useInjection(ThemeStore);
 
   return (
     <div className={styles.tableBody} key={i}>
@@ -111,7 +113,7 @@ const Row = ({
               height="40px"
               width="156px"
               color={
-                theme === "light" ? "transparentWhite" : "transparentBlack"
+                themeStore.theme === "light" ? "transparentWhite" : "transparentBlack"
               }
               fontWeight="fw600"
             >
@@ -122,7 +124,7 @@ const Row = ({
       </div>
     </div>
   );
-};
+});
 
 const VeCSMDesktopTable = ({
   whichValidator,

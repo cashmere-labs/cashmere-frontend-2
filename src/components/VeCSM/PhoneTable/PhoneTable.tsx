@@ -1,12 +1,12 @@
-import DOWNBLACK from "assets/pool/down-icon-black.png";
-import DOWNWHITE from "assets/pool/down-icon-white.png";
-import { PATHS } from "constants/paths";
-import { useTheme } from "hooks";
+import DOWNBLACK from "../../../assets/pool/down-icon-black.png";
+import DOWNWHITE from "../../../assets/pool/down-icon-white.png";
+import { PATHS } from "../../../constants/paths";
+import { useTheme } from "../../../hooks";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
-import { Button, NetworkBadge } from "ui";
-import { clsnm } from "utils/clsnm";
+import { Button, NetworkBadge } from "../../../ui";
+import { clsnm } from "../../../utils/clsnm";
 
 import styles from "./PhoneTable.module.scss";
 

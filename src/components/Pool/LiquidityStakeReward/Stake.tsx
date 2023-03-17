@@ -1,15 +1,15 @@
-import { InfoIcon } from "assets/icons";
-import GRAYPLUS from "assets/icons/grayPlus.png";
-import MINUS from "assets/icons/minus.png";
-import WHITEPLUS from "assets/icons/whitePlus.png";
-import DAI from "assets/pool/dai.png";
-import { useTheme } from "hooks";
+import { InfoIcon } from "../../../assets/icons";
+import GRAYPLUS from "../../../assets/icons/grayPlus.png";
+import MINUS from "../../../assets/icons/minus.png";
+import WHITEPLUS from "../../../assets/icons/whitePlus.png";
+import DAI from "../../../assets/pool/dai.png";
+import { useTheme } from "../../../hooks";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useMediaQuery } from "react-responsive";
-import { setFunctionName, setValue } from "store/slicers/pool";
-import { Button, Input } from "ui";
-import { Icon, Tooltip } from "ui";
+import { setFunctionName, setValue } from "../../../store/slicers/pool";
+import { Button, Input } from "../../../ui";
+import { Icon, Tooltip } from "../../../ui";
 
 import styles from "./Stake.module.scss";
 

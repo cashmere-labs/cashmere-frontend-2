@@ -1,5 +1,5 @@
-import { Lockers, MyLocks } from "types/app";
-import { NetworkTypes } from "ui/NetworkBadge/utils";
+import { Lockers, MyLocks } from "../../types/app";
+import { NetworkTypes } from "../../ui/NetworkBadge/utils";
 
 export const LockersDatas: Lockers[] = [
   {

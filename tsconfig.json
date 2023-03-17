@@ -19,7 +19,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "types": [
+      "@svgx/vite-plugin-react", "node", "vite/client"
+    ]
   },
   "include": [
     "src"

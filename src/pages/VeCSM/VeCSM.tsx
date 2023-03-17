@@ -1,7 +1,7 @@
-import { Footer, Navbar } from "components";
-import { ChooseValidator, ClaimDashboard, Validators } from "components";
-import { useTitle } from "hooks/useTitle";
-import { Layout } from "ui";
+import { Footer, Navbar } from "../../components";
+import { ChooseValidator, ClaimDashboard, Validators } from "../../components";
+import { useTitle } from "../../hooks/useTitle";
+import { Layout } from "../../ui";
 
 import styles from "./VeCSM.module.scss";
 

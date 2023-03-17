@@ -1,4 +1,4 @@
-import CALENDER from "assets/icons/calender.png";
+import CALENDER from "../../../assets/icons/calender.png";
 import {
   VoteGaugeDesktopTable,
   VoteGaugeDesktopTitle,
@@ -6,12 +6,12 @@ import {
   VoteGaugePhoneTable,
   VoteGaugePhoneTitle,
   Waiting,
-} from "components";
-import { useModal } from "hooks";
+} from "../../../components";
+import { useModal } from "../../../hooks";
 import { useEffect, useMemo, useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import { useNetwork } from "store/hooks/networkHooks";
-import { Modal } from "ui";
+import { useNetwork } from "../../../store/hooks/networkHooks";
+import { Modal } from "../../../ui";
 
 import styles from "./VoteGauge.module.scss";
 import { VOTEGAUGE } from "./datas";

@@ -1,6 +1,6 @@
 import { ComponentPropsWithoutRef, ReactNode } from "react";
-import { Alert } from "ui";
-import { clsnm } from "utils/clsnm";
+import { Alert } from "../../ui";
+import { clsnm } from "../../utils/clsnm";
 
 import styles from "./Input.module.scss";
 

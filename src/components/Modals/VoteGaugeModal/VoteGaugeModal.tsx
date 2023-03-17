@@ -1,11 +1,11 @@
-import { InfoIcon } from "assets/icons";
-import CALENDER from "assets/icons/calender.png";
-import LOGOBLACK from "assets/images/cashmere.png";
-import LOGOWHITE from "assets/images/cashmereWhite.png";
-import { useTheme } from "hooks";
-import { ModalController } from "hooks/useModal";
+import { InfoIcon } from "../../../assets/icons";
+import CALENDER from "../../../assets/icons/calender.png";
+import LOGOBLACK from "../../../assets/images/cashmere.png";
+import LOGOWHITE from "../../../assets/images/cashmereWhite.png";
+import { useTheme } from "../../../hooks";
+import { ModalController } from "../../../hooks/useModal";
 import { useMediaQuery } from "react-responsive";
-import { Button, Icon, Input, Modal, Token, Tooltip } from "ui";
+import { Button, Icon, Input, Modal, Token, Tooltip } from "../../../ui";
 
 import styles from "./VoteGaugeModal.module.scss";
 

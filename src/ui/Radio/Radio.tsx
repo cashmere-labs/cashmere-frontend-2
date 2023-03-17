@@ -1,7 +1,7 @@
 import { ComponentPropsWithoutRef, ReactNode } from "react";
 import { IoMdRadioButtonOff, IoMdRadioButtonOn } from "react-icons/io";
-import { Icon } from "ui/Icon/Icon";
-import { clsnm } from "utils/clsnm";
+import { Icon } from "../../ui/Icon/Icon";
+import { clsnm } from "../../utils/clsnm";
 
 import styles from "./Radio.module.scss";
 

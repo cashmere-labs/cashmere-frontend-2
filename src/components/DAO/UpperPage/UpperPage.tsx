@@ -1,8 +1,8 @@
-import { InfoIcon } from "assets/icons";
-import { Logo, Waiting } from "components";
-import { useModal, useTheme } from "hooks";
+import { InfoIcon } from "../../../assets/icons";
+import { Logo, Waiting } from "../../../components";
+import { useModal, useTheme } from "../../../hooks";
 import { useState } from "react";
-import { Button, Icon, Modal, Tooltip } from "ui";
+import { Button, Icon, Modal, Tooltip } from "../../../ui";
 
 import styles from "./UpperPage.module.scss";
 

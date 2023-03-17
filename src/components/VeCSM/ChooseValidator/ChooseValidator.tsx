@@ -1,10 +1,10 @@
-import { BecomeValidator, Waiting } from "components";
-import { useModal, useTheme, useVeCSMStates } from "hooks";
+import { BecomeValidator, Waiting } from "../../../components";
+import { useModal, useTheme, useVeCSMStates } from "../../../hooks";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
-import { Button, Modal } from "ui";
-import { clsnm } from "utils/clsnm";
+import { Button, Modal } from "../../../ui";
+import { clsnm } from "../../../utils/clsnm";
 
 import styles from "./ChooseValidator.module.scss";
 

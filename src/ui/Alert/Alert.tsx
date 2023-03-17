@@ -1,7 +1,7 @@
 import { ComponentPropsWithoutRef } from "react";
 import { MdWarning } from "react-icons/md";
-import { Icon } from "ui";
-import { clsnm } from "utils/clsnm";
+import { Icon } from "../../ui";
+import { clsnm } from "../../utils/clsnm";
 
 import styles from "./Alert.module.scss";
 

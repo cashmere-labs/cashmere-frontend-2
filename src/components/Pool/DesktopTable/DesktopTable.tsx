@@ -1,10 +1,10 @@
-import { InfoIcon } from "assets/icons";
-import { ModalController } from "hooks/useModal";
-import { FilterType } from "pages/Pool/Pool";
+import { InfoIcon } from "../../../assets/icons";
+import { ModalController } from "../../../hooks/useModal";
+import { FilterType } from "../../../pages/Pool/Pool";
 import { useDispatch } from "react-redux";
-import { setWhichGlobalModal, setWhichPersonalModal } from "store/slicers/pool";
-import { Icon, NetworkBadge, Tooltip } from "ui";
-import { getNetworkFromNetwork } from "utils/getNetworkFromNetwork";
+import { setWhichGlobalModal, setWhichPersonalModal } from "../../../store/slicers/pool";
+import { Icon, NetworkBadge, Tooltip } from "../../../ui";
+import { getNetworkFromNetwork } from "../../../utils/getNetworkFromNetwork";
 
 import styles from "./DesktopTable.module.scss";
 

@@ -1,11 +1,11 @@
-import ARBITRUM_IMG from "assets/images/networks/arbitrum.png";
-import AVALANCHE_IMG from "assets/images/networks/avalanche.png";
-import BNB_IMG from "assets/images/networks/bnb.png";
-import ETHEREUM_IMG from "assets/images/networks/ethereum.svg";
-import OPTIMISM_IMG from "assets/images/networks/optimism.png";
-import FANTOM_IMG from "assets/images/networks/phantom.png";
-import POLYGON_IMG from "assets/images/networks/polygon.png";
-import QUESTIONMARK from "assets/images/networks/question.png";
+import ARBITRUM_IMG from "../../assets/images/networks/arbitrum.png";
+import AVALANCHE_IMG from "../../assets/images/networks/avalanche.png";
+import BNB_IMG from "../../assets/images/networks/bnb.png";
+import ETHEREUM_IMG from '../../assets/images/networks/ethereum.svg';
+import OPTIMISM_IMG from "../../assets/images/networks/optimism.png";
+import FANTOM_IMG from "../../assets/images/networks/phantom.png";
+import POLYGON_IMG from "../../assets/images/networks/polygon.png";
+import QUESTIONMARK from "../../assets/images/networks/question.png";
 
 export enum NetworkTypes {
   "AVALANCE",
@@ -17,6 +17,12 @@ export enum NetworkTypes {
   "FANTOM",
   'GOERLI',
   'MUMBAI',
+  'BSC_TESTNET',
+  'AVALANCHE_FUJI',
+  'FANTOM_TESTNET',
+  'ARBITRUM_GOERLI',
+  'OPTIMISM_GOERLI',
+  'BASE_GOERLI',
 }
 
 export const getBadgeProps = (label: NetworkTypes | string) => {

@@ -1,4 +1,4 @@
-import { useTheme } from "hooks";
+import { useTheme } from "../../../../hooks";
 import SkewLoader from "react-spinners/SkewLoader";
 
 import styles from "./Waiting.module.scss";

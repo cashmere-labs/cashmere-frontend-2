@@ -1,11 +1,11 @@
-import ExitBlack from "assets/icons/exit-black.png";
-import ExitWhite from "assets/icons/exit-white.png";
+import ExitBlack from "../../../assets/icons/exit-black.png";
+import ExitWhite from "../../../assets/icons/exit-white.png";
 import { motion } from "framer-motion";
-import { useTheme } from "hooks";
+import { useTheme } from "../../../hooks";
 import { MdOutlineDone } from "react-icons/md";
 import { useMediaQuery } from "react-responsive";
-import { Button } from "ui";
-import { clsnm } from "utils/clsnm";
+import { Button } from "../../../ui";
+import { clsnm } from "../../../utils/clsnm";
 
 import modalStyles from "../../../ui/Modal/Modal.module.scss";
 import styles from "./Done.module.scss";

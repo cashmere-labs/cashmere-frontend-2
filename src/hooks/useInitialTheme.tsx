@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setTheme } from "store/slicers/theme";
+import { setTheme } from "../store/slicers/theme";
 
 export const useInitialTheme = () => {
   const dispatch = useDispatch();

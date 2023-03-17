@@ -1,11 +1,11 @@
-import { Row } from "components";
-import { ModalController } from "hooks/useModal";
+import { Row } from "../../../components";
+import { ModalController } from "../../../hooks/useModal";
 import { ReactNode } from "react";
 import { BiLinkExternal } from "react-icons/bi";
 import { FaCheck } from "react-icons/fa";
-import { TransactionStep } from "types/app";
-import { Icon, Modal, Spinner } from "ui";
-import { clsnm } from "utils/clsnm";
+import { TransactionStep } from "../../../types/app";
+import { Icon, Modal, Spinner } from "../../../ui";
+import { clsnm } from "../../../utils/clsnm";
 
 import styles from "./TxProgressModal.module.scss";
 

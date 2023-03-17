@@ -1,14 +1,14 @@
-import { Row } from "components";
+import { Row } from "../../../components";
 import { useAccount } from "ethylene/hooks";
-import { useTheme } from "hooks";
-import { ModalController } from "hooks/useModal";
+import { useTheme } from "../../../hooks";
+import { ModalController } from "../../../hooks/useModal";
 import React, { useMemo, useState } from "react";
 import { BiLinkExternal } from "react-icons/bi";
 import { FiUser } from "react-icons/fi";
-import { AccountBalance } from "types/app";
-import { Button, Icon, Modal } from "ui";
-import { NetworkTypes, getBadgeProps } from "ui/NetworkBadge/utils";
-import { formatAddress } from "utils/formatAddress";
+import { AccountBalance } from "../../../types/app";
+import { Button, Icon, Modal } from "../../../ui";
+import { NetworkTypes, getBadgeProps } from "../../../ui/NetworkBadge/utils";
+import { formatAddress } from "../../../utils/formatAddress";
 
 import styles from "./AccountModal.module.scss";
 

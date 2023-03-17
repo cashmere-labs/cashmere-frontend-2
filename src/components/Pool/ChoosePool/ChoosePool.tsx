@@ -1,13 +1,13 @@
-import { Row } from "components";
-import { useTheme } from "hooks";
-import { usePoolStates } from "hooks";
-import { FilterType, PoolTab } from "pages/Pool/Pool";
+import { Row } from "../../../components";
+import { useTheme } from "../../../hooks";
+import { usePoolStates } from "../../../hooks";
+import { FilterType, PoolTab } from "../../../pages/Pool/Pool";
 import useDimensions from "react-cool-dimensions";
 import { useMediaQuery } from "react-responsive";
-import { Network } from "types/network";
-import { Token } from "types/token";
-import { Button, Option, Select } from "ui";
-import { clsnm } from "utils/clsnm";
+import { Network } from "../../../types/network";
+import { Token } from "../../../types/token";
+import { Button, Option, Select } from "../../../ui";
+import { clsnm } from "../../../utils/clsnm";
 
 import styles from "./ChoosePool.module.scss";
 

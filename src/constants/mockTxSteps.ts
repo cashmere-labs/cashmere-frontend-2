@@ -1,4 +1,4 @@
-import ETHEREUM_IMG from "assets/images/networks/ethereum.svg";
+import ETHEREUM_IMG from '../assets/images/networks/ethereum.svg';
 import { TransactionStep } from "types/app";
 
 export const mockTxSteps: TransactionStep[] = [

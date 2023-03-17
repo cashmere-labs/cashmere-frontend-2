@@ -1,6 +1,6 @@
 import { CSSProperties, ComponentPropsWithoutRef } from "react";
-import { TokenTypes, getBadgeProps } from "ui/Token/utils";
-import { clsnm } from "utils/clsnm";
+import { TokenTypes, getBadgeProps } from './utils';
+import { clsnm } from "../../utils/clsnm";
 
 import styles from "./Token.module.scss";
 

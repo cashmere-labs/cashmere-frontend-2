@@ -1,3 +1,5 @@
-export { ReactComponent as SettingsIcon } from "./settings.svg";
-export { ReactComponent as RotateIcon } from "./rotate.svg";
-export { ReactComponent as InfoIcon } from "./info.svg";
+import SettingsIcon from "./settings.svg?component";
+import RotateIcon from "./rotate.svg?component";
+import InfoIcon from "./info.svg?component";
+
+export { SettingsIcon, RotateIcon, InfoIcon };

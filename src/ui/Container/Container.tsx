@@ -1,5 +1,5 @@
 import { ComponentPropsWithoutRef, ReactNode } from "react";
-import { clsnm } from "utils/clsnm";
+import { clsnm } from "../../utils/clsnm";
 
 import styles from "./Container.module.scss";
 

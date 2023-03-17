@@ -4,14 +4,14 @@ import {
   Footer,
   Navbar,
   Pools,
-} from "components";
-import { networkOptions } from "constants/networkOptions";
+} from "../../components";
+import { networkOptions } from "../../constants/networkOptions";
 // import { tokenOptions } from "constants/tokenOptions";
-import { useTitle } from "hooks/useTitle";
+import { useTitle } from "../../hooks/useTitle";
 import { useState } from "react";
-import { Network } from "types/network";
-import { Token } from "types/token";
-import { Layout } from "ui";
+import { Network } from "../../types/network";
+import { Token } from "../../types/token";
+import { Layout } from "../../ui";
 
 import styles from "./Pool.module.scss";
 

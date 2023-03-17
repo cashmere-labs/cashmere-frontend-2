@@ -1,12 +1,13 @@
-import ARBITRUM_IMAGE from "assets/images/networks/arbitrum.png";
-import AVALANCHE_IMAGE from "assets/images/networks/avalanche.png";
-import BNB_IMAGE from "assets/images/networks/bnb.png";
-import ETHEREUM_IMAGE from "assets/images/networks/ethereum.svg";
-import OPTIMISM_IMAGE from "assets/images/networks/optimism.png";
-import FANTOM_IMAGE from "assets/images/networks/phantom.png";
-import POLYGON_IMAGE from "assets/images/networks/polygon.png";
-import { Network } from "types/network";
-import { NetworkTypes } from "ui/NetworkBadge/utils";
+import ARBITRUM_IMAGE from "../assets/images/networks/arbitrum.png";
+import AVALANCHE_IMAGE from "../assets/images/networks/avalanche.png";
+import BNB_IMAGE from "../assets/images/networks/bnb.png";
+import ETHEREUM_IMAGE from '../assets/images/networks/ethereum.svg';
+import OPTIMISM_IMAGE from "../assets/images/networks/optimism.png";
+import FANTOM_IMAGE from "../assets/images/networks/phantom.png";
+import POLYGON_IMAGE from "../assets/images/networks/polygon.png";
+import BASE_IMAGE from '../assets/images/networks/base.svg';
+import { Network } from "../types/network";
+import { NetworkTypes } from "../ui/NetworkBadge/utils";
 
 import arbitrumTokenList from "./assets/blockchains/arbitrum/tokenlist.json";
 import avalancheTokenList from "./assets/blockchains/avalanchec/tokenlist.json";
@@ -77,6 +78,186 @@ const goerliTokenList = [
   },
 ];
 
+const bscTestnetTokenList = [
+  {
+    asset: '0',
+    type: 'BSC',
+    address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+    name: 'ETH',
+    symbol: 'ETH',
+    decimals: 18,
+    logoURI: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
+  {
+    asset: '1',
+    type: 'BSC',
+    address: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
+    name: 'Wrapped ETH',
+    symbol: 'WETH',
+    decimals: 18,
+    logoURI: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
+  {
+    asset: '2',
+    type: 'BSC',
+    address: '0x4325BB533E44c369ed9A154bDe923DF0Bbef129C',
+    name: 'USDC',
+    symbol: 'USDC',
+    decimals: 18,
+    logoURI: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
+  },
+];
+
+const avalancheFujiTokenList = [
+  {
+    asset: '0',
+    type: 'AVALANCHE',
+    address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+    name: 'ETH',
+    symbol: 'ETH',
+    decimals: 18,
+    logoURI: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
+  {
+    asset: '1',
+    type: 'AVALANCHE',
+    address: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
+    name: 'Wrapped ETH',
+    symbol: 'WETH',
+    decimals: 18,
+    logoURI: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
+  {
+    asset: '2',
+    type: 'AVALANCHE',
+    address: '0x231401dC8b53338d78c08f83CC4EBc74148196d0',
+    name: 'USDC',
+    symbol: 'USDC',
+    decimals: 18,
+    logoURI: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
+  },
+];
+
+const fantomTestnetTokenList = [
+  {
+    asset: '0',
+    type: 'FANTOM',
+    address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+    name: 'ETH',
+    symbol: 'ETH',
+    decimals: 18,
+    logoURI: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
+  {
+    asset: '1',
+    type: 'FANTOM',
+    address: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
+    name: 'Wrapped ETH',
+    symbol: 'WETH',
+    decimals: 18,
+    logoURI: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
+  {
+    asset: '2',
+    type: 'FANTOM',
+    address: '0x0Fdf019338d4229A160011d0aA87485c756a24f0',
+    name: 'USDC',
+    symbol: 'USDC',
+    decimals: 18,
+    logoURI: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
+  },
+];
+
+const arbitrumGoerliTokenList = [
+  {
+    asset: '0',
+    type: 'ARBITRUM',
+    address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+    name: 'ETH',
+    symbol: 'ETH',
+    decimals: 18,
+    logoURI: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
+  {
+    asset: '1',
+    type: 'ARBITRUM',
+    address: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
+    name: 'Wrapped ETH',
+    symbol: 'WETH',
+    decimals: 18,
+    logoURI: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
+  {
+    asset: '2',
+    type: 'ARBITRUM',
+    address: '0x747E19a0A0D074598BB5FB758591bFF8dE517312',
+    name: 'USDC',
+    symbol: 'USDC',
+    decimals: 18,
+    logoURI: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
+  },
+];
+
+const optimismGoerliTokenList = [
+  {
+    asset: '0',
+    type: 'OPTIMISM',
+    address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+    name: 'ETH',
+    symbol: 'ETH',
+    decimals: 18,
+    logoURI: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
+  {
+    asset: '1',
+    type: 'OPTIMISM',
+    address: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
+    name: 'Wrapped ETH',
+    symbol: 'WETH',
+    decimals: 18,
+    logoURI: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
+  {
+    asset: '2',
+    type: 'OPTIMISM',
+    address: '0x12AAef2833E39d556d9D913574a8B021D8e954c0',
+    name: 'USDC',
+    symbol: 'USDC',
+    decimals: 18,
+    logoURI: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
+  },
+];
+
+const baseGoerliTokenList = [
+  {
+    asset: '0',
+    type: 'BASE',
+    address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+    name: 'ETH',
+    symbol: 'ETH',
+    decimals: 18,
+    logoURI: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
+  {
+    asset: '1',
+    type: 'BASE',
+    address: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
+    name: 'Wrapped ETH',
+    symbol: 'WETH',
+    decimals: 18,
+    logoURI: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
+  {
+    asset: '2',
+    type: 'BASE',
+    address: '0x290B54A504A3b0cB21888e3E405AFC1b2946598C',
+    name: 'USDC',
+    symbol: 'USDC',
+    decimals: 18,
+    logoURI: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
+  },
+];
+
 export const POLYGON: Network = {
   chainId: "0x89",
   explorer: {
@@ -101,7 +282,7 @@ export const MUMBAI: Network = {
     url: "https://mumbai.polygonscan.com/",
   },
   imageUrl: POLYGON_IMAGE,
-  name: "Mumbai",
+  name: "Polygon Mumbai",
   nativeCurrency: {
     decimals: 18,
     name: "MATIC",
@@ -213,6 +394,108 @@ export const ETHEREUM: Network = {
   tokenList: ethereumTokenList.tokens.map(t => new Token(t)),
 };
 
+export const BSC_TESTNET: Network = {
+  chainId: "0x61",
+  explorer: {
+    name: "BSCScan",
+    url: "https://testnet.bscscan.com/",
+  },
+  imageUrl: BNB_IMAGE,
+  name: "BSC Testnet",
+  nativeCurrency: {
+    decimals: 18,
+    name: "BNB",
+    symbol: "BNB",
+  },
+  rpcUrls: ["https://data-seed-prebsc-2-s1.binance.org:8545"],
+  tokenList: bscTestnetTokenList.map(t => new Token(t)),
+};
+
+export const AVALANCHE_FUJI: Network = {
+  chainId: "0xa869",
+  explorer: {
+    name: "Snowtrace",
+    url: "https://testnet.snowtrace.io/",
+  },
+  imageUrl: AVALANCHE_IMAGE,
+  name: "Avalanche Fuji",
+  nativeCurrency: {
+    decimals: 18,
+    name: "AVAX",
+    symbol: "AVAX",
+  },
+  rpcUrls: ["https://api.avax-test.network/ext/bc/C/rpc"],
+  tokenList: avalancheFujiTokenList.map(t => new Token(t)),
+};
+
+export const FANTOM_TESTNET: Network = {
+  chainId: "0xfa2",
+  explorer: {
+    name: "FTMScan",
+    url: "https://testnet.ftmscan.com/",
+  },
+  imageUrl: FANTOM_IMAGE,
+  name: "Fantom Testnet",
+  nativeCurrency: {
+    decimals: 18,
+    name: "Fantom",
+    symbol: "FTM",
+  },
+  rpcUrls: ["https://rpc.testnet.fantom.network"],
+  tokenList: fantomTestnetTokenList.map(t => new Token(t)),
+};
+
+export const ARBITRUM_GOERLI: Network = {
+  chainId: "0x66eed",
+  explorer: {
+    name: "Arbiscan",
+    url: "https://testnet.arbiscan.io/",
+  },
+  imageUrl: ARBITRUM_IMAGE,
+  name: "Arbitrum Goerli",
+  nativeCurrency: {
+    decimals: 18,
+    name: "Ethereum",
+    symbol: "ETH",
+  },
+  rpcUrls: ["https://goerli-rollup.arbitrum.io/rpc"],
+  tokenList: arbitrumGoerliTokenList.map(t => new Token(t)),
+};
+
+export const OPTIMISM_GOERLI: Network = {
+  chainId: "0x1a4",
+  explorer: {
+    name: "Etherscan",
+    url: "https://goerli-optimism.etherscan.io/",
+  },
+  imageUrl: OPTIMISM_IMAGE,
+  name: "Optimism Goerli",
+  nativeCurrency: {
+    decimals: 18,
+    name: "Ethereum",
+    symbol: "ETH",
+  },
+  rpcUrls: ["https://goerli.optimism.io"],
+  tokenList: optimismGoerliTokenList.map(t => new Token(t)),
+};
+
+export const BASE_GOERLI: Network = {
+  chainId: "0x14a33",
+  explorer: {
+    name: "Basescan",
+    url: "https://goerli.basescan.org/",
+  },
+  imageUrl: BASE_IMAGE,
+  name: "Base Goerli",
+  nativeCurrency: {
+    decimals: 18,
+    name: "Ethereum",
+    symbol: "ETH",
+  },
+  rpcUrls: ["https://goerli.base.org"],
+  tokenList: baseGoerliTokenList.map(t => new Token(t)),
+};
+
 export const GOERLI: Network = {
   chainId: "0x5",
   explorer: {
@@ -220,7 +503,7 @@ export const GOERLI: Network = {
     url: "https://goerli.etherscan.io/",
   },
   imageUrl: ETHEREUM_IMAGE,
-  name: "Goerli",
+  name: "Ethereum Goerli",
   nativeCurrency: {
     decimals: 18,
     name: "Ethereum",
@@ -240,4 +523,10 @@ export const networkTypes = [
   NetworkTypes.POLYGON,
   NetworkTypes.MUMBAI,
   NetworkTypes.GOERLI,
+  NetworkTypes.BSC_TESTNET,
+  NetworkTypes.AVALANCHE_FUJI,
+  NetworkTypes.FANTOM_TESTNET,
+  NetworkTypes.ARBITRUM_GOERLI,
+  NetworkTypes.OPTIMISM_GOERLI,
+  NetworkTypes.BASE_GOERLI,
 ];

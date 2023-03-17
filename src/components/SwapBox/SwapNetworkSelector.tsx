@@ -1,9 +1,9 @@
-import { ModalController } from "hooks/useModal";
+import { ModalController } from "../../hooks/useModal";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { IoMdClose } from "react-icons/io";
-import { Network } from "types/network";
-import { Token } from "types/token";
-import { Icon, Input } from "ui";
+import { Network } from "../../types/network";
+import { Token } from "../../types/token";
+import { Icon, Input } from "../../ui";
 
 import styles from "./SwapBox.module.scss";
 import { ethers } from "ethers";

@@ -1,6 +1,6 @@
-import CALENDER from "assets/icons/calender.png";
-import CLOCK from "assets/icons/clock.png";
-import LOGO from "assets/images/cashmereGray.png";
+import CALENDER from "../../../../assets/icons/calender.png";
+import CLOCK from "../../../../assets/icons/clock.png";
+import LOGO from "../../../../assets/images/cashmereGray.png";
 import useDimensions from "react-cool-dimensions";
 
 import styles from "./Balance.module.scss";

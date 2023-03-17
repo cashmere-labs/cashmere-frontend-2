@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setIsActive, setValidatorCount } from "store/slicers/veCSM";
+import { setIsActive, setValidatorCount } from "../store/slicers/veCSM";
 
 export const useVeCSMStates = () => {
   const validatorCount = useSelector(

@@ -1,9 +1,9 @@
 import { ResponsivePie } from "@nivo/pie";
-import { Column, ExecutingModal, Row } from "components";
-import { useModal, useTheme } from "hooks";
+import { Column, ExecutingModal, Row } from "../../components";
+import { useModal, useTheme } from "../../hooks";
 import { useMediaQuery } from "react-responsive";
-import { useNetwork } from "store/hooks/networkHooks";
-import { clsnm } from "utils/clsnm";
+import { useNetwork } from "../../store/hooks/networkHooks";
+import { clsnm } from "../../utils/clsnm";
 
 import styles from "./Poll.module.scss";
 

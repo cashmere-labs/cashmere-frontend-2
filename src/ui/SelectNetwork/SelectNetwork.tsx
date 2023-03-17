@@ -1,5 +1,5 @@
-import { networkTypes } from "constants/networks";
-import { useOnClickOutside, usePopper } from "hooks";
+import { networkTypes } from "../../constants/networks";
+import { useOnClickOutside, usePopper } from "../../hooks";
 import {
   CSSProperties,
   ComponentPropsWithoutRef,
@@ -8,10 +8,10 @@ import {
   useState,
 } from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
-import { useNetwork, useSetNetwork } from "store/hooks/networkHooks";
-import { Icon } from "ui";
-import { NetworkBadge } from "ui/NetworkBadge/NetworkBadge";
-import { NetworkTypes } from "ui/NetworkBadge/utils";
+import { useNetwork, useSetNetwork } from "../../store/hooks/networkHooks";
+import { Icon } from "../../ui";
+import { NetworkBadge } from "../../ui/NetworkBadge/NetworkBadge";
+import { NetworkTypes } from "../../ui/NetworkBadge/utils";
 
 import styles from "./SelectNetwork.module.scss";
 

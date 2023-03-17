@@ -1,9 +1,9 @@
-import { PATHS } from "constants/paths";
-import { useTheme } from "hooks";
+import { PATHS } from "../../../constants/paths";
+import { useTheme } from "../../../hooks";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Lockers, MyLocks } from "types/app";
-import { Button, NetworkBadge } from "ui";
+import { Lockers, MyLocks } from "../../../types/app";
+import { Button, NetworkBadge } from "../../../ui";
 
 import styles from "./DesktopTable.module.scss";
 

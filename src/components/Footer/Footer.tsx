@@ -5,8 +5,8 @@ import {
   FaTelegram,
   FaTwitter,
 } from "react-icons/fa";
-import { Icon } from "ui";
-import { clsnm } from "utils/clsnm";
+import { Icon } from "../../ui";
+import { clsnm } from "../../utils/clsnm";
 
 import styles from "./Footer.module.scss";
 

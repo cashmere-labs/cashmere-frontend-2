@@ -1,9 +1,9 @@
-import { InfoIcon } from "assets/icons";
-import { useTheme } from "hooks";
-import { ModalController } from "hooks/useModal";
+import { InfoIcon } from "../../../assets/icons";
+import { useTheme } from "../../../hooks";
+import { ModalController } from "../../../hooks/useModal";
 import { useMediaQuery } from "react-responsive";
-import { Button, Icon, Modal, Tooltip } from "ui";
-import { NetworkTypes } from "ui/NetworkBadge/utils";
+import { Button, Icon, Modal, Tooltip } from "../../../ui";
+import { NetworkTypes } from "../../../ui/NetworkBadge/utils";
 
 import styles from "./ExecutingModal.module.scss";
 

@@ -1,5 +1,5 @@
-import { useTheme } from "hooks";
-import { Button, NetworkBadge } from "ui";
+import { useTheme } from "../../../hooks";
+import { Button, NetworkBadge } from "../../../ui";
 
 import { VOTEGAUGE } from "../VoteGauge/datas";
 import styles from "./VoteGaugeDesktop.module.scss";

@@ -1,10 +1,10 @@
-import { InfoIcon } from "assets/icons";
-import CALCULATER from "assets/icons/calculater.png";
-import { Footer, Gauge, Manage, Navbar } from "components";
-import { useModal } from "hooks";
-import { useTitle } from "hooks/useTitle";
-import { Layout } from "ui";
-import { Icon, Tooltip } from "ui";
+import { InfoIcon } from "../../assets/icons";
+import CALCULATER from "../../assets/icons/calculater.png";
+import { Footer, Gauge, Manage, Navbar } from "../../components";
+import { useModal } from "../../hooks";
+import { useTitle } from "../../hooks/useTitle";
+import { Layout } from "../../ui";
+import { Icon, Tooltip } from '../../ui';
 
 import styles from "./ManagePage.module.scss";
 

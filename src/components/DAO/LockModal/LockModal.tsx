@@ -1,11 +1,11 @@
-import EXCHANGE from "assets/icons/exchange.png";
-import INFO from "assets/icons/info.png";
-import LOGOBLACK from "assets/images/cashmere.png";
-import LOGOWHITE from "assets/images/cashmereWhite.png";
-import { useTheme } from "hooks";
-import { ModalController } from "hooks/useModal";
+import EXCHANGE from "../../../assets/icons/exchange.png";
+import INFO from "../../../assets/icons/info.png";
+import LOGOBLACK from "../../../assets/images/cashmere.png";
+import LOGOWHITE from "../../../assets/images/cashmereWhite.png";
+import { useTheme } from "../../../hooks";
+import { ModalController } from "../../../hooks/useModal";
 import { useMediaQuery } from "react-responsive";
-import { Button, Modal } from "ui";
+import { Button, Modal } from "../../../ui";
 
 import styles from "./LockModal.module.scss";
 

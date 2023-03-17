@@ -1,8 +1,8 @@
-import { ModalController } from "hooks/useModal";
+import { ModalController } from "../../../hooks/useModal";
 import { ReactNode, useMemo } from "react";
-import { Network } from "types/network";
-import { Modal, NetworkBadge } from "ui";
-import { stringToBadgeType } from "ui/NetworkBadge/utils";
+import { Network } from "../../../types/network";
+import { Modal, NetworkBadge } from "../../../ui";
+import { stringToBadgeType } from "../../../ui/NetworkBadge/utils";
 import { v4 as uuid } from "uuid";
 
 import styles from "./GasEstimatorModal.module.scss";

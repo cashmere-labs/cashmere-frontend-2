@@ -1,9 +1,9 @@
-import { Liquidity, Reward, Stake } from "components";
-import { ModalController } from "hooks/useModal";
+import { Liquidity, Reward, Stake } from "../../../components";
+import { ModalController } from "../../../hooks/useModal";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { setValue } from "store/slicers/pool";
-import { Modal } from "ui";
+import { setValue } from "../../../store/slicers/pool";
+import { Modal } from "../../../ui";
 
 import styles from "./LiquidityStakeReward.module.scss";
 

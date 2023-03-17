@@ -1,13 +1,13 @@
-import { VeCSMDesktopTable, VeCSMTitle } from "components";
+import { VeCSMDesktopTable, VeCSMTitle } from "../../../components";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
-import { useTypedSelector } from "store";
+import { useTypedSelector } from "../../../store";
 
 import {
   VeCSMPhoneTable,
   VeCSMPhoneTitle,
-} from "components/VeCSM/PhoneTable/PhoneTable";
+} from "../../../components/VeCSM/PhoneTable/PhoneTable";
 
 import { LockersDatas, MyLocksDatas } from "../datas";
 import styles from "./Validators.module.scss";

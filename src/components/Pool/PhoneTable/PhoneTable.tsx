@@ -1,16 +1,16 @@
-import { InfoIcon } from "assets/icons";
-import DOWNBLACK from "assets/pool/down-icon-black.png";
-import DOWNWHITE from "assets/pool/down-icon-white.png";
-import { useTheme } from "hooks";
-import { ModalController } from "hooks/useModal";
-import { FilterType } from "pages/Pool/Pool";
+import { InfoIcon } from "../../../assets/icons";
+import DOWNBLACK from "../../../assets/pool/down-icon-black.png";
+import DOWNWHITE from "../../../assets/pool/down-icon-white.png";
+import { useTheme } from "../../../hooks";
+import { ModalController } from "../../../hooks/useModal";
+import { FilterType } from "../../../pages/Pool/Pool";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { setWhichGlobalModal, setWhichPersonalModal } from "store/slicers/pool";
-import { PoolData } from "types/app";
-import { Icon, NetworkBadge, Tooltip } from "ui";
-import { clsnm } from "utils/clsnm";
-import { getNetworkFromNetwork } from "utils/getNetworkFromNetwork";
+import { setWhichGlobalModal, setWhichPersonalModal } from "../../../store/slicers/pool";
+import { PoolData } from "../../../types/app";
+import { Icon, NetworkBadge, Tooltip } from "../../../ui";
+import { clsnm } from "../../../utils/clsnm";
+import { getNetworkFromNetwork } from "../../../utils/getNetworkFromNetwork";
 
 import styles from "./PhoneTable.module.scss";
 

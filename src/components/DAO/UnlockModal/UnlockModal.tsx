@@ -1,10 +1,10 @@
-import LOGOBLACK from "assets/images/cashmere.png";
-import LOGOWHITE from "assets/images/cashmereWhite.png";
-import { Warning } from "components";
-import { useTheme } from "hooks";
-import { ModalController } from "hooks/useModal";
+import LOGOBLACK from "../../../assets/images/cashmere.png";
+import LOGOWHITE from "../../../assets/images/cashmereWhite.png";
+import { Warning } from "../../../components";
+import { useTheme } from "../../../hooks";
+import { ModalController } from "../../../hooks/useModal";
 import { useMediaQuery } from "react-responsive";
-import { Button, Input, Modal } from "ui";
+import { Button, Input, Modal } from "../../../ui";
 
 import styles from "./UnlockModal.module.scss";
 

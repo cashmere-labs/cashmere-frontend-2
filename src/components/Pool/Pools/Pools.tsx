@@ -5,15 +5,15 @@ import {
   PoolPhoneTable,
   PoolPhoneTitle,
   Waiting,
-} from "components";
-import { useModal, useTheme } from "hooks";
-import { usePoolStates } from "hooks";
-import { FilterType, PoolTab } from "pages/Pool/Pool";
+} from "../../../components";
+import { useModal, useTheme } from "../../../hooks";
+import { usePoolStates } from "../../../hooks";
+import { FilterType, PoolTab } from "../../../pages/Pool/Pool";
 import { useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import { useTypedSelector } from "store";
-import { Button, Modal } from "ui";
-import { clsnm } from "utils/clsnm";
+import { useTypedSelector } from "../../../store";
+import { Button, Modal } from "../../../ui";
+import { clsnm } from "../../../utils/clsnm";
 
 import { GlobalData, PersonalData } from "../datas";
 import styles from "./Pools.module.scss";

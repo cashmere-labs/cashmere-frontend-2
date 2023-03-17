@@ -6,8 +6,8 @@ import {
   FANTOM,
   OPTIMISM,
   POLYGON,
-} from "constants/networks";
-import { NetworkTypes } from "ui/NetworkBadge/utils";
+} from "../constants/networks";
+import { NetworkTypes } from "../ui/NetworkBadge/utils";
 
 export const networkMap = new Map([
   [NetworkTypes.ARBITRUM, ARBITRUM],

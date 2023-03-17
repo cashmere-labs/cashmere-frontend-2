@@ -1,7 +1,7 @@
-import { useTheme } from "hooks";
+import { useTheme } from "../../hooks";
 import { ComponentPropsWithoutRef } from "react";
-import { Spinner } from "ui/Spinner/Spinner";
-import { clsnm } from "utils/clsnm";
+import { Spinner } from "../../ui/Spinner/Spinner";
+import { clsnm } from "../../utils/clsnm";
 
 import styles from "./Button.module.scss";
 

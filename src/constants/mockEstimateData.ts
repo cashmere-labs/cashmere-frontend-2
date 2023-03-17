@@ -6,9 +6,9 @@ import {
   FANTOM,
   OPTIMISM,
   POLYGON,
-} from "constants/networks";
+} from "../constants/networks";
 
-import { EstimateMapping } from "components/Modals/GasEstimatorModal/GasEstimatorModal";
+import { EstimateMapping } from "../components/Modals/GasEstimatorModal/GasEstimatorModal";
 
 export const mockEstimateNetworks = [
   ETHEREUM,

@@ -1,8 +1,8 @@
-import WARNING from "assets/icons/warning.png";
-import { useTheme } from "hooks";
-import { ModalController } from "hooks/useModal";
+import WARNING from "../../../assets/icons/warning.png";
+import { useTheme } from "../../../hooks";
+import { ModalController } from "../../../hooks/useModal";
 import { useMediaQuery } from "react-responsive";
-import { Button, Modal } from "ui";
+import { Button, Modal } from "../../../ui";
 
 import styles from "./UnstakeWarning.module.scss";
 

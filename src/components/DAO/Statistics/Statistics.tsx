@@ -1,10 +1,10 @@
 import { ResponsivePie } from "@nivo/pie";
-import { InfoIcon } from "assets/icons";
-import { mockStatistics } from "constants/mockPollData";
-import { useTheme } from "hooks";
-import { useTabModal } from "hooks/useTabModal";
+import { InfoIcon } from "../../../assets/icons";
+import { mockStatistics } from "../../../constants/mockPollData";
+import { useTheme } from "../../../hooks";
+import { useTabModal } from "../../../hooks/useTabModal";
 import { useMediaQuery } from "react-responsive";
-import { Icon, Tab, Tooltip } from "ui";
+import { Icon, Tab, Tooltip } from "../../../ui";
 
 import styles from "./Statistics.module.scss";
 import { WEEKLYFEES } from "./WeeklyFeesDatas";

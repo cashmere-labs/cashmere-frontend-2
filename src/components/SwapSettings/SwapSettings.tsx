@@ -1,9 +1,9 @@
-import { InfoIcon } from "assets/icons";
-import { Column, Row } from "components";
-import { ModalController } from "hooks/useModal";
-import { Alert, Icon, Input, Modal, Radio, Tooltip } from "ui";
+import { InfoIcon } from "../../assets/icons";
+import { Column, Row } from "../../components";
+import { ModalController } from "../../hooks/useModal";
+import { Alert, Icon, Input, Modal, Radio, Tooltip } from "../../ui";
 
-import { SwapSettings as SwapSettingsType } from "components/SwapSettings/useSwapSettings";
+import { SwapSettings as SwapSettingsType } from "../../components/SwapSettings/useSwapSettings";
 
 import styles from "./SwapSettings.module.scss";
 

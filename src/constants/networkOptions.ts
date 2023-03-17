@@ -8,7 +8,13 @@ import {
   // FANTOM,
   // OPTIMISM,
   // POLYGON,
-} from 'constants/networks';
+    BSC_TESTNET,
+    AVALANCHE_FUJI,
+    FANTOM_TESTNET,
+    ARBITRUM_GOERLI,
+    OPTIMISM_GOERLI,
+    BASE_GOERLI,
+} from './networks';
 
 export const networkOptions = [
   // POLYGON,
@@ -20,4 +26,10 @@ export const networkOptions = [
   // BSC,
     GOERLI,
     MUMBAI,
+    BSC_TESTNET,
+    AVALANCHE_FUJI,
+    FANTOM_TESTNET,
+    ARBITRUM_GOERLI,
+    OPTIMISM_GOERLI,
+    BASE_GOERLI,
 ];

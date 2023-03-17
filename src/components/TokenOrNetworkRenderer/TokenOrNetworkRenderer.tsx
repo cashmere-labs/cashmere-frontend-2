@@ -1,8 +1,8 @@
-import { Row } from "components";
-import { Network } from "types/network";
-import { Token } from "types/token";
-import { NetworkBadge } from "ui";
-import { stringToBadgeType } from "ui/NetworkBadge/utils";
+import { Row } from "../../components";
+import { Network } from "../../types/network";
+import { Token } from "../../types/token";
+import { NetworkBadge } from "../../ui";
+import { stringToBadgeType } from "../../ui/NetworkBadge/utils";
 
 const TokenOrNetworkRenderer = ({
   tokenOrNetwork,

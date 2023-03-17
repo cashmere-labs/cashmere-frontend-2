@@ -1,19 +1,19 @@
-import { AccountModal, Logo } from "components";
-import { PATHS } from "constants/paths";
+import { AccountModal, Logo } from "../../components";
+import { PATHS } from "../../constants/paths";
 import {
   useAccount,
   useAuth,
   useConnection,
   // useRightNetwork,
 } from "ethylene/hooks";
-import { useModal, useTheme } from "hooks";
+import { useModal, useTheme } from "../../hooks";
 import { useMemo, useRef, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { IoMdMoon, IoMdSunny } from "react-icons/io";
 import { Link, useLocation } from "react-router-dom";
-import { Button, Container, Icon } from "ui";
-import { clsnm } from "utils/clsnm";
-import { formatAddress } from "utils/formatAddress";
+import { Button, Container, Icon } from "../../ui";
+import { clsnm } from "../../utils/clsnm";
+import { formatAddress } from "../../utils/formatAddress";
 
 import styles from "./Navbar.module.scss";
 // import { ARBITRUM } from "../../constants/networks";

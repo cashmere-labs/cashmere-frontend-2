@@ -5,11 +5,11 @@ import {
   Statistics,
   UpperPage,
   VoteGauge,
-} from "components";
-import { useTitle } from "hooks/useTitle";
-import { Container, Layout } from "ui";
+} from "../../components";
+import { useTitle } from "../../hooks/useTitle";
+import { Container, Layout } from "../../ui";
 
-import { NetworkSelector } from "components/DAO/NetworkSelector/NetworkSelector";
+import { NetworkSelector } from "../../components/DAO/NetworkSelector/NetworkSelector";
 
 import styles from "./DAO.module.scss";
 

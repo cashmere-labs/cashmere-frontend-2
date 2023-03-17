@@ -1,10 +1,10 @@
-import DOWNBLACK from "assets/pool/down-icon-black.png";
-import DOWNWHITE from "assets/pool/down-icon-white.png";
-import { useTheme } from "hooks";
+import DOWNBLACK from "../../../assets/pool/down-icon-black.png";
+import DOWNWHITE from "../../../assets/pool/down-icon-white.png";
+import { useTheme } from "../../../hooks";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import { Button, NetworkBadge } from "ui";
-import { clsnm } from "utils/clsnm";
+import { Button, NetworkBadge } from "../../../ui";
+import { clsnm } from "../../../utils/clsnm";
 
 import styles from "./VoteGaugePhone.module.scss";
 

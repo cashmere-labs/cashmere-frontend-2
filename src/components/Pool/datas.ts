@@ -1,8 +1,8 @@
-import DAI from "assets/pool/dai.png";
-import USDC from "assets/pool/usdc.png";
-import USDT from "assets/pool/usdt.png";
-import { PoolData } from "types/app";
-import { NetworkTypes } from "ui/NetworkBadge/utils";
+import DAI from "../../assets/pool/dai.png";
+import USDC from "../../assets/pool/usdc.png";
+import USDT from "../../assets/pool/usdt.png";
+import { PoolData } from "../../types/app";
+import { NetworkTypes } from "../../ui/NetworkBadge/utils";
 
 export const GlobalData: PoolData[] = [
   {

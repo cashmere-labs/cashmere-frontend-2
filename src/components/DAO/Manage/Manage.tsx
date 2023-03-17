@@ -1,12 +1,12 @@
-import { Balance, UpperBox } from "components";
-import { useManageParams } from "hooks/useManageParams";
+import { Balance, UpperBox } from "../../../components";
+import { useManageParams } from "../../../hooks/useManageParams";
 import { useMemo } from "react";
 import { FaChevronRight } from "react-icons/fa";
-import { useNetwork } from "store/hooks/networkHooks";
-import { Container, NetworkBadge } from "ui";
-import { NetworkTypes } from "ui/NetworkBadge/utils";
+import { useNetwork } from "../../../store/hooks/networkHooks";
+import { Container, NetworkBadge } from "../../../ui";
+import { NetworkTypes } from "../../../ui/NetworkBadge/utils";
 
-import { LockersDatas, MyLocksDatas } from "components/VeCSM/datas";
+import { LockersDatas, MyLocksDatas } from "../../../components/VeCSM/datas";
 
 import styles from "./Manage.module.scss";
 

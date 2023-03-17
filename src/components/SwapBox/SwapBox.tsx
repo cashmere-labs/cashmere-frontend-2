@@ -1,22 +1,22 @@
-import { RotateIcon, SettingsIcon } from "assets/icons";
-import { Row } from "components";
-import { SwapConfirmation, TokenOrNetworkRenderer } from "components";
-import { networkOptions } from "constants/networkOptions";
+import { RotateIcon, SettingsIcon } from "../../assets/icons";
+import { Row } from "../../components";
+import { SwapConfirmation, TokenOrNetworkRenderer } from "../../components";
+import { networkOptions } from "../../constants/networkOptions";
 // import { ETHEREUM, POLYGON } from "constants/networks";
 // import { tokenOptions } from "constants/tokenOptions";
 import { useAccount, useConnection, useOnNetworkChange, useProvider, useRightNetwork } from "ethylene/hooks";
-import { useDebounce, useModal, useTheme } from 'hooks';
-import { SwapState } from "pages/Swap/Swap";
+import { useDebounce, useModal, useTheme } from '../../hooks';
+import { SwapState } from "../../pages/Swap/Swap";
 import { ReactElement, useEffect, useMemo, useRef, useState } from 'react';
 import { FaChevronRight } from "react-icons/fa";
-import { Network } from "types/network";
-import { Token } from "types/token";
-import { Button, Icon, Input, Select } from "ui";
+import { Network } from "../../types/network";
+import { Token } from "../../types/token";
+import { Button, Icon, Input, Select } from "../../ui";
 
 // import { SwapBoxDetails } from "components/SwapBox/SwapBoxDetails";
-import { SwapNetworkSelector } from "components/SwapBox/SwapNetworkSelector";
-import { SwapSettings } from "components/SwapSettings/SwapSettings";
-import { SwapSettings as SwapSettingType } from "components/SwapSettings/useSwapSettings";
+import { SwapNetworkSelector } from "../../components/SwapBox/SwapNetworkSelector";
+import { SwapSettings } from "../../components/SwapSettings/SwapSettings";
+import { SwapSettings as SwapSettingType } from "../../components/SwapSettings/useSwapSettings";
 
 import styles from "./SwapBox.module.scss";
 import { ethers } from "ethers";

@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { NetworkTypes } from "ui/NetworkBadge/utils";
+import { NetworkTypes } from "../../ui/NetworkBadge/utils";
 
 export interface NetworkState {
   network: NetworkTypes | string;

@@ -1,8 +1,8 @@
-import { Row } from "components";
-import { useTheme } from "hooks";
-import { ModalController } from "hooks/useModal";
+import { Row } from "../../../components";
+import { useTheme } from "../../../hooks";
+import { ModalController } from "../../../hooks/useModal";
 import { useState } from "react";
-import { Button, Input, Modal, Option, Select } from "ui";
+import { Button, Input, Modal, Option, Select } from "../../../ui";
 
 import styles from "./Gauge.module.scss";
 

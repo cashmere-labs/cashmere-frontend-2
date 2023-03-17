@@ -1,7 +1,7 @@
-import { Waiting } from "components";
-import { useModal, useTheme } from "hooks";
-import { Button, Modal, SelectNetwork } from "ui";
-import { clsnm } from "utils/clsnm";
+import { Waiting } from "../../../components";
+import { useModal, useTheme } from "../../../hooks";
+import { Button, Modal, SelectNetwork } from "../../../ui";
+import { clsnm } from "../../../utils/clsnm";
 
 import styles from "./DepositDashboard.module.scss";
 

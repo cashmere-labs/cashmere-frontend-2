@@ -1,11 +1,11 @@
 // import AvaxImage from "assets/images/tokens/avax.png";
 // import DaiImage from "assets/images/tokens/dai.png";
-// import EtherImage from "assets/images/tokens/ethereum.svg";
+// import EtherImage from 'assets/images/tokens/ethereum.svg';
 // import MaticImage from "assets/images/tokens/polygon.png";
 // import TetherusImage from "assets/images/tokens/tetherus.png";
 // import UsdcImage from "assets/pool/usdc.png";
-// import SushiImage from "assets/pool/sushi.svg";
-// import UniswapImage from "assets/pool/uniswap.svg";
+// import SushiImage from 'assets/pool/sushi.svg';
+// import UniswapImage from 'assets/pool/uniswap.svg';
 // import { Token } from "types/token";
 // import { ARBITRUM, AVALANCHE, BSC, ETHEREUM, OPTIMISM, POLYGON } from "./networks";
 

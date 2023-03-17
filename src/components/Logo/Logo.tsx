@@ -1,8 +1,8 @@
-import BlackLogo from "assets/images/logos/black.svg";
-import WhiteLogo from "assets/images/logos/white.svg";
-import { useTheme } from "hooks";
+import BlackLogo from '../../assets/images/logos/black.svg';
+import WhiteLogo from '../../assets/images/logos/white.svg';
+import { useTheme } from "../../hooks";
 import { Link } from "react-router-dom";
-import { clsnm } from "utils/clsnm";
+import { clsnm } from "../../utils/clsnm";
 
 import styles from "./Logo.module.scss";
 

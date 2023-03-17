@@ -1,3 +1,4 @@
 export const NUMBER_REGEX = /^-?\d*\.?\d*$/;
 
-export const apiAddress = process.env.REACT_APP_LOCATION === "test" ? "" : "http://dev.bennnnsss.com:30002";
+export const apiAddress = import.meta.env.DEV ? 'http://localhost:3003' : '';
+

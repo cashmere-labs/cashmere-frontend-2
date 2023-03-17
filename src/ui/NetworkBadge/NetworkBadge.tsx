@@ -1,6 +1,6 @@
 import { CSSProperties, ComponentPropsWithoutRef, useRef } from "react";
-import { NetworkTypes, getBadgeProps } from "ui/NetworkBadge/utils";
-import { clsnm } from "utils/clsnm";
+import { NetworkTypes, getBadgeProps } from './utils';
+import { clsnm } from "../../utils/clsnm";
 
 import styles from "./NetworkBadge.module.scss";
 

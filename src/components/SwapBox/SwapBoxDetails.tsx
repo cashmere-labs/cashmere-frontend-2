@@ -1,8 +1,8 @@
-import { InfoIcon, RotateIcon } from "assets/icons";
-import { Row } from "components";
+import { InfoIcon, RotateIcon } from "../../assets/icons";
+import { Row } from "../../components";
 import { ReactNode } from "react";
-import { SwapDetailsData } from "types/swap";
-import { Icon, Tooltip } from "ui";
+import { SwapDetailsData } from "../../types/swap";
+import { Icon, Tooltip } from "../../ui";
 
 import styles from "./SwapBox.module.scss";
 

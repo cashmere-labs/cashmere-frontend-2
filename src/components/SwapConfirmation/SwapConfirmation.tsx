@@ -1,18 +1,18 @@
-import { RotateIcon } from "assets/icons";
-import { Done, Row } from "components";
-import { useTheme } from "hooks";
-import { ModalController } from "hooks/useModal";
+import { RotateIcon } from "../../assets/icons";
+import { Done, Row } from "../../components";
+import { useTheme } from "../../hooks";
+import { ModalController } from "../../hooks/useModal";
 import { ReactNode, useEffect, useState } from "react";
 import { FaChevronRight } from "react-icons/fa";
-import { Network } from "types/network";
-import { SwapDetailsData } from "types/swap";
-import { Token } from "types/token";
-import { Button, Icon, Modal } from "ui";
+import { Network } from "../../types/network";
+import { SwapDetailsData } from "../../types/swap";
+import { Token } from "../../types/token";
+import { Button, Icon, Modal } from "../../ui";
 import { TransactionRequest } from "@ethersproject/abstract-provider";
 
 // import { SwapBoxDetails } from "components/SwapBox/SwapBoxDetails";
-import { SwapSettings } from "components/SwapSettings/useSwapSettings";
-import { TokenOrNetworkRenderer } from "components/TokenOrNetworkRenderer/TokenOrNetworkRenderer";
+import { SwapSettings } from "../../components/SwapSettings/useSwapSettings";
+import { TokenOrNetworkRenderer } from "../../components/TokenOrNetworkRenderer/TokenOrNetworkRenderer";
 
 import styles from "./SwapConfirmation.module.scss";
 import Big from "big.js";

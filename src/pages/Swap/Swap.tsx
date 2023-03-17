@@ -1,15 +1,15 @@
-import { Footer, Navbar, SwapBox } from "components";
-import { GasEstimatorModal } from "components";
-import { getMockEstimations } from "constants/mockEstimateData";
-import { GOERLI, MUMBAI } from 'constants/networks';
-import { useModal } from "hooks";
-import { useTitle } from "hooks/useTitle";
+import { Footer, Navbar, SwapBox } from "../../components";
+import { GasEstimatorModal } from "../../components";
+import { getMockEstimations } from "../../constants/mockEstimateData";
+import { GOERLI, MUMBAI } from '../../constants/networks';
+import { useModal } from "../../hooks";
+import { useTitle } from "../../hooks/useTitle";
 import { useState } from "react";
-import { Network } from "types/network";
-import { Token } from "types/token";
-import { Layout } from "ui";
+import { Network } from "../../types/network";
+import { Token } from "../../types/token";
+import { Layout } from "../../ui";
 
-import { useSwapSettings } from "components/SwapSettings/useSwapSettings";
+import { useSwapSettings } from "../../components/SwapSettings/useSwapSettings";
 
 import styles from "./Swap.module.scss";
 
@@ -23,7 +23,7 @@ export type SwapState = {
 
 const Swap = () => {
   useTitle("Swap");
-  console.log("Coded by Ethylene Blockchain Studio!");
+  // console.log("Coded by Ethylene Blockchain Studio!");
 
   const swapSettings = useSwapSettings();
   const [state, setState] = useState<SwapState>({

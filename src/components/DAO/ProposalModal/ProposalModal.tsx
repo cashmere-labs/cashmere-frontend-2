@@ -1,15 +1,15 @@
-import LOGO from "assets/images/cashmere.png";
-import TICK from "assets/images/tick.png";
-import { Row } from "components";
+import LOGO from "../../../assets/images/cashmere.png";
+import TICK from "../../../assets/images/tick.png";
+import { Row } from "../../../components";
 import { ethers } from "ethers";
-import { useTheme } from "hooks";
-import { useFormValidator } from "hooks/useFormValidator";
-import { ModalController } from "hooks/useModal";
+import { useTheme } from "../../../hooks";
+import { useFormValidator } from "../../../hooks/useFormValidator";
+import { ModalController } from "../../../hooks/useModal";
 import { useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import { useNetwork } from "store/hooks/networkHooks";
-import { Button, Input, Modal, Option, Select } from "ui";
-import { isValidNumberInput } from "utils/isValidNumberInput";
+import { useNetwork } from "../../../store/hooks/networkHooks";
+import { Button, Input, Modal, Option, Select } from "../../../ui";
+import { isValidNumberInput } from "../../../utils/isValidNumberInput";
 
 import styles from "./ProposalModal.module.scss";
 

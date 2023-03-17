@@ -1,8 +1,8 @@
-import { useTheme } from "hooks";
+import { useTheme } from "../../../hooks";
 import { useDispatch } from "react-redux";
 import { useMediaQuery } from "react-responsive";
-import { setFunctionName, setValue } from "store/slicers/pool";
-import { Button } from "ui";
+import { setFunctionName, setValue } from "../../../store/slicers/pool";
+import { Button } from "../../../ui";
 
 import styles from "./Reward.module.scss";
 

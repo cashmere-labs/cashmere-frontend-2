@@ -1,5 +1,5 @@
-import WARNING from "assets/icons/warning.png";
-import { useTheme } from "hooks";
+import WARNING from "../../../assets/icons/warning.png";
+import { useTheme } from "../../../hooks";
 import { useMediaQuery } from "react-responsive";
 
 import styles from "./Warning.module.scss";

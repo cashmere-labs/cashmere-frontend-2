@@ -1,15 +1,15 @@
-import { InfoIcon } from "assets/icons";
-import LOGOBLACK from "assets/images/cashmere.png";
-import LOGOWHITE from "assets/images/cashmereWhite.png";
-import { LockModal, UnlockModal, UnstakeWarning, Waiting } from "components";
-import { useModal, useTheme } from "hooks";
+import { InfoIcon } from "../../../../assets/icons";
+import LOGOBLACK from "../../../../assets/images/cashmere.png";
+import LOGOWHITE from "../../../../assets/images/cashmereWhite.png";
+import { LockModal, UnlockModal, UnstakeWarning, Waiting } from "../../../../components";
+import { useModal, useTheme } from "../../../../hooks";
 import { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import DatePicker, { DayValue } from "react-modern-calendar-datepicker";
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import { useMediaQuery } from "react-responsive";
-import { Button, Icon, Input, Modal, Tooltip } from "ui";
-import { clsnm } from "utils/clsnm";
+import { Button, Icon, Input, Modal, Tooltip } from "../../../../ui";
+import { clsnm } from "../../../../utils/clsnm";
 
 import styles from "./UpperBox.module.scss";
 

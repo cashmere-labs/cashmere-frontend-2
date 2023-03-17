@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
-import { useTypedSelector } from "store";
-import { setTheme } from "store/slicers/theme";
+import { useTypedSelector } from "../store";
+import { setTheme } from "../store/slicers/theme";
 
 export const useTheme = () => {
   const { theme } = useTypedSelector((state) => state.theme);

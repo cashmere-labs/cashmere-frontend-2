@@ -1,10 +1,10 @@
-import { PATHS } from "constants/paths";
+import { PATHS } from "./constants/paths";
 import { useOnAccountsChange,
   // useOnNetworkChange
 } from "ethylene/hooks";
-import { useInitialTheme, useTheme } from "hooks";
-import { DAO, ManagePage, Pool, Swap, VeCSM } from "pages";
-import { NotFound } from "pages/NotFound/NotFound";
+import { useInitialTheme, useTheme } from "./hooks";
+import { DAO, ManagePage, Pool, Swap, VeCSM } from "./pages";
+import { NotFound } from "./pages/NotFound/NotFound";
 import { useEffect } from "react";
 import {
   BrowserRouter,

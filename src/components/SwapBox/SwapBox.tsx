@@ -174,6 +174,7 @@ const SwapBox = observer(({
     const getSwapButtonContent = () => {
         if (!auth) return 'Connect Wallet';
         if (!rightNetwork) return 'Switch network';
+        if (insufficientBalance) return `Insufficient ${fromto.symbol} balance`;
         if (estimateError) return estimateError;
         return 'Swap';
     };
@@ -208,6 +209,8 @@ const SwapBox = observer(({
         setMinReceiveAmount('...');
         estimateAmountDebounced();
     }, [fromamount, fromto, fromfrom, toto, tofrom, estimateAmountDebounced]);
+
+    const insufficientBalance = useMemo(() => Number.isFinite(parseFloat(fromamount)) && fromBalance?.lt(fromamount), [fromamount, fromBalance]);
 
     /**
      * @dev erc20Balance can be acquired a hook that is inside ethylene/hooks
@@ -497,7 +500,7 @@ const SwapBox = observer(({
                 height="56px"
                 width="100%"
                 color={themeStore.theme === 'dark' ? 'white' : 'black'}
-                disabled={!!estimateError && auth && rightNetwork}
+                disabled={auth && rightNetwork && (!!estimateError || insufficientBalance)}
             >
                 {getSwapButtonContent()}
             </Button>

@@ -57,92 +57,84 @@ const SwapConfirmation = observer(({
   const { provider } = useProvider();
   const signer = useSigner();
   const [ l0Link, setL0Link ] = useState('');
+  const [ insufficientFunds, setInsufficientFunds ] = useState(false);
+  const [ feeRequired, setFeeRequired ] = useState<Big>();
+
+  useEffect(() => setInsufficientFunds(false), [modalController.isOpen]);
 
   useEffect(() => {
     setL0Link('');
   }, [modalController.isOpen]);
 
   const _handleSwap = async () => {
-    setL0Link('');
-    console.log(`dev: ${import.meta.env.DEV}`);
-    console.log(data);
-    console.log(from);
+    try {
+      setL0Link('');
+      console.log(`dev: ${import.meta.env.DEV}`);
+      console.log(data);
+      console.log(from);
 
-    // const signature = await signer?.signMessage(ethers.utils.defaultAbiCoder.encode(
-    //     ['address', 'address', 'address', 'address', 'uint256'],
-    //     [accountAddress, ]
-    // ));
+      // const signature = await signer?.signMessage(ethers.utils.defaultAbiCoder.encode(
+      //     ['address', 'address', 'address', 'address', 'uint256'],
+      //     [accountAddress, ]
+      // ));
 
-    const fromAmount = new Big(from.amount).mul(new Big(10).pow(from.token.decimals)).toFixed(0);
-    const r = await fetch(apiAddress + '/swapParamsL0?' + new URLSearchParams({
-      fromAmount,
-      fromChain: parseInt(from.network.chainId, 16).toString(),
-      fromToken: from.token.address,
-      toChain: parseInt(to.network.chainId, 16).toString(),
-      toToken: to.token.address,
-    }));
-    const resp = await r.json();
-    console.log(resp);
+      const fromAmount = new Big(from.amount).mul(new Big(10).pow(from.token.decimals)).toFixed(0);
+      const r = await fetch(apiAddress + '/swapParamsL0?' + new URLSearchParams({
+        fromAmount,
+        fromChain: parseInt(from.network.chainId, 16).toString(),
+        fromToken: from.token.address,
+        toChain: parseInt(to.network.chainId, 16).toString(),
+        toToken: to.token.address,
+      }));
+      const resp = await r.json();
+      console.log(resp);
 
-    if (from.token.address !== '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE') {
-      const fromToken = new ethers.Contract(from.token.address, ERC20, signer);
-      if ((await fromToken.allowance(accountAddress, resp.to)).lt(fromAmount)) {
-        const tx = await fromToken.approve(resp.to, constants.MaxUint256);
-        await tx.wait();
+      if (from.token.address !== '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE') {
+        const fromToken = new ethers.Contract(from.token.address, ERC20, signer);
+        if ((await fromToken.allowance(accountAddress, resp.to)).lt(fromAmount)) {
+          const tx = await fromToken.approve(resp.to, constants.MaxUint256);
+          await tx.wait();
+        }
       }
-    }
 
-    const signature = await signer?._signTypedData(
-      {
-        name: "Cashmere Swap",
-        version: "0.0.2",
-        chainId: from.network.chainId,
-        verifyingContract: resp.to,
-      },
-      {
-        Parameters: [
-          { name: 'receiver', type: 'address' },
-          { name: 'lwsPoolId', type: 'uint16' },
-          { name: 'hgsPoolId', type: 'uint16' },
-          { name: 'dstToken', type: 'address' },
-          { name: 'minHgsAmount', type: 'uint256' },
-        ]
-      },
-      {
-        receiver: accountAddress,
-        lwsPoolId: resp.args.lwsPoolId,
-        hgsPoolId: resp.args.hgsPoolId,
-        dstToken: resp.args.dstToken,
-        minHgsAmount: BigNumber.from(resp.args.minHgsAmount).mul("9").div("10")
-      }
-    );
-    console.log(signature);
+      const signature = await signer?._signTypedData(
+          {
+            name: "Cashmere Swap",
+            version: "0.0.2",
+            chainId: from.network.chainId,
+            verifyingContract: resp.to,
+          },
+          {
+            Parameters: [
+              { name: 'receiver', type: 'address' },
+              { name: 'lwsPoolId', type: 'uint16' },
+              { name: 'hgsPoolId', type: 'uint16' },
+              { name: 'dstToken', type: 'address' },
+              { name: 'minHgsAmount', type: 'uint256' },
+            ]
+          },
+          {
+            receiver: accountAddress,
+            lwsPoolId: resp.args.lwsPoolId,
+            hgsPoolId: resp.args.hgsPoolId,
+            dstToken: resp.args.dstToken,
+            minHgsAmount: BigNumber.from(resp.args.minHgsAmount).mul("9").div("10")
+          }
+      );
+      console.log(signature);
 
-    // const signature = await signer?._signTypedData(ethers.utils.arrayify(ethers.utils.keccak256(ethers.utils.defaultAbiCoder.encode(
-    //     ["address", "address", "address", "address", "uint256"],
-    //     [
-    //       accountAddress,
-    //       resp.args.lwsToken,
-    //       resp.args.hgsToken,
-    //       resp.args.dstToken,
-    //       BigNumber.from(resp.args.hgsEstimate).mul("9").div("10"),
-    //     ]
-    // ))));
-    const aggRouter: CashmereAggregatorUniswapContext = new ethers.Contract(resp.to, CashmereAggregatorUniswapABI, signer) as unknown as CashmereAggregatorUniswapContext;
-    console.log({
-      srcToken: resp.args.srcToken,
-      srcAmount: resp.args.srcAmount,
-      lwsPoolId: resp.args.lwsPoolId,
-      hgsPoolId: resp.args.hgsPoolId,
-      dstToken: resp.args.dstToken,
-      dstChain: resp.args.dstChain,
-      dstAggregatorAddress: resp.args.dstAggregatorAddress,
-      minHgsAmount: BigNumber.from(resp.args.minHgsAmount).mul("9").div('10'),
-      signature: signature!,
-    });
-    const txData = aggRouter.interface.encodeFunctionData(
-      aggRouter.interface.functions["startSwap((address,uint256,uint16,uint16,address,uint16,address,uint256,bytes))"],
-      [{
+      // const signature = await signer?._signTypedData(ethers.utils.arrayify(ethers.utils.keccak256(ethers.utils.defaultAbiCoder.encode(
+      //     ["address", "address", "address", "address", "uint256"],
+      //     [
+      //       accountAddress,
+      //       resp.args.lwsToken,
+      //       resp.args.hgsToken,
+      //       resp.args.dstToken,
+      //       BigNumber.from(resp.args.hgsEstimate).mul("9").div("10"),
+      //     ]
+      // ))));
+      const aggRouter: CashmereAggregatorUniswapContext = new ethers.Contract(resp.to, CashmereAggregatorUniswapABI, signer) as unknown as CashmereAggregatorUniswapContext;
+      console.log({
         srcToken: resp.args.srcToken,
         srcAmount: resp.args.srcAmount,
         lwsPoolId: resp.args.lwsPoolId,
@@ -152,33 +144,54 @@ const SwapConfirmation = observer(({
         dstAggregatorAddress: resp.args.dstAggregatorAddress,
         minHgsAmount: BigNumber.from(resp.args.minHgsAmount).mul("9").div('10'),
         signature: signature!,
-      }]
-    );
-    const tx: TransactionRequest = {
-      data: txData,
-      from: accountAddress,
-      gasPrice: await provider?.getGasPrice(),
-      to: resp.to,
-      value: resp.value,
-    };
+      });
+      const txData = aggRouter.interface.encodeFunctionData(
+          aggRouter.interface.functions["startSwap((address,uint256,uint16,uint16,address,uint16,address,uint256,bytes))"],
+          [{
+            srcToken: resp.args.srcToken,
+            srcAmount: resp.args.srcAmount,
+            lwsPoolId: resp.args.lwsPoolId,
+            hgsPoolId: resp.args.hgsPoolId,
+            dstToken: resp.args.dstToken,
+            dstChain: resp.args.dstChain,
+            dstAggregatorAddress: resp.args.dstAggregatorAddress,
+            minHgsAmount: BigNumber.from(resp.args.minHgsAmount).mul("9").div('10'),
+            signature: signature!,
+          }]
+      );
+      const tx: TransactionRequest = {
+        data: txData,
+        from: accountAddress,
+        gasPrice: await provider?.getGasPrice(),
+        to: resp.to,
+        value: resp.value,
+      };
 
-    console.log("beforeEstimate", tx);
-    tx.gasLimit = await provider?.estimateGas(tx);
-    console.log("afterEstimate", tx);
-    const receipt = await signer?.sendTransaction(tx);
+      console.log("beforeEstimate", tx);
+      setFeeRequired(Big(resp.value).div(Big(10).pow(18)));
+      tx.gasLimit = await provider?.estimateGas(tx);
+      setFeeRequired(Big(tx.gasLimit!.toString()).div(Big(10).pow(18)));
+      console.log("afterEstimate", tx);
+      const receipt = await signer?.sendTransaction(tx);
 
-    setTransactionHash(receipt?.hash);
-    setIsConfirmed(true);
+      setTransactionHash(receipt?.hash);
+      setIsConfirmed(true);
 
-    const l0Interval = setInterval(async () => {
-      const r = await fetch(`https://api-testnet.layerzero-scan.com/tx/${receipt?.hash}`);
-      const data = await r.json();
-      if (data?.messages?.length) {
-        const m = data.messages[0];
-        setL0Link(`https://testnet.layerzeroscan.com/${m.srcChainId}/address/${m.srcUaAddress}/message/${m.dstChainId}/address/${m.dstUaAddress}/nonce/${m.srcUaNonce}`);
-        clearInterval(l0Interval);
+      const l0Interval = setInterval(async () => {
+        const r = await fetch(`https://api-testnet.layerzero-scan.com/tx/${receipt?.hash}`);
+        const data = await r.json();
+        if (data?.messages?.length) {
+          const m = data.messages[0];
+          setL0Link(`https://testnet.layerzeroscan.com/${m.srcChainId}/address/${m.srcUaAddress}/message/${m.dstChainId}/address/${m.dstUaAddress}/nonce/${m.srcUaNonce}`);
+          clearInterval(l0Interval);
+        }
+      }, 1000);
+    } catch (e) {
+      console.error(e);
+      if ((e as any).code === -32603) {  // insufficient funds
+        setInsufficientFunds(true);
       }
-    }, 1000);
+    }
   };
 
   useEffect(() => {
@@ -260,8 +273,9 @@ const SwapConfirmation = observer(({
         height="56px"
         width="100%"
         color={themeStore.theme === "dark" ? "white" : "black"}
+        disabled={insufficientFunds}
       >
-        Swap
+        {insufficientFunds ? `Insufficient fee (${feeRequired?.toFixed(4)} ${from.network.nativeCurrency.symbol} required)` : 'Swap'}
       </Button>
     </Modal>
   );

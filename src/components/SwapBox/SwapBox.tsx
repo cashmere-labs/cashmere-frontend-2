@@ -4,7 +4,7 @@ import { SwapConfirmation, TokenOrNetworkRenderer } from '../../components';
 import { networkOptions } from '../../constants/networkOptions';
 // import { ETHEREUM, POLYGON } from "constants/networks";
 // import { tokenOptions } from "constants/tokenOptions";
-import { useAccount, useConnection, useOnNetworkChange, useProvider, useRightNetwork } from 'ethylene/hooks';
+import { useAccount, useConnection, useOnNetworkChange, useProvider } from 'ethylene/hooks';
 import { useDebounce, useModal } from '../../hooks';
 import { SwapState } from '../../pages/Swap/Swap';
 import { ReactElement, useEffect, useMemo, useRef, useState } from 'react';
@@ -23,7 +23,6 @@ import { ethers } from 'ethers';
 import { ERC20 as ERC20_ABI } from 'ethylene/constants/abi';
 import Big from 'big.js';
 import { EthyleneNetwork } from 'ethylene/types/app';
-import { useNetwork } from '../../store/hooks/networkHooks';
 import { apiAddress } from '../../constants/utils';
 import { SwapBoxDetails } from './SwapBoxDetails';
 import { formatValue } from '../../utils/formatValue';
@@ -80,14 +79,14 @@ const SwapBox = observer(({
     const { auth, address: accountAddress } = useAccount();
     const { connect, disconnect } = useConnection();
     const { provider } = useProvider();
-    const network = useNetwork();
-    const { isRightNetwork, switchTo } = useRightNetwork(state.fromfrom);
     const [method, setMethod] = useState<'stable' | 'aggregator'>('stable');
     const [toAmount, setToAmount] = useState('');
     const [minReceiveAmount, setMinReceiveAmount] = useState('');
     const [fee, setFee] = useState('');
     const [priceImpact, setPriceImpact] = useState('');
     const [estimateError, setEstimateError] = useState<string>();
+    // const [nativeFee, setNativeFee] = useState<Big>();
+    // const [nativeBalance, setNativeBalance] = useState<Big>();
 
     const [networkId, setNetworkId] = useState<number | undefined>();
 
@@ -127,6 +126,7 @@ const SwapBox = observer(({
         } else {
             setToBalance(new Big((await toProvider.getBalance(accountAddress)).toString()).div(new Big(10).pow(state.toto.decimals)));
         }
+        // setNativeBalance(new Big((await fromProvider.getBalance(accountAddress)).toString()).div(Big(10).pow(18)));
     })(), [accountAddress, state.fromfrom, state.fromto, state.tofrom, state.toto]);
 
     const onNetworkSelect = useRef<(item: Network | Token) => void>(
@@ -175,6 +175,7 @@ const SwapBox = observer(({
         if (!auth) return 'Connect Wallet';
         if (!rightNetwork) return 'Switch network';
         if (insufficientBalance) return `Insufficient ${fromto.symbol} balance`;
+        // if (notEnoughGas) return `Not enough gas (${nativeFee}`
         if (estimateError) return estimateError;
         return 'Swap';
     };
@@ -196,6 +197,7 @@ const SwapBox = observer(({
             setMinReceiveAmount(Big(resp.minReceivedDst).div(Big(10).pow(state.toto.decimals)).toString());
             setFee(resp.fee);
             setPriceImpact(resp.priceImpact);
+            // setNativeFee(Big(resp.nativeFee));
             setEstimateError(undefined);
         } else if (resp.cause?.code === 'CALL_EXCEPTION' && resp.cause.reason) {
             setEstimateError(resp.cause.reason);
@@ -211,6 +213,15 @@ const SwapBox = observer(({
     }, [fromamount, fromto, fromfrom, toto, tofrom, estimateAmountDebounced]);
 
     const insufficientBalance = useMemo(() => Number.isFinite(parseFloat(fromamount)) && fromBalance?.lt(fromamount), [fromamount, fromBalance]);
+    // const notEnoughGas = useMemo(() => {
+    //     if (!fromBalance || !nativeFee || !nativeBalance)
+    //         return false;
+    //     let fee = nativeFee;
+    //     if (fromto.address === '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE') {
+    //         fee = fee.add(fromamount);
+    //     }
+    //     return nativeBalance.lt(fee);
+    // }, [fromBalance, nativeFee, nativeBalance, fromto.address, fromamount]);
 
     /**
      * @dev erc20Balance can be acquired a hook that is inside ethylene/hooks

@@ -6,10 +6,11 @@ import { BiLinkExternal } from "react-icons/bi";
 import { FiUser } from "react-icons/fi";
 import { AccountBalance } from "../../../types/app";
 import { Button, Icon, Modal } from "../../../ui";
-import { NetworkTypes, getBadgeProps } from "../../../ui/NetworkBadge/utils";
+import { getBadgeProps } from "../../../ui/NetworkBadge/utils";
 import { formatAddress } from "../../../utils/formatAddress";
 
 import styles from "./AccountModal.module.scss";
+import { NetworkTypes } from '../../../constants/networks';
 
 type AccountModalProps = {
   modalContoller: ModalController;

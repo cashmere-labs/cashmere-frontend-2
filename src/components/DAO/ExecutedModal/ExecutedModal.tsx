@@ -2,9 +2,9 @@ import { InfoIcon } from "../../../assets/icons";
 import { ModalController } from "../../../hooks/useModal";
 import { useMediaQuery } from "react-responsive";
 import { Icon, Modal, Tooltip } from "../../../ui";
-import { NetworkTypes } from "../../../ui/NetworkBadge/utils";
 
 import styles from "./ExecutedModal.module.scss";
+import { NetworkTypes } from '../../../constants/networks';
 
 type ExecutedModalProps = {
   modalController: ModalController;

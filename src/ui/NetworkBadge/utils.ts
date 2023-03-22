@@ -1,132 +1,123 @@
-import ARBITRUM_IMG from "../../assets/images/networks/arbitrum.png";
-import AVALANCHE_IMG from "../../assets/images/networks/avalanche.png";
-import BNB_IMG from "../../assets/images/networks/bnb.png";
-import ETHEREUM_IMG from '../../assets/images/networks/ethereum.svg';
-import OPTIMISM_IMG from "../../assets/images/networks/optimism.png";
-import FANTOM_IMG from "../../assets/images/networks/phantom.png";
-import POLYGON_IMG from "../../assets/images/networks/polygon.png";
-import QUESTIONMARK from "../../assets/images/networks/question.png";
+// import ARBITRUM_IMG from "../../assets/images/networks/arbitrum.png";
+// import AVALANCHE_IMG from "../../assets/images/networks/avalanche.png";
+// import BNB_IMG from "../../assets/images/networks/bnb.png";
+// import ETHEREUM_IMG from '../../assets/images/networks/ethereum.svg';
+// import OPTIMISM_IMG from "../../assets/images/networks/optimism.png";
+// import FANTOM_IMG from "../../assets/images/networks/phantom.png";
+// import POLYGON_IMG from "../../assets/images/networks/polygon.png";
+// import BASE_IMG from '../../assets/images/networks/base.svg';
+import QUESTIONMARK from '../../assets/images/networks/question.png';
+import { NetworkTypes, networkTypeToNetwork } from '../../constants/networks';
 
-export enum NetworkTypes {
-  "AVALANCE",
-  "BNB",
-  "ETHEREUM",
-  "POLYGON",
-  "ARBITRUM",
-  "OPTIMISM",
-  "FANTOM",
-  'GOERLI',
-  'MUMBAI',
-  'BSC_TESTNET',
-  'AVALANCHE_FUJI',
-  'FANTOM_TESTNET',
-  'ARBITRUM_GOERLI',
-  'OPTIMISM_GOERLI',
-  'BASE_GOERLI',
-}
-
-export const getBadgeProps = (label: NetworkTypes | string) => {
+export const getBadgeProps = (label: NetworkTypes) => {
+  let badgeProps: {
+    bg: string;
+    hoverBg: string;
+    text: string;
+    icon?: string;
+    name?: string;
+  };
   switch (label) {
-    case NetworkTypes.AVALANCE: {
-      return {
+    case NetworkTypes.AVALANCE:
+    case NetworkTypes.AVALANCHE_FUJI: {
+      badgeProps = {
         bg: "#ffd9da",
         hoverBg: "#f7c1c3",
-        icon: AVALANCHE_IMG,
-        name: "Avalanche",
+        // icon: AVALANCHE_IMG,
+        // name: "Avalanche",
         text: "#e84142",
       };
+      break;
     }
-    case NetworkTypes.BNB: {
-      return {
+    case NetworkTypes.BNB:
+    case NetworkTypes.BSC_TESTNET: {
+      badgeProps = {
         bg: "#ffe29b",
         hoverBg: "#fada8c",
-        icon: BNB_IMG,
-        name: "BNBChain",
+        // icon: BNB_IMG,
+        // name: "BSC",
         text: "#282b32",
       };
+      break;
     }
-    case NetworkTypes.ETHEREUM: {
-      return {
+    case NetworkTypes.ETHEREUM:
+    case NetworkTypes.GOERLI: {
+      badgeProps = {
         bg: "#d8dfff",
         hoverBg: "#ccd5fc",
-        icon: ETHEREUM_IMG,
-        name: "Ethereum",
+        // icon: ETHEREUM_IMG,
+        // name: "Ethereum",
         text: "#627eea",
       };
+      break;
     }
-    case NetworkTypes.POLYGON: {
-      return {
+    case NetworkTypes.POLYGON:
+    case NetworkTypes.MUMBAI: {
+      badgeProps = {
         bg: "#f0e6ff",
         hoverBg: "#e9dcfc",
-        icon: POLYGON_IMG,
-        name: "Polygon",
+        // icon: POLYGON_IMG,
+        // name: "Polygon",
         text: "#8247e5",
       };
+      break;
     }
-    case NetworkTypes.ARBITRUM: {
-      return {
+    case NetworkTypes.ARBITRUM:
+    case NetworkTypes.ARBITRUM_GOERLI: {
+      badgeProps = {
         bg: "#e0f1ff",
         hoverBg: "#d9eeff",
-        icon: ARBITRUM_IMG,
-        name: "Arbitrum",
+        // icon: ARBITRUM_IMG,
+        // name: "Arbitrum",
         text: "#2c374b",
       };
+      break;
     }
-    case NetworkTypes.OPTIMISM: {
-      return {
+    case NetworkTypes.OPTIMISM:
+    case NetworkTypes.OPTIMISM_GOERLI: {
+      badgeProps = {
         bg: "#ffd6d9",
         hoverBg: "#facace",
-        icon: OPTIMISM_IMG,
-        name: "Optimism",
+        // icon: OPTIMISM_IMG,
+        // name: "Optimism",
         text: "#fc0d20",
       };
+      break;
     }
-    case NetworkTypes.FANTOM: {
-      return {
+    case NetworkTypes.FANTOM:
+    case NetworkTypes.FANTOM_TESTNET: {
+      badgeProps = {
         bg: "#d6f4ff",
         hoverBg: "#caeffc",
-        icon: FANTOM_IMG,
-        name: "Fantom",
+        // icon: FANTOM_IMG,
+        // name: "Fantom",
         text: "#129cce",
       };
+      break;
+    }
+    case NetworkTypes.BASE_GOERLI: {
+      badgeProps = {
+        bg: "#d6f4ff",
+        hoverBg: "#caeffc",
+        // icon: BASE_IMG,
+        // name: "Fantom",
+        text: "#129cce",
+      };
+      break;
     }
     default:
-      return {
+      badgeProps = {
         bg: "#d6f4ff",
         hoverBg: "#cff2ff",
         icon: QUESTIONMARK,
         name: label,
         text: "#2c374b",
       };
+      break;
   }
-};
-
-export const stringToBadgeType = (_str: string) => {
-  const str = _str.toUpperCase();
-  switch (str) {
-    case "AVALANCHE": {
-      return NetworkTypes.AVALANCE;
-    }
-    case "ETHEREUM": {
-      return NetworkTypes.ETHEREUM;
-    }
-    case "FANTOM": {
-      return NetworkTypes.FANTOM;
-    }
-    case "BNB": {
-      return NetworkTypes.BNB;
-    }
-    case "OPTIMISM": {
-      return NetworkTypes.OPTIMISM;
-    }
-    case "ARBITRUM": {
-      return NetworkTypes.ARBITRUM;
-    }
-    case "POLYGON": {
-      return NetworkTypes.POLYGON;
-    }
-    default: {
-      return _str;
-    }
+  if (!badgeProps.icon) {
+    badgeProps.icon = networkTypeToNetwork[label].imageUrl;
+    badgeProps.name = networkTypeToNetwork[label].name;
   }
+  return badgeProps;
 };

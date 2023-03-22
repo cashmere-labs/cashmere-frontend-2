@@ -2,7 +2,6 @@ import { ModalController } from "../../../hooks/useModal";
 import { ReactNode, useMemo } from "react";
 import { Network } from "../../../types/network";
 import { Modal, NetworkBadge } from "../../../ui";
-import { stringToBadgeType } from "../../../ui/NetworkBadge/utils";
 import { v4 as uuid } from "uuid";
 
 import styles from "./GasEstimatorModal.module.scss";
@@ -61,7 +60,7 @@ const GasEstimatorModal = ({
               <div className={styles.bodyCellInner}>
                 <NetworkBadge
                   className={styles.tableNetwork}
-                  label={stringToBadgeType(key.name)}
+                  label={key.type}
                 />
               </div>
             </td>

@@ -1,4 +1,4 @@
-import { NetworkTypes } from "ui/NetworkBadge/utils";
+import { NetworkTypes } from '../constants/networks';
 
 export type MapStringToString = { [key: string]: string };
 

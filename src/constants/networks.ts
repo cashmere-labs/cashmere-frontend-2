@@ -1,22 +1,21 @@
-import ARBITRUM_IMAGE from "../assets/images/networks/arbitrum.png";
-import AVALANCHE_IMAGE from "../assets/images/networks/avalanche.png";
-import BNB_IMAGE from "../assets/images/networks/bnb.png";
+import ARBITRUM_IMAGE from '../assets/images/networks/arbitrum.png';
+import AVALANCHE_IMAGE from '../assets/images/networks/avalanche.png';
+import BNB_IMAGE from '../assets/images/networks/bnb.png';
 import ETHEREUM_IMAGE from '../assets/images/networks/ethereum.svg';
-import OPTIMISM_IMAGE from "../assets/images/networks/optimism.png";
-import FANTOM_IMAGE from "../assets/images/networks/phantom.png";
-import POLYGON_IMAGE from "../assets/images/networks/polygon.png";
+import OPTIMISM_IMAGE from '../assets/images/networks/optimism.png';
+import FANTOM_IMAGE from '../assets/images/networks/phantom.png';
+import POLYGON_IMAGE from '../assets/images/networks/polygon.png';
 import BASE_IMAGE from '../assets/images/networks/base.svg';
-import { Network } from "../types/network";
-import { NetworkTypes } from "../ui/NetworkBadge/utils";
+import { Network } from '../types/network';
 
-import arbitrumTokenList from "./assets/blockchains/arbitrum/tokenlist.json";
-import avalancheTokenList from "./assets/blockchains/avalanchec/tokenlist.json";
-import bscTokenList from "./assets/blockchains/smartchain/tokenlist.json";
-import ethereumTokenList from "./assets/blockchains/ethereum/tokenlist.json";
-import fantomTokenList from "./assets/blockchains/fantom/tokenlist.json";
-import optimismTokenList from "./assets/blockchains/optimism/tokenlist.json";
-import polygonTokenList from "./assets/blockchains/polygon/tokenlist.json";
-import { Token } from "../types/token";
+import arbitrumTokenList from './assets/blockchains/arbitrum/tokenlist.json';
+import avalancheTokenList from './assets/blockchains/avalanchec/tokenlist.json';
+import bscTokenList from './assets/blockchains/smartchain/tokenlist.json';
+import ethereumTokenList from './assets/blockchains/ethereum/tokenlist.json';
+import fantomTokenList from './assets/blockchains/fantom/tokenlist.json';
+import optimismTokenList from './assets/blockchains/optimism/tokenlist.json';
+import polygonTokenList from './assets/blockchains/polygon/tokenlist.json';
+import { Token } from '../types/token';
 
 const mumbaiTokenList = [
   {
@@ -258,7 +257,26 @@ const baseGoerliTokenList = [
   },
 ];
 
+export enum NetworkTypes {
+  'AVALANCE',
+  'BNB',
+  'ETHEREUM',
+  'POLYGON',
+  'ARBITRUM',
+  'OPTIMISM',
+  'FANTOM',
+  'GOERLI',
+  'MUMBAI',
+  'BSC_TESTNET',
+  'AVALANCHE_FUJI',
+  'FANTOM_TESTNET',
+  'ARBITRUM_GOERLI',
+  'OPTIMISM_GOERLI',
+  'BASE_GOERLI',
+}
+
 export const POLYGON: Network = {
+  type: NetworkTypes.POLYGON,
   chainId: "0x89",
   explorer: {
     name: "Polygonscan",
@@ -276,6 +294,7 @@ export const POLYGON: Network = {
 };
 
 export const MUMBAI: Network = {
+  type: NetworkTypes.MUMBAI,
   chainId: "0x13881",
   explorer: {
     name: "Polygonscan",
@@ -293,6 +312,7 @@ export const MUMBAI: Network = {
 };
 
 export const AVALANCHE: Network = {
+  type: NetworkTypes.AVALANCE,
   chainId: "0xa86a",
   explorer: {
     name: "SnowTrace",
@@ -310,6 +330,7 @@ export const AVALANCHE: Network = {
 };
 
 export const BSC: Network = {
+  type: NetworkTypes.BNB,
   chainId: "0x38",
   explorer: {
     name: "BSCScan",
@@ -327,6 +348,7 @@ export const BSC: Network = {
 };
 
 export const OPTIMISM: Network = {
+  type: NetworkTypes.OPTIMISM,
   chainId: "0xa",
   explorer: {
     name: "The Optimism Explorer",
@@ -344,6 +366,7 @@ export const OPTIMISM: Network = {
 };
 
 export const FANTOM: Network = {
+  type: NetworkTypes.FANTOM,
   chainId: "0xfa",
   explorer: {
     name: "FTMScan",
@@ -361,6 +384,7 @@ export const FANTOM: Network = {
 };
 
 export const ARBITRUM: Network = {
+  type: NetworkTypes.ARBITRUM,
   chainId: "0xa4b1",
   explorer: {
     name: "Arbiscan",
@@ -378,6 +402,7 @@ export const ARBITRUM: Network = {
 };
 
 export const ETHEREUM: Network = {
+  type: NetworkTypes.ETHEREUM,
   chainId: "0x1",
   explorer: {
     name: "Etherscan",
@@ -395,6 +420,7 @@ export const ETHEREUM: Network = {
 };
 
 export const BSC_TESTNET: Network = {
+  type: NetworkTypes.BSC_TESTNET,
   chainId: "0x61",
   explorer: {
     name: "BSCScan",
@@ -412,6 +438,7 @@ export const BSC_TESTNET: Network = {
 };
 
 export const AVALANCHE_FUJI: Network = {
+  type: NetworkTypes.AVALANCHE_FUJI,
   chainId: "0xa869",
   explorer: {
     name: "Snowtrace",
@@ -429,6 +456,7 @@ export const AVALANCHE_FUJI: Network = {
 };
 
 export const FANTOM_TESTNET: Network = {
+  type: NetworkTypes.FANTOM_TESTNET,
   chainId: "0xfa2",
   explorer: {
     name: "FTMScan",
@@ -446,6 +474,7 @@ export const FANTOM_TESTNET: Network = {
 };
 
 export const ARBITRUM_GOERLI: Network = {
+  type: NetworkTypes.ARBITRUM_GOERLI,
   chainId: "0x66eed",
   explorer: {
     name: "Arbiscan",
@@ -463,6 +492,7 @@ export const ARBITRUM_GOERLI: Network = {
 };
 
 export const OPTIMISM_GOERLI: Network = {
+  type: NetworkTypes.OPTIMISM_GOERLI,
   chainId: "0x1a4",
   explorer: {
     name: "Etherscan",
@@ -480,6 +510,7 @@ export const OPTIMISM_GOERLI: Network = {
 };
 
 export const BASE_GOERLI: Network = {
+  type: NetworkTypes.BASE_GOERLI,
   chainId: "0x14a33",
   explorer: {
     name: "Basescan",
@@ -497,6 +528,7 @@ export const BASE_GOERLI: Network = {
 };
 
 export const GOERLI: Network = {
+  type: NetworkTypes.GOERLI,
   chainId: "0x5",
   explorer: {
     name: "Etherscan",
@@ -530,3 +562,21 @@ export const networkTypes = [
   NetworkTypes.OPTIMISM_GOERLI,
   NetworkTypes.BASE_GOERLI,
 ];
+
+export const networkTypeToNetwork = {
+  [NetworkTypes.ARBITRUM]: ARBITRUM,
+  [NetworkTypes.AVALANCE]: AVALANCHE,
+  [NetworkTypes.BNB]: BSC,
+  [NetworkTypes.ETHEREUM]: ETHEREUM,
+  [NetworkTypes.FANTOM]: FANTOM,
+  [NetworkTypes.OPTIMISM]: OPTIMISM,
+  [NetworkTypes.POLYGON]: POLYGON,
+  [NetworkTypes.MUMBAI]: MUMBAI,
+  [NetworkTypes.GOERLI]: GOERLI,
+  [NetworkTypes.BSC_TESTNET]: BSC_TESTNET,
+  [NetworkTypes.AVALANCHE_FUJI]: AVALANCHE_FUJI,
+  [NetworkTypes.FANTOM_TESTNET]: FANTOM_TESTNET,
+  [NetworkTypes.ARBITRUM_GOERLI]: ARBITRUM_GOERLI,
+  [NetworkTypes.OPTIMISM_GOERLI]: OPTIMISM_GOERLI,
+  [NetworkTypes.BASE_GOERLI]: BASE_GOERLI,
+};

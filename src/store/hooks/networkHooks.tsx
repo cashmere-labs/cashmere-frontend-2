@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { useTypedSelector } from "../../store";
 import { setNetwork } from "../../store/slicers/network";
-import { NetworkTypes } from "../../ui/NetworkBadge/utils";
+import { NetworkTypes } from '../../constants/networks';
 
 export const useNetwork = (): NetworkTypes | string => {
   const { network } = useTypedSelector((state) => state.network);

@@ -10,9 +10,9 @@ import {
 import { mockTxSteps } from "constants/mockTxSteps";
 import { useModal } from "hooks";
 import { NetworkBadge } from "ui";
-import { NetworkTypes } from "ui/NetworkBadge/utils";
 
 import styles from "./Test.module.scss";
+import { NetworkTypes } from '../../constants/networks';
 
 const data = [
   {

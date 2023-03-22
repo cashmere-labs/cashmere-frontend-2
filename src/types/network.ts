@@ -1,6 +1,8 @@
 import { Token } from "./token";
+import { NetworkTypes } from '../constants/networks';
 
 export interface Network {
+  type: NetworkTypes;
   chainId: string;
   name: string;
   rpcUrls: string[];

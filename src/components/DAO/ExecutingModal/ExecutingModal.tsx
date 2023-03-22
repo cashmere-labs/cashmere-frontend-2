@@ -2,12 +2,12 @@ import { InfoIcon } from "../../../assets/icons";
 import { ModalController } from "../../../hooks/useModal";
 import { useMediaQuery } from "react-responsive";
 import { Button, Icon, Modal, Tooltip } from "../../../ui";
-import { NetworkTypes } from "../../../ui/NetworkBadge/utils";
 
 import styles from "./ExecutingModal.module.scss";
 import { useInjection } from 'inversify-react';
 import ThemeStore from '../../../store/ThemeStore';
 import { observer } from 'mobx-react-lite';
+import { NetworkTypes } from '../../../constants/networks';
 
 const ExecutingModal = observer(({
   modalController,

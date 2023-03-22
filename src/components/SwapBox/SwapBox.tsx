@@ -30,7 +30,6 @@ import { formatValue } from '../../utils/formatValue';
 import { useInjection } from 'inversify-react';
 import ThemeStore from '../../store/ThemeStore';
 import { observer } from 'mobx-react-lite';
-import { isObservable, isObservableProp } from 'mobx';
 
 const switchNetwork = function (network: EthyleneNetwork) {
     const fn = async () => {
@@ -88,6 +87,7 @@ const SwapBox = observer(({
     const [minReceiveAmount, setMinReceiveAmount] = useState('');
     const [fee, setFee] = useState('');
     const [priceImpact, setPriceImpact] = useState('');
+    const [estimateError, setEstimateError] = useState<string>();
 
     const [networkId, setNetworkId] = useState<number | undefined>();
 
@@ -174,12 +174,14 @@ const SwapBox = observer(({
     const getSwapButtonContent = () => {
         if (!auth) return 'Connect Wallet';
         if (!rightNetwork) return 'Switch network';
+        if (estimateError) return estimateError;
         return 'Swap';
     };
 
     const estimateAmount = useMemo(() => async () => {
         if (!parseFloat(state.fromamount))
             return;
+        setEstimateError('Estimating...');
         const r = await fetch(apiAddress + '/swapEstimateL0?' + new URLSearchParams({
             fromAmount: Big(state.fromamount).mul(Big(10).pow(state.fromto.decimals)).toFixed(0),
             fromChain: parseInt(state.fromfrom.chainId, 16).toString(),
@@ -188,10 +190,15 @@ const SwapBox = observer(({
             toToken: state.toto.address,
         }));
         const resp = await r.json();
-        setToAmount(Big(resp.dstAmount).div(Big(10).pow(state.toto.decimals)).toString());
-        setMinReceiveAmount(Big(resp.minReceivedDst).div(Big(10).pow(state.toto.decimals)).toString());
-        setFee(resp.fee);
-        setPriceImpact(resp.priceImpact);
+        if (!resp.error) {
+            setToAmount(Big(resp.dstAmount).div(Big(10).pow(state.toto.decimals)).toString());
+            setMinReceiveAmount(Big(resp.minReceivedDst).div(Big(10).pow(state.toto.decimals)).toString());
+            setFee(resp.fee);
+            setPriceImpact(resp.priceImpact);
+            setEstimateError(undefined);
+        } else if (resp.cause?.code === 'CALL_EXCEPTION' && resp.cause.reason) {
+            setEstimateError(resp.cause.reason);
+        }
     }, [state]);
     const estimateAmountDebounced = useDebounce(estimateAmount);
 
@@ -490,6 +497,7 @@ const SwapBox = observer(({
                 height="56px"
                 width="100%"
                 color={themeStore.theme === 'dark' ? 'white' : 'black'}
+                disabled={!!estimateError && auth && rightNetwork}
             >
                 {getSwapButtonContent()}
             </Button>

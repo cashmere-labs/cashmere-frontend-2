@@ -181,7 +181,7 @@ const SwapBox = observer(({
         if (!parseFloat(state.fromamount))
             return;
         const r = await fetch(apiAddress + '/swapEstimateL0?' + new URLSearchParams({
-            fromAmount: Big(state.fromamount).mul(Big(10).pow(state.fromto.decimals)).toString(),
+            fromAmount: Big(state.fromamount).mul(Big(10).pow(state.fromto.decimals)).toFixed(0),
             fromChain: parseInt(state.fromfrom.chainId, 16).toString(),
             fromToken: state.fromto.address,
             toChain: parseInt(state.tofrom.chainId, 16).toString(),

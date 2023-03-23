@@ -11,7 +11,6 @@ import { usePoolStates } from "../../../hooks";
 import { FilterType, PoolTab } from "../../../pages/Pool/Pool";
 import { useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import { useTypedSelector } from "../../../store";
 import { Button, Modal } from "../../../ui";
 import { clsnm } from "../../../utils/clsnm";
 
@@ -20,6 +19,7 @@ import styles from "./Pools.module.scss";
 import { useInjection } from 'inversify-react';
 import ThemeStore from '../../../store/ThemeStore';
 import { observer } from 'mobx-react-lite';
+import PoolStore from '../../../store/PoolStore';
 
 enum Page {
   "FORM",
@@ -32,9 +32,10 @@ type PoolsProps = {
 };
 
 const Pools = observer(({ filter, poolTab }: PoolsProps) => {
-  const poolCount = useTypedSelector((state) => state.pool.poolCount);
-  const functionName = useTypedSelector((state) => state.pool.functionName);
-  const value = useTypedSelector((state) => state.pool.value);
+  const poolStore = useInjection(PoolStore);
+  const poolCount = poolStore.poolCount;
+  const functionName = poolStore.functionName;
+  const value = poolStore.value;
 
   const [whichModal, setWhichModal] = useState<Page>(Page.FORM);
 

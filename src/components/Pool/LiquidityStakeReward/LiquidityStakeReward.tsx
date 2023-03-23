@@ -1,13 +1,14 @@
 import { Liquidity, Reward, Stake } from "../../../components";
 import { ModalController } from "../../../hooks/useModal";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { setValue } from "../../../store/slicers/pool";
 import { Modal } from "../../../ui";
 
 import styles from "./LiquidityStakeReward.module.scss";
+import { observer } from 'mobx-react-lite';
+import { useInjection } from 'inversify-react';
+import PoolStore from '../../../store/PoolStore';
 
-const LiquidityStakeReward = ({
+const LiquidityStakeReward = observer(({
   modal,
   onSuccess,
   whichNetwork,
@@ -16,16 +17,17 @@ const LiquidityStakeReward = ({
   onSuccess: () => void;
   whichNetwork: any;
 }) => {
+  const poolStore = useInjection(PoolStore);
+
   const [whichComponent, setWhichComponent] = useState(0);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     setWhichComponent(0);
   }, [modal.isOpen]);
 
   useEffect(() => {
-    dispatch(setValue(""));
-  }, [whichComponent, dispatch]);
+    poolStore.setValue("");
+  }, [whichComponent, poolStore]);
 
   return (
     <Modal
@@ -70,6 +72,6 @@ const LiquidityStakeReward = ({
       )}
     </Modal>
   );
-};
+});
 
 export { LiquidityStakeReward };

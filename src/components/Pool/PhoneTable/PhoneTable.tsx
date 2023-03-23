@@ -4,8 +4,6 @@ import DOWNWHITE from "../../../assets/pool/down-icon-white.png";
 import { ModalController } from "../../../hooks/useModal";
 import { FilterType } from "../../../pages/Pool/Pool";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { setWhichGlobalModal, setWhichPersonalModal } from "../../../store/slicers/pool";
 import { PoolData } from "../../../types/app";
 import { Icon, NetworkBadge, Tooltip } from "../../../ui";
 import { clsnm } from "../../../utils/clsnm";
@@ -15,6 +13,8 @@ import styles from "./PhoneTable.module.scss";
 import { useInjection } from 'inversify-react';
 import ThemeStore from '../../../store/ThemeStore';
 import { observer } from 'mobx-react-lite';
+import PoolStore from '../../../store/PoolStore';
+import { chainIdToChain } from '../../../constants/chains';
 
 interface Table {
   whichPool?: boolean;
@@ -74,7 +74,7 @@ const PoolPhoneTable = observer(({
     });
   };
   const themeStore = useInjection(ThemeStore);
-  const dispatch = useDispatch();
+  const poolStore = useInjection(PoolStore);
   return (
     <>
       {datas.map((data, i: number) => {
@@ -97,8 +97,8 @@ const PoolPhoneTable = observer(({
               onClick={() => {
                 if (bodyOpenGlobal[i] === true) {
                   setWhichNetwork(data.network);
-                  dispatch(setWhichPersonalModal(-1));
-                  dispatch(setWhichGlobalModal(i));
+                  poolStore.setWhichPersonalModal(-1);
+                  poolStore.setWhichGlobalModal(i);
                   modal.open();
                 }
               }}
@@ -118,7 +118,7 @@ const PoolPhoneTable = observer(({
                   </div>
                   <div className={styles.network}>
                     <NetworkBadge
-                      label={data.network}
+                      chain={chainIdToChain.get(data.network)}
                       className={styles.network}
                       size={26}
                     />
@@ -199,8 +199,8 @@ const PoolPhoneTable = observer(({
               key={i}
               onClick={() => {
                 if (bodyOpenGlobal[i] === true) {
-                  dispatch(setWhichPersonalModal(-1));
-                  dispatch(setWhichGlobalModal(i));
+                  poolStore.setWhichPersonalModal(-1);
+                  poolStore.setWhichGlobalModal(i);
                   modal.open();
                 }
               }}
@@ -220,7 +220,7 @@ const PoolPhoneTable = observer(({
                   </div>
                   <div className={styles.network}>
                     <NetworkBadge
-                      label={data.network}
+                      chain={chainIdToChain.get(data.network)}
                       className={styles.network}
                       size={26}
                     />
@@ -304,8 +304,8 @@ const Row = observer(({
   setBodyOpenGlobal,
   updateMyArray,
 }: Row) => {
-  const dispatch = useDispatch();
   const themeStore = useInjection(ThemeStore);
+  const poolStore = useInjection(PoolStore);
   return (
     <div
       className={clsnm(
@@ -323,8 +323,8 @@ const Row = observer(({
       key={index}
       onClick={() => {
         if (bodyOpenGlobal[index] === true) {
-          dispatch(setWhichPersonalModal(-1));
-          dispatch(setWhichGlobalModal(index));
+          poolStore.setWhichPersonalModal(-1);
+          poolStore.setWhichGlobalModal(index);
           modal.open();
         }
       }}
@@ -344,7 +344,7 @@ const Row = observer(({
           </div>
           <div className={styles.network}>
             <NetworkBadge
-              label={data.network}
+              chain={chainIdToChain.get(data.network)}
               className={styles.network}
               size={26}
             />

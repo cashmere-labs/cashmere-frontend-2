@@ -6,7 +6,6 @@ import { useFormValidator } from "../../../hooks/useFormValidator";
 import { ModalController } from "../../../hooks/useModal";
 import { useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import { useNetwork } from "../../../store/hooks/networkHooks";
 import { Button, Input, Modal, Option, Select } from "../../../ui";
 import { isValidNumberInput } from "../../../utils/isValidNumberInput";
 
@@ -14,6 +13,8 @@ import styles from "./ProposalModal.module.scss";
 import { useInjection } from 'inversify-react';
 import ThemeStore from '../../../store/ThemeStore';
 import { observer } from 'mobx-react-lite';
+import { useNetwork } from 'wagmi';
+import { Chain } from '../../../constants/chains';
 
 const ProposalModal = observer(({
   modal,
@@ -39,7 +40,7 @@ const ProposalModal = observer(({
   const [amount, setAmount] = useState("");
   const [tokenAddress, setTokenAddress] = useState("");
   const { validator, errors, setErrors } = useFormValidator();
-  const network = useNetwork();
+  const { chain } = useNetwork();
 
   const isDisabled = () => {
     if (
@@ -84,7 +85,7 @@ const ProposalModal = observer(({
 
   return (
     <Modal
-      network={network}
+      network={chain as Chain}
       isOpen={modal.isOpen}
       close={modal.close}
       className={styles.wrapper}

@@ -5,18 +5,16 @@ import {
   Navbar,
   Pools,
 } from "../../components";
-import { networkOptions } from "../../constants/networkOptions";
-// import { tokenOptions } from "constants/tokenOptions";
 import { useTitle } from "../../hooks/useTitle";
 import { useState } from "react";
-import { Network } from "../../types/network";
 import { Token } from "../../types/token";
 import { Layout } from "../../ui";
 
 import styles from "./Pool.module.scss";
+import { activeChains, Chain } from '../../constants/chains';
 
 export type FilterType = {
-  network: null | Network;
+  network: null | Chain;
   token: null | Token;
 };
 
@@ -47,7 +45,7 @@ const Pool = () => {
             filter={filter}
             setFilter={setFilter}
             tokenOptions={[] /*tokenOptions*/}
-            networkOptions={networkOptions}
+            networkOptions={activeChains}
           />
           <Pools filter={filter} poolTab={poolTab} />
         </div>

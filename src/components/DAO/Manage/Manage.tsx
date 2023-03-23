@@ -2,16 +2,16 @@ import { Balance, UpperBox } from "../../../components";
 import { useManageParams } from "../../../hooks/useManageParams";
 import { useMemo } from "react";
 import { FaChevronRight } from "react-icons/fa";
-import { useNetwork } from "../../../store/hooks/networkHooks";
 import { Container, NetworkBadge } from "../../../ui";
 
 import { LockersDatas, MyLocksDatas } from "../../../components/VeCSM/datas";
 
 import styles from "./Manage.module.scss";
-import { NetworkTypes } from '../../../constants/networks';
+import { chainIdToChain } from '../../../constants/chains';
+import { useNetwork } from 'wagmi';
 
 const Manage = () => {
-  const network = useNetwork();
+  const { chain } = useNetwork();
   const { id } = useManageParams();
 
   const data = useMemo(() => {
@@ -21,15 +21,19 @@ const Manage = () => {
     return myLockCheck ?? allLockCheck ?? null;
   }, [id]);
 
-  const shortenNetworkName = (network?: NetworkTypes | string) => {
-    if (network == null) {
+  const shortenNetworkName = (network?: number) => {
+    if (!network) {
       return "";
     }
-    const name = String(NetworkTypes[network as NetworkTypes]);
-    if (name === "ETHEREUM") {
-      return "ETH";
-    }
-    return name;
+    return chainIdToChain.get(network)?.name || '';
+    // if (network == null) {
+    //   return "";
+    // }
+    // const name = String(NetworkTypes[network as NetworkTypes]);
+    // if (name === "ETHEREUM") {
+    //   return "ETH";
+    // }
+    // return name;
   };
 
   return (
@@ -42,7 +46,7 @@ const Manage = () => {
             CSM<sub>{shortenNetworkName(data?.network)}</sub>
           </div>
         </div>
-        {data?.network != null && <NetworkBadge label={data?.network} />}
+        {data?.network != null && <NetworkBadge chain={chainIdToChain.get(data?.network)} />}
       </div>
       <div className={styles.upperBox}>
         <UpperBox />

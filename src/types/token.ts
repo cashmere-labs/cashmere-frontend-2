@@ -5,16 +5,16 @@ export class Token {
   name: string;
   symbol: string;
   decimals: number;
-  imageUrl: string;
+  iconUrl: string;
 
-  constructor({ asset, type, address, name, symbol, decimals, logoURI }: TrustToken) {
+  constructor({ asset, type, address, name, symbol, decimals, iconUrl }: TrustToken) {
     this.asset = asset;
     this.type = type;
     this.address = address;
     this.name = name;
     this.symbol = symbol;
     this.decimals = decimals;
-    this.imageUrl = logoURI;
+    this.iconUrl = iconUrl;
   }
 }
 
@@ -25,5 +25,5 @@ export interface TrustToken {
   name: string;
   symbol: string;
   decimals: number;
-  logoURI: string;
+  iconUrl: string;
 }

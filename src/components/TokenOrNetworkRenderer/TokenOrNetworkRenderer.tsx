@@ -1,14 +1,14 @@
 import { Row } from "../../components";
-import { Network } from "../../types/network";
 import { Token } from "../../types/token";
 import { NetworkBadge } from "../../ui";
+import { Chain } from '../../constants/chains';
 
 const TokenOrNetworkRenderer = ({
   tokenOrNetwork,
   imgSize = 24,
   type = "default",
 }: {
-  tokenOrNetwork: Token | Network;
+  tokenOrNetwork: Token | Chain;
   imgSize?: number;
   type?: "badge" | "default";
 }) => {
@@ -19,7 +19,7 @@ const TokenOrNetworkRenderer = ({
           <img
             style={{ marginRight: "8px" }}
             width={imgSize}
-            src={tokenOrNetwork.imageUrl}
+            src={tokenOrNetwork.iconUrl}
           />
           <span style={{ color: "var(--text)" }}>{tokenOrNetwork.name}</span>
         </>
@@ -27,7 +27,7 @@ const TokenOrNetworkRenderer = ({
         <NetworkBadge
           size={24}
           fontSize="14px"
-          label={tokenOrNetwork.type}
+          chain={tokenOrNetwork}
         />
       )}
     </Row>

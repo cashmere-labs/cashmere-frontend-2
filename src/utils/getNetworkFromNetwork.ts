@@ -1,5 +1,5 @@
-import { NetworkTypes, networkTypeToNetwork } from '../constants/networks';
+import { chainIdToChain } from '../constants/chains';
 
-export const getNetworkFromNetwork = (network: NetworkTypes) => {
-  return networkTypeToNetwork[network];
+export const getNetworkFromNetwork = (network: number) => {
+  return chainIdToChain.get(network);
 };

@@ -1,23 +1,22 @@
 import { Footer, Navbar, SwapBox } from "../../components";
 import { GasEstimatorModal } from "../../components";
 import { getMockEstimations } from "../../constants/mockEstimateData";
-import { GOERLI, MUMBAI } from '../../constants/networks';
 import { useModal } from "../../hooks";
 import { useTitle } from "../../hooks/useTitle";
-import { useState } from "react";
-import { Network } from "../../types/network";
+import { useState } from 'react';
 import { Token } from "../../types/token";
 import { Layout } from "../../ui";
 
 import { useSwapSettings } from "../../components/SwapSettings/useSwapSettings";
 
 import styles from "./Swap.module.scss";
+import { Chain, goerli, polygonMumbai } from '../../constants/chains';
 
 export type SwapState = {
-  fromfrom: Network;
-  fromto: Token;
-  tofrom: Network;
-  toto: Token;
+  fromChain: Chain;
+  fromToken: Token;
+  toChain: Chain;
+  toToken: Token;
   fromamount: string;
 };
 
@@ -28,10 +27,10 @@ const Swap = () => {
   const swapSettings = useSwapSettings();
   const [state, setState] = useState<SwapState>({
     fromamount: "",
-    fromfrom: GOERLI,
-    fromto: GOERLI.tokenList[0],
-    tofrom: MUMBAI,
-    toto: MUMBAI.tokenList[0],
+    fromChain: goerli,
+    fromToken: goerli.tokenList[0],
+    toChain: polygonMumbai,
+    toToken: polygonMumbai.tokenList[0],
   });
 
   const estimateModal = useModal();

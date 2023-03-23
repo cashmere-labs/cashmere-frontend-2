@@ -2,13 +2,13 @@ import { ResponsivePie } from "@nivo/pie";
 import { Column, ExecutingModal, Row } from "../../components";
 import { useModal } from "../../hooks";
 import { useMediaQuery } from "react-responsive";
-import { useNetwork } from "../../store/hooks/networkHooks";
 import { clsnm } from "../../utils/clsnm";
 
 import styles from "./Poll.module.scss";
 import { useInjection } from 'inversify-react';
 import ThemeStore from '../../store/ThemeStore';
 import { observer } from 'mobx-react-lite';
+import { useNetwork } from 'wagmi';
 
 type PollData = {
   id: string;
@@ -38,11 +38,11 @@ const Poll = observer(({
   });
 
   const modal = useModal();
-  const network = useNetwork();
+  const { chain } = useNetwork();
 
   return (
     <>
-      <ExecutingModal network={network} modalController={modal} />
+      <ExecutingModal network={chain} modalController={modal} />
       <div onClick={modal.open} className={clsnm(styles.wrapper)}>
         <Column
           className={styles.contentWrapper}

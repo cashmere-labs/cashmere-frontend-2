@@ -6,7 +6,7 @@ import { NetworkBadge } from "../../ui";
 import { clsnm } from "../../utils/clsnm";
 
 import styles from "./Modal.module.scss";
-import { NetworkTypes } from '../../constants/networks';
+import { Chain } from '../../constants/chains';
 
 type ModalProps = {
   children: ReactNode;
@@ -16,7 +16,7 @@ type ModalProps = {
   className?: string;
   bodyProps?: ComponentPropsWithoutRef<"div">;
   width?: string;
-  network?: NetworkTypes | string;
+  network?: Chain;
   paddingTop?: string;
 };
 
@@ -61,7 +61,7 @@ const Modal = ({
         }}
       >
         {network != null && (
-          <NetworkBadge className={styles.network} label={network} />
+          <NetworkBadge className={styles.network} chain={network} />
         )}
         <Icon
           hoverable

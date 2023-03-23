@@ -27,7 +27,7 @@ const DepositDashboard = observer(() => {
           </div>
         </div>
         <div className={styles.buttons}>
-          {/* <NetworkBadge label={NetworkTypes.ETHEREUM} className={styles.network}/> */}
+          {/* <NetworkBadge label={ethereum.id} className={styles.network}/> */}
           <SelectNetwork style={{ height: "40px" }} />
           <Button
             height="40px"

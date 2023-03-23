@@ -1,12 +1,13 @@
 import { InfoIcon } from "../../../assets/icons";
 import { ModalController } from "../../../hooks/useModal";
 import { FilterType } from "../../../pages/Pool/Pool";
-import { useDispatch } from "react-redux";
-import { setWhichGlobalModal, setWhichPersonalModal } from "../../../store/slicers/pool";
 import { Icon, NetworkBadge, Tooltip } from "../../../ui";
 import { getNetworkFromNetwork } from "../../../utils/getNetworkFromNetwork";
 
 import styles from "./DesktopTable.module.scss";
+import { useInjection } from 'inversify-react';
+import PoolStore from '../../../store/PoolStore';
+import { chainIdToChain } from '../../../constants/chains';
 
 interface Table {
   whichPool?: boolean;
@@ -104,7 +105,7 @@ interface Row {
 }
 
 const Row = ({ whichPool, modal, data, index, setWhichNetwork }: Row) => {
-  const dispatch = useDispatch();
+  const poolStore = useInjection(PoolStore);
   return (
     <div
       className={styles.tableBody}
@@ -112,8 +113,8 @@ const Row = ({ whichPool, modal, data, index, setWhichNetwork }: Row) => {
       onClick={() => {
         modal.open();
         setWhichNetwork(data.network);
-        dispatch(setWhichPersonalModal(-1));
-        dispatch(setWhichGlobalModal(index));
+        poolStore.setWhichPersonalModal(-1);
+        poolStore.setWhichGlobalModal(index);
       }}
     >
       <div className={styles.line}></div>
@@ -131,7 +132,7 @@ const Row = ({ whichPool, modal, data, index, setWhichNetwork }: Row) => {
           </span>
         </div>
         <div className={styles.data2}>
-          <NetworkBadge label={data.network} className={styles.network} />
+          <NetworkBadge chain={chainIdToChain.get(data.network)} className={styles.network} />
         </div>
         <div className={styles.data3}>%{data.CR}</div>
         <div className={styles.data4}>%{data.stakedLP}</div>

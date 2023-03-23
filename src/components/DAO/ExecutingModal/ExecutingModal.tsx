@@ -7,14 +7,14 @@ import styles from "./ExecutingModal.module.scss";
 import { useInjection } from 'inversify-react';
 import ThemeStore from '../../../store/ThemeStore';
 import { observer } from 'mobx-react-lite';
-import { NetworkTypes } from '../../../constants/networks';
+import { Chain } from '../../../constants/chains';
 
 const ExecutingModal = observer(({
   modalController,
   network,
 }: {
   modalController: ModalController;
-  network: NetworkTypes | string;
+  network: Chain;
 }) => {
   const themeStore = useInjection(ThemeStore);
 

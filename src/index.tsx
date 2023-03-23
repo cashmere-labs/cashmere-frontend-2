@@ -1,27 +1,24 @@
-import { EthyleneProvider } from 'ethylene/utils';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider as ReduxProvider } from 'react-redux';
 import { Provider as InversifyProvider } from 'inversify-react';
-import { store } from './store';
 import './styles/index.scss';
+import '@rainbow-me/rainbowkit/styles.css';
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import RootStore from './store/RootStore';
+import RainbowKit from './RainbowKit';
 
 export const rootStore = new RootStore();
 const container = rootStore.container;
 
 ReactDOM.render(
     <React.StrictMode>
-        <ReduxProvider store={store}>
-            <InversifyProvider container={container}>
-                <EthyleneProvider>
-                    <App/>
-                </EthyleneProvider>
-            </InversifyProvider>
-        </ReduxProvider>
+        <InversifyProvider container={container}>
+            <RainbowKit>
+                <App/>
+            </RainbowKit>
+        </InversifyProvider>
     </React.StrictMode>,
     document.getElementById('root'),
 );

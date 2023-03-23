@@ -1,46 +1,46 @@
 import { Lockers, MyLocks } from "../../types/app";
-import { NetworkTypes } from '../../constants/networks';
+import { arbitrum, avalanche, bsc, ethereum, fantom, optimism, polygon } from '../../constants/chains';
 
 export const LockersDatas: Lockers[] = [
   {
     id: 1,
-    network: NetworkTypes.ETHEREUM,
+    network: ethereum.id,
     totalLockedCSM: "5,234,921.09",
     weeklyFees: "390.124",
   },
   {
     id: 2,
-    network: NetworkTypes.BNB,
+    network: bsc.id,
     totalLockedCSM: "5,234,921.09",
     weeklyFees: "390.124",
   },
   {
     id: 3,
-    network: NetworkTypes.AVALANCE,
+    network: avalanche.id,
     totalLockedCSM: "5,234,921.09",
     weeklyFees: "390.124",
   },
   {
     id: 4,
-    network: NetworkTypes.POLYGON,
+    network: polygon.id,
     totalLockedCSM: "5,234,921.09",
     weeklyFees: "390.124",
   },
   {
     id: 5,
-    network: NetworkTypes.ARBITRUM,
+    network: arbitrum.id,
     totalLockedCSM: "5,234,921.09",
     weeklyFees: "390.124",
   },
   {
     id: 6,
-    network: NetworkTypes.OPTIMISM,
+    network: optimism.id,
     totalLockedCSM: "5,234,921.09",
     weeklyFees: "390.124",
   },
   {
     id: 7,
-    network: NetworkTypes.FANTOM,
+    network: fantom.id,
     totalLockedCSM: "5,234,921.09",
     weeklyFees: "390.124",
   },
@@ -49,7 +49,7 @@ export const LockersDatas: Lockers[] = [
 export const MyLocksDatas: MyLocks[] = [
   {
     id: 8,
-    network: NetworkTypes.ETHEREUM,
+    network: ethereum.id,
     weeklyFees: "285.150",
     claimableFees: "285.150",
     myVotePower: "150.000",
@@ -57,7 +57,7 @@ export const MyLocksDatas: MyLocks[] = [
   },
   {
     id: 9,
-    network: NetworkTypes.BNB,
+    network: bsc.id,
     weeklyFees: "285.150",
     claimableFees: "285.150",
     myVotePower: "150.000",
@@ -65,7 +65,7 @@ export const MyLocksDatas: MyLocks[] = [
   },
   {
     id: 10,
-    network: NetworkTypes.AVALANCE,
+    network: avalanche.id,
     weeklyFees: "285.150",
     claimableFees: "285.150",
     myVotePower: "150.000",
@@ -73,7 +73,7 @@ export const MyLocksDatas: MyLocks[] = [
   },
   {
     id: 11,
-    network: NetworkTypes.POLYGON,
+    network: polygon.id,
     weeklyFees: "285.150",
     claimableFees: "285.150",
     myVotePower: "150.000",
@@ -81,7 +81,7 @@ export const MyLocksDatas: MyLocks[] = [
   },
   {
     id: 12,
-    network: NetworkTypes.ARBITRUM,
+    network: arbitrum.id,
     weeklyFees: "285.150",
     claimableFees: "285.150",
     myVotePower: "150.000",
@@ -89,7 +89,7 @@ export const MyLocksDatas: MyLocks[] = [
   },
   {
     id: 13,
-    network: NetworkTypes.OPTIMISM,
+    network: optimism.id,
     weeklyFees: "285.150",
     claimableFees: "285.150",
     myVotePower: "150.000",
@@ -97,7 +97,7 @@ export const MyLocksDatas: MyLocks[] = [
   },
   {
     id: 14,
-    network: NetworkTypes.FANTOM,
+    network: fantom.id,
     weeklyFees: "285.150",
     claimableFees: "285.150",
     myVotePower: "150.000",

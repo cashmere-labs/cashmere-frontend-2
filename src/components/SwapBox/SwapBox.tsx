@@ -1,15 +1,12 @@
 import { RotateIcon, SettingsIcon } from '../../assets/icons';
 import { Row } from '../../components';
 import { SwapConfirmation, TokenOrNetworkRenderer } from '../../components';
-import { networkOptions } from '../../constants/networkOptions';
 // import { ETHEREUM, POLYGON } from "constants/networks";
 // import { tokenOptions } from "constants/tokenOptions";
-import { useAccount, useConnection, useOnNetworkChange, useProvider } from 'ethylene/hooks';
 import { useDebounce, useModal } from '../../hooks';
 import { SwapState } from '../../pages/Swap/Swap';
 import { ReactElement, useEffect, useMemo, useRef, useState } from 'react';
 import { FaChevronRight } from 'react-icons/fa';
-import { Network } from '../../types/network';
 import { Token } from '../../types/token';
 import { Button, Icon, Input, Select } from '../../ui';
 
@@ -20,52 +17,16 @@ import { SwapSettings as SwapSettingType } from '../../components/SwapSettings/u
 
 import styles from './SwapBox.module.scss';
 import { ethers } from 'ethers';
-import { ERC20 as ERC20_ABI } from 'ethylene/constants/abi';
 import Big from 'big.js';
-import { EthyleneNetwork } from 'ethylene/types/app';
 import { apiAddress } from '../../constants/utils';
 import { SwapBoxDetails } from './SwapBoxDetails';
 import { formatValue } from '../../utils/formatValue';
 import { useInjection } from 'inversify-react';
 import ThemeStore from '../../store/ThemeStore';
 import { observer } from 'mobx-react-lite';
-
-const switchNetwork = function (network: EthyleneNetwork) {
-    const fn = async () => {
-        try {
-            // @ts-ignore
-            await window.ethereum.request({
-                method: 'wallet_switchEthereumChain',
-                params: [{ chainId: network.chainId }],
-            });
-        } catch (error: any) {
-            const WALLET_ERROR_CODE = 4902;
-
-            if (error.code === WALLET_ERROR_CODE) {
-                try {
-                    // @ts-ignore
-                    await window.ethereum.request({
-                        method: 'wallet_addEthereumChain',
-                        params: [
-                            {
-                                chainId: network.chainId,
-                                rpcUrls: network.rpcUrls,
-                                nativeCurrency: network.nativeCurrency,
-                                chainName: network.name,
-                            },
-                        ],
-                    });
-                } catch (addError) {
-                    console.log('[DEBUG] Network Add error', addError);
-                    return;
-                }
-            }
-            console.log('[DEBUG] Switch Network Error');
-            return;
-        }
-    };
-    fn().then().catch();
-};
+import { erc20ABI, useAccount, useNetwork, useSwitchNetwork } from 'wagmi';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
+import { activeChains, Chain } from '../../constants/chains';
 
 const SwapBox = observer(({
                      state,
@@ -76,9 +37,15 @@ const SwapBox = observer(({
     setState: (to: SwapState) => void;
     swapSettings: SwapSettingType;
 }) => {
-    const { auth, address: accountAddress } = useAccount();
-    const { connect, disconnect } = useConnection();
-    const { provider } = useProvider();
+
+    const { chain } = useNetwork();
+    const { switchNetworkAsync } = useSwitchNetwork();
+    const account = useAccount();
+    const { openConnectModal } = useConnectModal();
+
+    // const { auth, address: account.address } = useAccount();
+    // const { connect, disconnect } = useConnection();
+    // const { provider } = useProvider();
     const [method, setMethod] = useState<'stable' | 'aggregator'>('stable');
     const [toAmount, setToAmount] = useState('');
     const [minReceiveAmount, setMinReceiveAmount] = useState('');
@@ -88,67 +55,67 @@ const SwapBox = observer(({
     // const [nativeFee, setNativeFee] = useState<Big>();
     // const [nativeBalance, setNativeBalance] = useState<Big>();
 
-    const [networkId, setNetworkId] = useState<number | undefined>();
+    // const [networkId, setNetworkId] = useState<number | undefined>();
 
-    useEffect(() => {
-        setNetworkId(provider?.network.chainId);
-    }, [provider]);
-
-    useOnNetworkChange(() => {
-        setNetworkId(provider?.network.chainId);
-    });
+    // useEffect(() => {
+    //     setNetworkId(provider?.network.chainId);
+    // }, [provider]);
+    //
+    // useOnNetworkChange(() => {
+    //     setNetworkId(provider?.network.chainId);
+    // });
 
     const swapSettingsModal = useModal();
     const swapConfirmationModal = useModal();
     const themeStore = useInjection(ThemeStore);
 
-    const rightNetwork = useMemo(() => networkId === parseInt(state.fromfrom.chainId, 16), [networkId, state]);
+    const rightNetwork = useMemo(() => chain?.id === state.fromChain.id, [chain?.id, state.fromChain]);
 
     const [fromBalance, setFromBalance] = useState<Big>();
     const [toBalance, setToBalance] = useState<Big>();
     useEffect(() => void (async () => {
-        if (!accountAddress) {
+        if (!account.address) {
             setFromBalance(undefined);
             setToBalance(undefined);
             return;
         }
-        const fromProvider = new ethers.providers.JsonRpcProvider(state.fromfrom.rpcUrls[0]);
-        const toProvider = new ethers.providers.JsonRpcProvider(state.tofrom.rpcUrls[0]);
-        if (state.fromto.address.toLowerCase() !== '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'.toLowerCase()) {
-            const fromContract = new ethers.Contract(state.fromto.address, ERC20_ABI, fromProvider);
-            setFromBalance(new Big((await fromContract.balanceOf(accountAddress)).toString()).div(new Big(10).pow(state.fromto.decimals)));
+        const fromProvider = new ethers.providers.JsonRpcProvider(state.fromChain.rpcUrls.default.http[0]);
+        const toProvider = new ethers.providers.JsonRpcProvider(state.toChain.rpcUrls.default.http[0]);
+        if (state.fromToken.address.toLowerCase() !== '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'.toLowerCase()) {
+            const fromContract = new ethers.Contract(state.fromToken.address, erc20ABI, fromProvider);
+            setFromBalance(new Big((await fromContract.balanceOf(account.address)).toString()).div(new Big(10).pow(state.fromToken.decimals)));
         } else {
-            setFromBalance(new Big((await fromProvider.getBalance(accountAddress)).toString()).div(new Big(10).pow(state.fromto.decimals)));
+            setFromBalance(new Big((await fromProvider.getBalance(account.address)).toString()).div(new Big(10).pow(state.fromToken.decimals)));
         }
-        if (state.toto.address.toLowerCase() !== '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'.toLowerCase()) {
-            const toContract = new ethers.Contract(state.toto.address, ERC20_ABI, toProvider);
-            setToBalance(new Big((await toContract.balanceOf(accountAddress)).toString()).div(new Big(10).pow(state.toto.decimals)));
+        if (state.toToken.address.toLowerCase() !== '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'.toLowerCase()) {
+            const toContract = new ethers.Contract(state.toToken.address, erc20ABI, toProvider);
+            setToBalance(new Big((await toContract.balanceOf(account.address)).toString()).div(new Big(10).pow(state.toToken.decimals)));
         } else {
-            setToBalance(new Big((await toProvider.getBalance(accountAddress)).toString()).div(new Big(10).pow(state.toto.decimals)));
+            setToBalance(new Big((await toProvider.getBalance(account.address)).toString()).div(new Big(10).pow(state.toToken.decimals)));
         }
-        // setNativeBalance(new Big((await fromProvider.getBalance(accountAddress)).toString()).div(Big(10).pow(18)));
-    })(), [accountAddress, state.fromfrom, state.fromto, state.tofrom, state.toto]);
+        // setNativeBalance(new Big((await fromProvider.getBalance(account.address)).toString()).div(Big(10).pow(18)));
+    })(), [account.address, state.fromChain, state.fromToken, state.toChain, state.toToken]);
 
-    const onNetworkSelect = useRef<(item: Network | Token) => void>(
+    const onNetworkSelect = useRef<(item: Chain | Token) => void>(
         () => undefined,
     );
-    const onTokenSelect = useRef<(item: Network | Token) => void>(
+    const onTokenSelect = useRef<(item: Chain | Token) => void>(
         () => undefined,
     );
     const networkSelectorModal = useModal();
     const tokenSelectorModal = useModal();
     const tokenList = useRef<Token[]>([]);
-    const tokenSelectorNetwork = useRef<Network>();
+    const tokenSelectorNetwork = useRef<Chain>();
 
     /**
      * @dev Reverse the from and to positions
      */
     const reverse = () => {
         const _state = { ...state };
-        _state.fromfrom = state.tofrom;
-        _state.fromto = state.toto;
-        _state.tofrom = state.fromfrom;
-        _state.toto = state.fromto;
+        _state.fromChain = state.toChain;
+        _state.fromToken = state.toToken;
+        _state.toChain = state.fromChain;
+        _state.toToken = state.fromToken;
 
         setState(_state);
     };
@@ -157,12 +124,12 @@ const SwapBox = observer(({
      * @dev Handles swap action
      */
     const handleSwap = async () => {
-        if (!auth) {
-            connect();
+        if (!account.isConnected) {
+            openConnectModal?.();
             return;
         }
         if (!rightNetwork) {
-            switchNetwork(state.fromfrom);
+            switchNetworkAsync?.(state.fromChain.id);
             return;
         }
         swapConfirmationModal.open();
@@ -172,9 +139,9 @@ const SwapBox = observer(({
      * @dev Formats the swap button content
      */
     const getSwapButtonContent = () => {
-        if (!auth) return 'Connect Wallet';
+        if (!account.isConnected) return 'Connect Wallet';
         if (!rightNetwork) return 'Switch network';
-        if (insufficientBalance) return `Insufficient ${fromto.symbol} balance`;
+        if (insufficientBalance) return `Insufficient ${fromToken.symbol} balance`;
         // if (notEnoughGas) return `Not enough gas (${nativeFee}`
         if (estimateError) return estimateError;
         return 'Swap';
@@ -185,16 +152,16 @@ const SwapBox = observer(({
             return;
         setEstimateError('Estimating...');
         const r = await fetch(apiAddress + '/swapEstimateL0?' + new URLSearchParams({
-            fromAmount: Big(state.fromamount).mul(Big(10).pow(state.fromto.decimals)).toFixed(0),
-            fromChain: parseInt(state.fromfrom.chainId, 16).toString(),
-            fromToken: state.fromto.address,
-            toChain: parseInt(state.tofrom.chainId, 16).toString(),
-            toToken: state.toto.address,
+            fromAmount: Big(state.fromamount).mul(Big(10).pow(state.fromToken.decimals)).toFixed(0),
+            fromChain: state.fromChain.id.toString(),
+            fromToken: state.fromToken.address,
+            toChain: state.toChain.id.toString(),
+            toToken: state.toToken.address,
         }));
         const resp = await r.json();
         if (!resp.error) {
-            setToAmount(Big(resp.dstAmount).div(Big(10).pow(state.toto.decimals)).toString());
-            setMinReceiveAmount(Big(resp.minReceivedDst).div(Big(10).pow(state.toto.decimals)).toString());
+            setToAmount(Big(resp.dstAmount).div(Big(10).pow(state.toToken.decimals)).toString());
+            setMinReceiveAmount(Big(resp.minReceivedDst).div(Big(10).pow(state.toToken.decimals)).toString());
             setFee(resp.fee);
             setPriceImpact(resp.priceImpact);
             // setNativeFee(Big(resp.nativeFee));
@@ -205,12 +172,12 @@ const SwapBox = observer(({
     }, [state]);
     const estimateAmountDebounced = useDebounce(estimateAmount);
 
-    const { fromamount, fromto, fromfrom, toto, tofrom } = state;
+    const { fromamount, fromToken, fromChain, toToken, toChain } = state;
     useEffect(() => {
         setToAmount('...');
         setMinReceiveAmount('...');
         estimateAmountDebounced();
-    }, [fromamount, fromto, fromfrom, toto, tofrom, estimateAmountDebounced]);
+    }, [fromamount, fromToken, fromChain, toToken, toChain, estimateAmountDebounced]);
 
     const insufficientBalance = useMemo(() => Number.isFinite(parseFloat(fromamount)) && fromBalance?.lt(fromamount), [fromamount, fromBalance]);
     // const notEnoughGas = useMemo(() => {
@@ -248,7 +215,7 @@ const SwapBox = observer(({
                     onSelect={onNetworkSelect.current}
                     modalController={networkSelectorModal}
                     options={{
-                        data: networkOptions,
+                        data: activeChains,
                         type: 'network',
                     }}
                 />
@@ -276,13 +243,13 @@ const SwapBox = observer(({
                 swapSettings={swapSettings}
                 from={{
                     amount: state.fromamount,
-                    network: state.fromfrom,
-                    token: state.fromto,
+                    network: state.fromChain,
+                    token: state.fromToken,
                 }}
                 to={{
                     amount: toAmount,
-                    network: state.tofrom,
-                    token: state.toto,
+                    network: state.toChain,
+                    token: state.toToken,
                 }}
             />
             <div className={styles.header}>
@@ -333,22 +300,22 @@ const SwapBox = observer(({
                     disableDefaultMode
                     onClick={() => {
                         networkSelectorModal.open();
-                        onNetworkSelect.current = (item: Network | Token) => {
+                        onNetworkSelect.current = (item: Chain | Token) => {
                             if (item instanceof Token) {
                                 return;
                             }
-                            if (state.fromfrom !== item) {
-                                disconnect();
-                            }
-                            const toNetwork = item === state.tofrom ? networkOptions.filter(n => n !== item)[0] : state.tofrom;
-                            const matchingTokenFrom = item.tokenList.filter(t => t.symbol === state.fromto.symbol)[0];
-                            const matchingTokenTo = item === state.tofrom ? toNetwork.tokenList.filter(t => t.symbol === state.toto.symbol)[0] : state.toto;
+                            // if (state.fromfrom !== item) {
+                            //     disconnect();
+                            // }
+                            const toNetwork = item === state.toChain ? activeChains.filter(n => n !== item)[0] : state.toChain;
+                            const matchingTokenFrom = item.tokenList.filter(t => t.symbol === state.fromToken.symbol)[0];
+                            const matchingTokenTo = item === state.toChain ? toNetwork.tokenList.filter(t => t.symbol === state.toToken.symbol)[0] : state.toToken;
                             setState({
                                 ...state,
-                                fromfrom: item,
-                                tofrom: toNetwork,
-                                fromto: matchingTokenFrom || item.tokenList[0],
-                                toto: matchingTokenTo || toNetwork.tokenList[0],
+                                fromChain: item,
+                                toChain: toNetwork,
+                                fromToken: matchingTokenFrom || item.tokenList[0],
+                                toToken: matchingTokenTo || toNetwork.tokenList[0],
                             });
                         };
                     }}
@@ -356,11 +323,11 @@ const SwapBox = observer(({
                     extendRight
                     isFullWidth
                     menuRenderer={() => (
-                        <TokenOrNetworkRenderer tokenOrNetwork={state.fromfrom}/>
+                        <TokenOrNetworkRenderer tokenOrNetwork={state.fromChain}/>
                     )}
-                    value={state.fromfrom}
+                    value={state.fromChain}
                     setValue={() => undefined}
-                    options={networkOptions}
+                    options={activeChains}
                     hideRightBorder
                 />
                 <Select
@@ -370,18 +337,18 @@ const SwapBox = observer(({
                     extendLeft
                     isFullWidth
                     menuRenderer={() => (
-                        <TokenOrNetworkRenderer tokenOrNetwork={state.fromto}/>
+                        <TokenOrNetworkRenderer tokenOrNetwork={state.fromToken}/>
                     )}
-                    value={state.fromto}
+                    value={state.fromToken}
                     setValue={() => undefined}
-                    options={state.fromfrom.tokenList /*tokenOptions*/}
+                    options={state.fromChain.tokenList /*tokenOptions*/}
                     onClick={() => {
-                        tokenList.current = state.fromfrom.tokenList;
-                        tokenSelectorNetwork.current = state.fromfrom;
+                        tokenList.current = state.fromChain.tokenList;
+                        tokenSelectorNetwork.current = state.fromChain;
                         tokenSelectorModal.open();
-                        onTokenSelect.current = (item: Network | Token) => {
+                        onTokenSelect.current = (item: Chain | Token) => {
                             if (item instanceof Token) {
-                                setState({ ...state, fromto: item });
+                                setState({ ...state, fromToken: item });
                             }
                         };
                     }}
@@ -431,29 +398,29 @@ const SwapBox = observer(({
                     extendRight
                     isFullWidth
                     menuRenderer={() => (
-                        <TokenOrNetworkRenderer tokenOrNetwork={state.tofrom}/>
+                        <TokenOrNetworkRenderer tokenOrNetwork={state.toChain}/>
                     )}
-                    value={state.tofrom}
-                    options={networkOptions}
+                    value={state.toChain}
+                    options={activeChains}
                     hideRightBorder
                     onClick={() => {
                         networkSelectorModal.open();
-                        onNetworkSelect.current = (item: Network | Token) => {
+                        onNetworkSelect.current = (item: Chain | Token) => {
                             if (item instanceof Token) {
                                 return;
                             }
-                            if (state.tofrom !== item) {
-                                disconnect();
-                            }
-                            const fromNetwork = item === state.fromfrom ? networkOptions.filter(n => n !== item)[0] : state.fromfrom;
-                            const matchingTokenFrom = item === state.fromfrom ? fromNetwork.tokenList.filter(t => t.symbol === state.toto.symbol)[0] : state.fromto;
-                            const matchingTokenTo = item.tokenList.filter(t => t.symbol === state.toto.symbol)[0];
+                            // if (state.tofrom !== item) {
+                            //     disconnect();
+                            // }
+                            const fromNetwork = item === state.fromChain ? activeChains.filter(n => n !== item)[0] : state.fromChain;
+                            const matchingTokenFrom = item === state.fromChain ? fromNetwork.tokenList.filter(t => t.symbol === state.toToken.symbol)[0] : state.fromToken;
+                            const matchingTokenTo = item.tokenList.filter(t => t.symbol === state.toToken.symbol)[0];
                             setState({
                                 ...state,
-                                fromfrom: fromNetwork,
-                                tofrom: item,
-                                fromto: matchingTokenFrom || fromNetwork.tokenList[0],
-                                toto: matchingTokenTo || item.tokenList[0],
+                                fromChain: fromNetwork,
+                                toChain: item,
+                                fromToken: matchingTokenFrom || fromNetwork.tokenList[0],
+                                toToken: matchingTokenTo || item.tokenList[0],
                             });
                         };
                     }}
@@ -464,18 +431,18 @@ const SwapBox = observer(({
                     extendRight
                     extendLeft
                     isFullWidth
-                    value={state.toto}
+                    value={state.toToken}
                     menuRenderer={() => (
-                        <TokenOrNetworkRenderer tokenOrNetwork={state.toto}/>
+                        <TokenOrNetworkRenderer tokenOrNetwork={state.toToken}/>
                     )}
-                    options={state.fromfrom.tokenList /*tokenOptions*/}
+                    options={state.fromChain.tokenList /*tokenOptions*/}
                     onClick={() => {
-                        tokenList.current = state.tofrom.tokenList;
-                        tokenSelectorNetwork.current = state.tofrom;
+                        tokenList.current = state.toChain.tokenList;
+                        tokenSelectorNetwork.current = state.toChain;
                         tokenSelectorModal.open();
-                        onTokenSelect.current = (item: Network | Token) => {
+                        onTokenSelect.current = (item: Chain | Token) => {
                             if (item instanceof Token) {
-                                setState({ ...state, toto: item });
+                                setState({ ...state, toToken: item });
                             }
                         };
                     }}
@@ -500,9 +467,9 @@ const SwapBox = observer(({
             <SwapBoxDetails
                 data={{
                     fee,
-                    minimumReceived: `${formatValue(minReceiveAmount, 4)} ${state.toto.symbol}`,
+                    minimumReceived: `${formatValue(minReceiveAmount, 4)} ${state.toToken.symbol}`,
                     priceImpact: `${formatValue(priceImpact, 4)}%`,
-                    rateAfterFee: `1 ${state.fromto.symbol} = ${parseFloat(toAmount) && parseFloat(state.fromamount) && formatValue(new Big(toAmount).div(state.fromamount).toString(), 4)} ${state.toto.symbol}`,
+                    rateAfterFee: `1 ${state.fromToken.symbol} = ${parseFloat(toAmount) && parseFloat(state.fromamount) && formatValue(new Big(toAmount).div(state.fromamount).toString(), 4)} ${state.toToken.symbol}`,
                 }}
             />
             <Button
@@ -511,16 +478,16 @@ const SwapBox = observer(({
                 height="56px"
                 width="100%"
                 color={themeStore.theme === 'dark' ? 'white' : 'black'}
-                disabled={auth && rightNetwork && (!!estimateError || insufficientBalance)}
+                disabled={account.isConnected && rightNetwork && (!!estimateError || insufficientBalance)}
             >
                 {getSwapButtonContent()}
             </Button>
-            <PathRenderer path={[state.fromfrom, state.tofrom]}/>
+            <PathRenderer path={[state.fromChain, state.toChain]}/>
         </div>
     );
 });
 
-const PathRenderer = ({ path }: { path: Network[] }): ReactElement => {
+const PathRenderer = ({ path }: { path: Chain[] }): ReactElement => {
     return (
         <Row
             marginBottom={8}

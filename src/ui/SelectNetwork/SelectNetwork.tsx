@@ -1,4 +1,3 @@
-import { NetworkTypes, networkTypes } from '../../constants/networks';
 import { useOnClickOutside, usePopper } from "../../hooks";
 import {
   CSSProperties,
@@ -8,14 +7,14 @@ import {
   useState,
 } from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
-import { useNetwork, useSetNetwork } from "../../store/hooks/networkHooks";
 import { Icon } from "../../ui";
 import { NetworkBadge } from "../../ui/NetworkBadge/NetworkBadge";
 
 import styles from "./SelectNetwork.module.scss";
+import { activeChains, Chain } from '../../constants/chains';
+import { useNetwork, useSwitchNetwork } from 'wagmi';
 
 export interface SelectNetworkProps extends ComponentPropsWithoutRef<"div"> {
-  label?: NetworkTypes | string;
   size?: number;
   className?: string;
   style?: CSSProperties;
@@ -23,9 +22,8 @@ export interface SelectNetworkProps extends ComponentPropsWithoutRef<"div"> {
 }
 
 const SelectNetwork = (props: SelectNetworkProps) => {
-  const networkOptions = networkTypes;
-  const currentNetwork = useNetwork();
-  const setCurrentNetwork = useSetNetwork();
+  const { chain: currentNetwork } = useNetwork();
+  const { switchNetworkAsync } = useSwitchNetwork();
 
   const [expand, setExpand] = useState(false);
   const { reference, floating, popperStyles } = usePopper({
@@ -53,7 +51,7 @@ const SelectNetwork = (props: SelectNetworkProps) => {
             hoverable
             size={28}
             className={styles.badge}
-            label={currentNetwork}
+            chain={currentNetwork as Chain}
             {...props}
           />
           <Icon size={16} className={styles.chevron}>
@@ -63,18 +61,18 @@ const SelectNetwork = (props: SelectNetworkProps) => {
       </div>
       {expand && (
         <div className={styles.menu} style={{ ...popperStyles }} ref={floating}>
-          {networkOptions.map((item, key) => (
+          {activeChains.map((item, key) => (
             <div
               key={key}
-              onClick={() => {
+              onClick={async () => {
                 setExpand(false);
-                setCurrentNetwork(item);
+                await switchNetworkAsync?.(item.id);
               }}
               ref={optionRef}
               className={styles.option}
             >
               <div className={styles.optionInner}>
-                <NetworkBadge label={item} />
+                <NetworkBadge chain={item} />
               </div>
             </div>
           ))}

@@ -6,7 +6,7 @@ import RootStore from './RootStore';
 export default class ThemeStore {
     @observable public theme: Theme = store.get('theme', 'dark');
 
-    constructor(private rootStore: RootStore) {
+    constructor(private readonly rootStore: RootStore) {
         makeObservable(this);
         this.save();
     }

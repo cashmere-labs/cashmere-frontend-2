@@ -1,7 +1,4 @@
 import { PATHS } from "./constants/paths";
-import { useOnAccountsChange,
-  // useOnNetworkChange
-} from "ethylene/hooks";
 import { DAO, ManagePage, Pool, Swap, VeCSM } from "./pages";
 import { NotFound } from "./pages/NotFound/NotFound";
 import { useEffect } from "react";
@@ -18,18 +15,17 @@ import { observer } from 'mobx-react-lite';
 import { useInjection } from 'inversify-react';
 import ThemeStore from './store/ThemeStore';
 
-const Main = () => {
-  useOnAccountsChange(() => window.location.reload(), { interval: 1000 });
-  // useOnNetworkChange(() => window.location.reload());
-  return null;
-};
+// const Main = () => {
+//   useOnAccountsChange(() => window.location.reload(), { interval: 1000 });
+//   return null;
+// };
 
 const App = observer(() => {
   const themeStore = useInjection(ThemeStore);
 
   return (
     <>
-      <Main />
+      {/*<Main />*/}
       <BrowserRouter>
         <Routes>
           <Route path={PATHS.home} element={<Navigate to={PATHS.swap} />} />

@@ -3,7 +3,6 @@ import { usePoolStates } from "../../../hooks";
 import { FilterType, PoolTab } from "../../../pages/Pool/Pool";
 import useDimensions from "react-cool-dimensions";
 import { useMediaQuery } from "react-responsive";
-import { Network } from "../../../types/network";
 import { Token } from "../../../types/token";
 import { Button, Option, Select } from "../../../ui";
 import { clsnm } from "../../../utils/clsnm";
@@ -12,6 +11,7 @@ import styles from "./ChoosePool.module.scss";
 import { useInjection } from 'inversify-react';
 import ThemeStore from '../../../store/ThemeStore';
 import { observer } from 'mobx-react-lite';
+import { Chain } from '../../../constants/chains';
 
 interface ChoosePool {
   poolTab: PoolTab;
@@ -19,7 +19,7 @@ interface ChoosePool {
   filter: FilterType;
   setFilter: (to: FilterType) => void;
   tokenOptions: Token[];
-  networkOptions: Network[];
+  networkOptions: Chain[];
 }
 
 const ChoosePool = observer(({

@@ -8,6 +8,7 @@ import styles from "./DesktopTable.module.scss";
 import { useInjection } from 'inversify-react';
 import ThemeStore from '../../../store/ThemeStore';
 import { observer } from 'mobx-react-lite';
+import { chainIdToChain } from '../../../constants/chains';
 
 interface Table {
   whichValidator: boolean;
@@ -78,7 +79,7 @@ const Row = observer(({
             <div className={styles.network}>
               {
                 <NetworkBadge
-                  label={data.network}
+                  chain={chainIdToChain.get(data.network)}
                   size={30}
                   style={{ width: "130px" }}
                 />
@@ -92,7 +93,7 @@ const Row = observer(({
             <div className={styles.network}>
               {
                 <NetworkBadge
-                  label={data.network}
+                  chain={chainIdToChain.get(data.network)}
                   size={30}
                   style={{ width: "130px" }}
                 />

@@ -1,10 +1,8 @@
-import { NetworkTypes } from '../constants/networks';
-
 export type MapStringToString = { [key: string]: string };
 
 export type ILockData<Data> = {
   id: string | number;
-  network: NetworkTypes;
+  network: number;
   weeklyFees: string;
 } & Data;
 
@@ -38,7 +36,7 @@ export type PoolData = {
   logo: string;
   myAPR: string;
   name: string;
-  network: NetworkTypes;
+  network: number;
   rewards: string;
   stakedLP: string;
   veAPR: string;

@@ -1,20 +1,20 @@
 import { ModalController } from "../../hooks/useModal";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { IoMdClose } from "react-icons/io";
-import { Network } from "../../types/network";
 import { Token } from "../../types/token";
 import { Icon, Input } from "../../ui";
 
 import styles from "./SwapBox.module.scss";
 import { ethers } from "ethers";
 import { ERC20 } from "ethylene/constants/abi";
+import { Chain } from '../../constants/chains';
 
 type SwapNetworkSelectorProps = {
   modalController: ModalController;
-  onSelect?: (item: Network | Token) => void;
+  onSelect?: (item: Chain | Token) => void;
   options:
-    | { data: Token[]; type: "token"; network: Network }
-    | { data: Network[]; type: "network"; network?: never };
+    | { data: Token[]; type: "token"; network: Chain }
+    | { data: Chain[]; type: "network"; network?: never };
 };
 
 const selectorShowKeyframes = [
@@ -50,9 +50,8 @@ const SwapNetworkSelector = ({
   const filteredOptions = useMemo(() => {
     if (options.type === "network") {
       return options.data.filter(
-        (item: Network) =>
-          item.name.toUpperCase().includes(text.toUpperCase()) ||
-          item.chainId.includes(text),
+        (item: Chain) =>
+          item.name.toUpperCase().includes(text.toUpperCase()),
       );
     } else {
       return options.data.filter(
@@ -73,7 +72,7 @@ const SwapNetworkSelector = ({
       const tokenContract = new ethers.Contract(
           address,
           ERC20,
-          new ethers.providers.JsonRpcProvider(options.network.rpcUrls[0]),
+          new ethers.providers.JsonRpcProvider(options.network.rpcUrls.default.http[0]),
       );
       Promise.all([
           tokenContract.name(),
@@ -84,7 +83,7 @@ const SwapNetworkSelector = ({
           address,
           asset: address,
           decimals,
-          logoURI: "",
+          iconUrl: "",
           name,
           symbol,
           type: "",
@@ -149,7 +148,7 @@ const SwapNetworkSelector = ({
               }}
               className={styles.option}
             >
-              <img src={item.imageUrl} />
+              <img src={item.iconUrl} />
               <span>{item.name}</span>
             </div>
           ))}

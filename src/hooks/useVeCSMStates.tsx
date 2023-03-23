@@ -1,22 +1,19 @@
-import { useDispatch, useSelector } from "react-redux";
-import { setIsActive, setValidatorCount } from "../store/slicers/veCSM";
+import { useInjection } from 'inversify-react';
+import VeCSMStore from '../store/VeCSMStore';
 
 export const useVeCSMStates = () => {
-  const validatorCount = useSelector(
-    (state: any) => state.veCSM.validatorCount,
-  );
-  const dispatch = useDispatch();
+  const veCsmStore = useInjection(VeCSMStore);
 
   const changeIsActive = (newState: boolean) => {
-    dispatch(setIsActive(newState));
+    veCsmStore.setIsActive(newState);
   };
 
   const increaseValidatorCount = () => {
-    dispatch(setValidatorCount(validatorCount + 10));
+    veCsmStore.setValidatorCount(veCsmStore.validatorCount + 10);
   };
 
   const resetValidatorCount = () => {
-    dispatch(setValidatorCount(6));
+    veCsmStore.setValidatorCount(6);
   };
 
   return { resetValidatorCount, increaseValidatorCount, changeIsActive };

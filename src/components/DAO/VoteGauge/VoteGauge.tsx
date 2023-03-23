@@ -10,11 +10,11 @@ import {
 import { useModal } from "../../../hooks";
 import { useEffect, useMemo, useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import { useNetwork } from "../../../store/hooks/networkHooks";
 import { Modal } from "../../../ui";
 
 import styles from "./VoteGauge.module.scss";
 import { VOTEGAUGE } from "./datas";
+import { useNetwork } from 'wagmi';
 
 enum PAGE {
   "FORM",
@@ -30,7 +30,7 @@ const VoteGauge = () => {
   const [whichNetwork, setWhichNetwork] = useState(1);
   const [whichToken, setWhichToken] = useState(1);
   const voteGaugeModal = useModal();
-  const network = useNetwork();
+  const { chain } = useNetwork();
 
   useEffect(() => {
     if (page === PAGE.SUCCESS) {
@@ -43,8 +43,8 @@ const VoteGauge = () => {
   };
 
   const voteData = useMemo(() => {
-    return VOTEGAUGE.filter((item) => item.network === network);
-  }, [network]);
+    return VOTEGAUGE.filter((item) => item.network === chain?.id);
+  }, [chain]);
 
   return (
     <div className={styles.wrapper}>

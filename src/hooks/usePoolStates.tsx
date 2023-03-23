@@ -1,17 +1,15 @@
-import { useDispatch } from "react-redux";
-import { useTypedSelector } from "../store";
-import { setPoolCount } from "../store/slicers/pool";
+import { useInjection } from 'inversify-react';
+import PoolStore from '../store/PoolStore';
 
 export const usePoolStates = () => {
-  const poolCount = useTypedSelector((state) => state.pool.poolCount);
-  const dispatch = useDispatch();
+  const poolStore = useInjection(PoolStore);
 
   const increasePoolCount = () => {
-    dispatch(setPoolCount(poolCount + 10));
+    poolStore.setPoolCount(poolStore.poolCount + 10);
   };
 
   const resetPoolCount = () => {
-    dispatch(setPoolCount(6));
+    poolStore.setPoolCount(6);
   };
 
   return { increasePoolCount, resetPoolCount };

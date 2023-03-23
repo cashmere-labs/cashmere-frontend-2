@@ -6,8 +6,8 @@ import { Icon, Input } from "../../ui";
 
 import styles from "./SwapBox.module.scss";
 import { ethers } from "ethers";
-import { ERC20 } from "ethylene/constants/abi";
 import { Chain } from '../../constants/chains';
+import { erc20ABI } from 'wagmi';
 
 type SwapNetworkSelectorProps = {
   modalController: ModalController;
@@ -71,7 +71,7 @@ const SwapNetworkSelector = ({
       const address = ethers.utils.getAddress(text);
       const tokenContract = new ethers.Contract(
           address,
-          ERC20,
+          erc20ABI,
           new ethers.providers.JsonRpcProvider(options.network.rpcUrls.default.http[0]),
       );
       Promise.all([

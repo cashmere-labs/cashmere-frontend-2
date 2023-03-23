@@ -148,11 +148,11 @@ const SwapBox = observer(({
     };
 
     const estimateAmount = useMemo(() => async () => {
-        if (!parseFloat(state.fromamount))
+        if (!parseFloat(state.fromAmount))
             return;
         setEstimateError('Estimating...');
         const r = await fetch(apiAddress + '/swapEstimateL0?' + new URLSearchParams({
-            fromAmount: Big(state.fromamount).mul(Big(10).pow(state.fromToken.decimals)).toFixed(0),
+            fromAmount: Big(state.fromAmount).mul(Big(10).pow(state.fromToken.decimals)).toFixed(0),
             fromChain: state.fromChain.id.toString(),
             fromToken: state.fromToken.address,
             toChain: state.toChain.id.toString(),
@@ -172,14 +172,14 @@ const SwapBox = observer(({
     }, [state]);
     const estimateAmountDebounced = useDebounce(estimateAmount);
 
-    const { fromamount, fromToken, fromChain, toToken, toChain } = state;
+    const { fromAmount, fromToken, fromChain, toToken, toChain } = state;
     useEffect(() => {
         setToAmount('...');
         setMinReceiveAmount('...');
         estimateAmountDebounced();
-    }, [fromamount, fromToken, fromChain, toToken, toChain, estimateAmountDebounced]);
+    }, [fromAmount, fromToken, fromChain, toToken, toChain, estimateAmountDebounced]);
 
-    const insufficientBalance = useMemo(() => Number.isFinite(parseFloat(fromamount)) && fromBalance?.lt(fromamount), [fromamount, fromBalance]);
+    const insufficientBalance = useMemo(() => Number.isFinite(parseFloat(fromAmount)) && fromBalance?.lt(fromAmount), [fromAmount, fromBalance]);
     // const notEnoughGas = useMemo(() => {
     //     if (!fromBalance || !nativeFee || !nativeBalance)
     //         return false;
@@ -242,7 +242,7 @@ const SwapBox = observer(({
                 modalController={swapConfirmationModal}
                 swapSettings={swapSettings}
                 from={{
-                    amount: state.fromamount,
+                    amount: state.fromAmount,
                     network: state.fromChain,
                     token: state.fromToken,
                 }}
@@ -358,11 +358,11 @@ const SwapBox = observer(({
                     className={styles.input}
                     extendLeft
                     hideLeftBorder
-                    value={state.fromamount}
-                    onChange={e => setState({ ...state, fromamount: e.target.value })}
+                    value={state.fromAmount}
+                    onChange={e => setState({ ...state, fromAmount: e.target.value })}
                     rightEl={
                         <Button width="18px" color="white"
-                                onClick={() => setState({ ...state, fromamount: fromBalance?.toString() || '' })}>
+                                onClick={() => setState({ ...state, fromAmount: fromBalance?.toString() || '' })}>
                             Max
                         </Button>
                     }
@@ -469,7 +469,7 @@ const SwapBox = observer(({
                     fee,
                     minimumReceived: `${formatValue(minReceiveAmount, 4)} ${state.toToken.symbol}`,
                     priceImpact: `${formatValue(priceImpact, 4)}%`,
-                    rateAfterFee: `1 ${state.fromToken.symbol} = ${parseFloat(toAmount) && parseFloat(state.fromamount) && formatValue(new Big(toAmount).div(state.fromamount).toString(), 4)} ${state.toToken.symbol}`,
+                    rateAfterFee: `1 ${state.fromToken.symbol} = ${parseFloat(toAmount) && parseFloat(state.fromAmount) && formatValue(new Big(toAmount).div(state.fromAmount).toString(), 4)} ${state.toToken.symbol}`,
                 }}
             />
             <Button

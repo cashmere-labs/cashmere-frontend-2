@@ -1,21 +1,21 @@
 import { BecomeValidator, Waiting } from "../../../components";
 import { useModal, useVeCSMStates } from "../../../hooks";
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
 import { Button, Modal } from "../../../ui";
 import { clsnm } from "../../../utils/clsnm";
 
 import styles from "./ChooseValidator.module.scss";
+import { observer } from 'mobx-react-lite';
 import { useInjection } from 'inversify-react';
-import ThemeStore from '../../../store/ThemeStore';
+import VeCSMStore from '../../../store/VeCSMStore';
 
 enum PAGE {
   "FORM",
   "SUCCESS",
 }
 
-const ChooseValidator = () => {
+const ChooseValidator = observer(() => {
   const isPhoneOrPC = useMediaQuery({
     query: "(max-width: 800px)",
   });
@@ -23,7 +23,8 @@ const ChooseValidator = () => {
     query: "(max-width: 380px)",
   });
   const { resetValidatorCount, changeIsActive } = useVeCSMStates();
-  const isActive = useSelector((state: any) => state.veCSM.isActive);
+  const veCsmStore = useInjection(VeCSMStore);
+  const isActive = veCsmStore.isActive;
 
   const [becomeValidatorPage, setBecomeValidatorPage] = useState<PAGE>(
     PAGE.FORM,
@@ -95,6 +96,6 @@ const ChooseValidator = () => {
       </div>
     </div>
   );
-};
+});
 
 export { ChooseValidator };

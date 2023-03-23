@@ -1,4 +1,4 @@
-import { IS_PROD } from "ethylene/constants";
+import { IS_PROD } from '../constants/utils';
 
 export const formatValue = (value: string | undefined, decimals = 6) => {
   if (!value) {

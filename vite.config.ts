@@ -36,14 +36,5 @@ export default defineConfig(async () => {
                 }
             })
         ],
-        build: {
-            rollupOptions: {
-                output: {
-                    manualChunks: {
-                        es: [ 'ethers' ],
-                    }
-                }
-            }
-        }
     };
 });

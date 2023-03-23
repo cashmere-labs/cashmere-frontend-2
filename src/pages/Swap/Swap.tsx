@@ -41,10 +41,13 @@ const Swap = () => {
           if (!chain)
               return;
           if (chain?.id !== state.fromChain.id && !chain.unsupported) {
+              const sameToChain = chain.id === state.toChain.id;
               setState({
                   ...state,
                   fromChain: chain as Chain,
                   fromToken: (chain as Chain).tokenList[0],
+                  toChain: sameToChain ? state.fromChain : state.toChain,
+                  toToken: sameToChain ? state.fromToken : state.toToken,
               });
           }
       });

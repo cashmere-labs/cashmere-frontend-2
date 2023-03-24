@@ -3,15 +3,13 @@ import {
   Navbar,
   Polls,
   Statistics,
-  UpperPage,
   VoteGauge,
 } from "../../components";
 import { useTitle } from "../../hooks/useTitle";
 import { Container, Layout } from "../../ui";
 
-import { NetworkSelector } from "../../components/DAO/NetworkSelector/NetworkSelector";
-
 import styles from "./DAO.module.scss";
+import { UpperPageReplaced } from '../../components/DAO/UpperPageReplaced/UpperPageReplaced';
 
 const DAO = () => {
   useTitle("DAO");
@@ -21,8 +19,7 @@ const DAO = () => {
       <Navbar />
       <div className={styles.wrapper}>
         <Container compact>
-          <NetworkSelector />
-          <UpperPage />
+          <UpperPageReplaced />
           <VoteGauge />
           <Polls />
           <Statistics />

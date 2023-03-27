@@ -10,6 +10,7 @@ import ThemeStore from '../../../store/ThemeStore';
 import { observer } from 'mobx-react-lite';
 import { Api, DaoStatsResponse } from '../../../utils/api';
 import Big from 'big.js';
+import { formatValue } from '../../../utils/formatValue';
 
 const UpperPageReplaced = observer(() => {
   const themeStore = useInjection(ThemeStore);
@@ -73,7 +74,7 @@ const UpperPageReplaced = observer(() => {
             </Icon>
           </Tooltip>
         </div>
-        <div className={styles.value}>${Big(stats?.tvl || 0).toFixed(2)}</div>
+        <div className={styles.value}>${formatValue(stats?.tvl || '0', 2, true)}</div>
         <div className={styles.line}></div>
           <div className={styles.title}>
             <div>Total Transactions</div>

@@ -213,7 +213,7 @@ const SwapConfirmation = observer(({
     modalController.isOpen ? (
       <Done
           onDone={modalController.close}
-          link={`${from.network.blockExplorers?.default.url}tx/${transactionHash}`}
+          link={`${from.network.blockExplorers?.default.url}/tx/${transactionHash}`}
           l0Link={l0Link}
           explorer={from.network.blockExplorers?.default.name}
       />

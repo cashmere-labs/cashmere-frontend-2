@@ -94,6 +94,7 @@ export type Chain = WagmiChain & {
     iconUrl: string;
     tokenList: Token[];
     badgeColors: BadgeColors;
+    faucetUrl?: string;
 };
 
 export const ethereum: Chain = {
@@ -108,6 +109,7 @@ export const goerli: Chain = {
     iconUrl: ETHEREUM_IMAGE,
     tokenList: goerliTokenList.map(t => new Token(t)),
     badgeColors: ethereumBadgeColors,
+    faucetUrl: 'https://goerlifaucet.com/',
 };
 
 export const polygon: Chain = {
@@ -122,6 +124,7 @@ export const polygonMumbai: Chain = {
     iconUrl: POLYGON_IMAGE,
     tokenList: mumbaiTokenList.map(t => new Token(t)),
     badgeColors: polygonBadgeColors,
+    faucetUrl: 'https://faucet.polygon.technology',
 };
 
 export const bsc: Chain = {
@@ -133,9 +136,11 @@ export const bsc: Chain = {
 
 export const bscTestnet: Chain = {
     ...wagmiBscTestnet,
+    name: 'BSC Testnet',
     iconUrl: BSC_IMAGE,
     tokenList: bscTestnetTokenList.map(t => new Token(t)),
     badgeColors: bscBadgeColors,
+    faucetUrl: 'https://testnet.binance.org/faucet-smart',
 };
 
 export const avalanche: Chain = {
@@ -150,6 +155,7 @@ export const avalancheFuji: Chain = {
     iconUrl: AVALANCHE_IMAGE,
     tokenList: avalancheFujiTokenList.map(t => new Token(t)),
     badgeColors: avalancheBadgeColors,
+    faucetUrl: 'https://faucet.avax-test.network',
 };
 
 export const fantom: Chain = {
@@ -164,6 +170,7 @@ export const fantomTestnet: Chain = {
     iconUrl: FANTOM_IMAGE,
     tokenList: fantomTestnetTokenList.map(t => new Token(t)),
     badgeColors: fantomBadgeColors,
+    faucetUrl: 'https://faucet.fantom.network',
 };
 
 export const arbitrum: Chain = {
@@ -178,6 +185,7 @@ export const arbitrumGoerli: Chain = {
     iconUrl: ARBITRUM_IMAGE,
     tokenList: arbitrumGoerliTokenList.map(t => new Token(t)),
     badgeColors: arbitrumBadgeColors,
+    faucetUrl: 'https://faucet.quicknode.com/arbitrum/goerli',
 };
 
 export const optimism: Chain = {
@@ -192,6 +200,7 @@ export const optimismGoerli: Chain = {
     iconUrl: OPTIMISM_IMAGE,
     tokenList: optimismGoerliTokenList.map(t => new Token(t)),
     badgeColors: optimismBadgeColors,
+    faucetUrl: 'https://faucet.quicknode.com/optimism/goerli',
 };
 
 export const baseGoerli: Chain = {
@@ -199,6 +208,7 @@ export const baseGoerli: Chain = {
     iconUrl: BASE_IMAGE,
     tokenList: baseGoerliTokenList.map(t => new Token(t)),
     badgeColors: baseBadgeColors,
+    faucetUrl: 'https://faucet.quicknode.com/base/goerli',
 };
 
 export const allChains: Chain[] = [

@@ -1,9 +1,6 @@
 import {
   Footer,
   Navbar,
-  Polls,
-  Statistics,
-  VoteGauge,
 } from "../../components";
 import { useTitle } from "../../hooks/useTitle";
 import { Container, Layout } from "../../ui";
@@ -20,9 +17,9 @@ const DAO = () => {
       <div className={styles.wrapper}>
         <Container compact>
           <UpperPageReplaced />
-          <VoteGauge />
-          <Polls />
-          <Statistics />
+          {/*<VoteGauge />*/}
+          {/*<Polls />*/}
+          {/*<Statistics />*/}
         </Container>
       </div>
 

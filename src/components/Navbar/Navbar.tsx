@@ -1,6 +1,6 @@
-import { AccountModal, Logo } from "../../components";
+import { Logo } from "../../components";
 import { PATHS } from "../../constants/paths";
-import { useModal } from "../../hooks";
+// import { useModal } from "../../hooks";
 import { useMemo, useRef, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { IoMdMoon, IoMdSunny } from "react-icons/io";
@@ -13,6 +13,8 @@ import { useInjection } from 'inversify-react';
 import ThemeStore from '../../store/ThemeStore';
 import { observer } from 'mobx-react-lite';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { useBalance } from 'wagmi';
+import { formatValue } from '../../utils/formatValue';
 
 const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
     const { pathname } = useLocation();
@@ -26,19 +28,19 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
                 soon: false,
                 active: pathname.startsWith(PATHS.swap),
             },
-            {
-                name: "Pool",
-                url: PATHS.pool,
-                soon: false,
-                active: pathname.startsWith(PATHS.pool),
-            },
-            {
-                name: "veCSM",
-                url: PATHS.veCSM,
-                soon: false,
-                active:
-                    pathname.startsWith(PATHS.veCSM) || pathname.startsWith(PATHS.manage),
-            },
+            // {
+            //     name: "Pool",
+            //     url: PATHS.pool,
+            //     soon: false,
+            //     active: pathname.startsWith(PATHS.pool),
+            // },
+            // {
+            //     name: "veCSM",
+            //     url: PATHS.veCSM,
+            //     soon: false,
+            //     active:
+            //         pathname.startsWith(PATHS.veCSM) || pathname.startsWith(PATHS.manage),
+            // },
             {
                 name: "DAO",
                 url: PATHS.dao,
@@ -50,7 +52,7 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
 
     const [show, setShow] = useState(false);
     const smallMenuRef = useRef<HTMLDivElement>(null);
-    const modal = useModal();
+    // const modal = useModal();
 
     const navbarMenuHandler = () => {
         setShow(!show);
@@ -82,6 +84,11 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
                     authenticationStatus,
                     mounted,
                 }) => {
+                    const { data: balance } = useBalance({
+                        address: account?.address as any,
+                        cacheTime: 60,
+                    });
+
                     const ready = mounted && authenticationStatus !== 'loading';
                     const connected =
                         ready &&
@@ -92,13 +99,17 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
 
                     return (
                         <div
-                            {...(!ready && {
+                            {...(!ready ? {
                                 'aria-hidden': true,
                                 'style': {
                                     opacity: 0,
                                     pointerEvents: 'none',
                                     userSelect: 'none',
                                 },
+                            } : {
+                                style: {
+                                    marginRight: '-5px',
+                                }
                             })}
                         >
                             {(() => {
@@ -135,17 +146,34 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
                                 }
 
                                 return (
-                                    <Button
-                                        height="40px"
-                                        onClick={() => modal.open()}
-                                        color={color}
-                                        className={clsnm(
-                                            !mobile ? styles.themeChanger : styles.themeChangerMobile,
-                                            styles.accountButton,
+                                    <div style={{ display: 'flex' }}>
+                                        {balance && (
+                                            <Button
+                                                height="40px"
+                                                onClick={openChainModal}
+                                                color={color}
+                                                className={clsnm(
+                                                    !mobile ? styles.themeChanger : styles.themeChangerMobile,
+                                                    styles.accountButton,
+                                                )}
+                                            >
+                                                {chain.hasIcon && <img src={chain.iconUrl} alt={chain.name} />}
+                                                {formatValue(balance.formatted, 5, true)} {balance.symbol}
+                                            </Button>
                                         )}
-                                    >
-                                        {account.displayName}
-                                    </Button>
+                                        <Button
+                                            height="40px"
+                                            onClick={openAccountModal}
+                                            color={color}
+                                            className={clsnm(
+                                                !mobile ? styles.themeChanger : styles.themeChangerMobile,
+                                                styles.accountButton,
+                                            )}
+                                            // style={{ cursor: 'default' }}
+                                        >
+                                            {account.displayName}
+                                        </Button>
+                                    </div>
                                 );
                             })()}
                         </div>
@@ -174,7 +202,7 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
             className={clsnm(styles.navbar, transparent && styles.transparent)}
             id="CashmereHeader"
         >
-            <AccountModal modalContoller={modal} />
+            {/*<AccountModal modalContoller={modal} />*/}
             <nav style={{ height: "var(--navbar-height)", display: "flex" }}>
                 <Container justifyContent="space-between" className={styles.container}>
                     <div className={styles.left}>

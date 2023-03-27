@@ -204,6 +204,7 @@
   }
   .themeChangerMobile {
     color: var(--icon-dark);
+    margin-right: 8px;
   }
   .smallMenuHeader {
     height: var(--navbar-height);
@@ -307,5 +308,12 @@
 @media (max-width: 512px) {
   .modal {
     width: 90vw;
+  }
+}
+
+.accountButton {
+  img {
+    width: 20px;
+    margin-right: 5px;
   }
 }

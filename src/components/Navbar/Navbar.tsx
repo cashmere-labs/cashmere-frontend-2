@@ -15,10 +15,13 @@ import { observer } from 'mobx-react-lite';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useBalance } from 'wagmi';
 import { formatValue } from '../../utils/formatValue';
+import { useInterval } from '../../hooks/useInterval';
+import { Api, SwapProgressEntry } from '../../utils/api';
 
 const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
     const { pathname } = useLocation();
     const themeStore = useInjection(ThemeStore);
+    const api = useInjection(Api);
 
     const LINKS = useMemo(() => {
         return [
@@ -89,6 +92,12 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
                         cacheTime: 60,
                     });
 
+                    const [ pendingTxs, setPendingTxs ] = useState<SwapProgressEntry[]>([]);
+
+                    useInterval(async () => {
+                        account && setPendingTxs(await api.pendingTxs(account.address));
+                    }, 10000, [account]);
+
                     const ready = mounted && authenticationStatus !== 'loading';
                     const connected =
                         ready &&
@@ -147,6 +156,19 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
 
                                 return (
                                     <div style={{ display: 'flex' }}>
+                                        {pendingTxs.length > 0 && (
+                                            <Button
+                                                height="40px"
+                                                onClick={openChainModal}
+                                                color={color}
+                                                className={clsnm(
+                                                    !mobile ? styles.themeChanger : styles.themeChangerMobile,
+                                                    styles.accountButton,
+                                                )}
+                                            >
+                                                {pendingTxs.length} pending
+                                            </Button>
+                                        )}
                                         {balance && (
                                             <Button
                                                 height="40px"

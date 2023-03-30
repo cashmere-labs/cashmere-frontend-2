@@ -9,10 +9,28 @@ export interface DaoStatsResponse {
     tvl: string;
 }
 
+export type SwapProgressEntry = {
+    id: string;
+    step: number;
+    receiver: string;
+    amount: string;
+    srcToken: string;
+    lwsToken: string;
+    hgsToken: string;
+    dstToken: string;
+}
+
 export class Api {
     client = axios.create({ baseURL: `${apiAddress}/` });
 
     async daoStats(): Promise<DaoStatsResponse> {
         return (await this.client.get('/daoStats')).data;
+    }
+
+    async pendingTxs(account: string): Promise<SwapProgressEntry[]> {
+        return (await this.client.get('/txsList', { params: {
+            type: 'pending',
+            account,
+        } })).data;
     }
 }

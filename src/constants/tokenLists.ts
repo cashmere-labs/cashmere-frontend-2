@@ -237,3 +237,63 @@ export const baseGoerliTokenList = [
     iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
   },
 ];
+
+export const lineaTestnetTokenList = [
+  {
+    asset: '0',
+    type: 'LINEA',
+    address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+    name: 'ETH',
+    symbol: 'ETH',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
+  {
+    asset: '1',
+    type: 'LINEA',
+    address: '0xC5aB03962938Fa544D16F4667ED76788894fFca4',
+    name: 'Wrapped ETH',
+    symbol: 'WETH',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
+  {
+    asset: '2',
+    type: 'LINEA',
+    address: '0xF484ca938Af7165d0A8D99746939b1B60A26F0af',
+    name: 'USDC',
+    symbol: 'USDC',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
+  },
+];
+
+export const polygonZkEvmTestnetTokenList = [
+  {
+    asset: '0',
+    type: 'POLYGONZK',
+    address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+    name: 'ETH',
+    symbol: 'ETH',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
+  {
+    asset: '1',
+    type: 'POLYGONZK',
+    address: '0x2ad78787CCaf7FA8FAe8953FD78ab9163f81DcC8',
+    name: 'Wrapped ETH',
+    symbol: 'WETH',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
+  {
+    asset: '2',
+    type: 'POLYGONZK',
+    address: '0x557278364B136a8D7686016b1930c8C7136d8af9',
+    name: 'USDC',
+    symbol: 'USDC',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
+  },
+];

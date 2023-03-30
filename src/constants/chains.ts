@@ -14,7 +14,9 @@ import {
     arbitrumGoerli as wagmiArbitrumGoerli,
     optimism as wagmiOptimism,
     optimismGoerli as wagmiOptimismGoerli,
-    baseGoerli as wagmiBaseGoerli
+    baseGoerli as wagmiBaseGoerli,
+    polygonZkEvmTestnet as wagmiPolygonZkEvmTestnet,
+
 } from 'wagmi/chains';
 import { Token } from '../types/token';
 import {
@@ -22,8 +24,8 @@ import {
     avalancheFujiTokenList, baseGoerliTokenList,
     bscTestnetTokenList,
     fantomTestnetTokenList,
-    goerliTokenList,
-    mumbaiTokenList, optimismGoerliTokenList
+    goerliTokenList, lineaTestnetTokenList,
+    mumbaiTokenList, optimismGoerliTokenList, polygonZkEvmTestnetTokenList
 } from './tokenLists';
 import ETHEREUM_IMAGE from '../assets/images/networks/ethereum.svg';
 import POLYGON_IMAGE from '../assets/images/networks/polygon.png';
@@ -33,6 +35,7 @@ import FANTOM_IMAGE from '../assets/images/networks/phantom.png';
 import ARBITRUM_IMAGE from '../assets/images/networks/arbitrum.png';
 import OPTIMISM_IMAGE from '../assets/images/networks/optimism.png';
 import BASE_IMAGE from '../assets/images/networks/base.svg';
+import CONSENSYS_IMAGE from '../assets/images/networks/consensys.svg';
 
 export type BadgeColors = {
     bg: string;
@@ -82,11 +85,16 @@ const optimismBadgeColors: BadgeColors = {
     text: "#fc0d20",
 };
 
-// todo
+const lineaBadgeColors: BadgeColors = {
+    bg: "#D1FFFF",
+    hoverBg: "#7c8cc2",
+    text: "#445AA8",
+};
+
 const baseBadgeColors: BadgeColors = {
-    bg: "#d6f4ff",
-    hoverBg: "#caeffc",
-    text: "#129cce",
+    bg: "#B0CAFA",
+    hoverBg: "#7985cb",
+    text: "#0052FF",
 };
 
 
@@ -211,6 +219,44 @@ export const baseGoerli: Chain = {
     faucetUrl: 'https://faucet.quicknode.com/base/goerli',
 };
 
+export const lineaTestnet: Chain = {
+    id: 59140,
+    name: 'Linea zkEVM Testnet',
+    network: 'linea-zkevm-testnet',
+    nativeCurrency: {
+        name: 'Ether',
+        symbol: 'ETH',
+        decimals: 18,
+    },
+    rpcUrls: {
+        default: {
+            http: ['https://rpc.goerli.linea.build'],
+        },
+        public: {
+            http: ['https://rpc.goerli.linea.build'],
+        }
+    },
+    blockExplorers: {
+        default: {
+            name: 'BlockScout',
+            url: 'https://explorer.goerli.linea.build/',
+        }
+    },
+    testnet: true,
+    iconUrl: CONSENSYS_IMAGE,
+    tokenList: lineaTestnetTokenList,
+    badgeColors: lineaBadgeColors,
+    faucetUrl: 'https://goerli.hop.exchange/#/send?token=ETH&sourceNetwork=ethereum&destNetwork=linea',
+};
+
+export const polygonZkEvmTestnet: Chain = {
+    ...wagmiPolygonZkEvmTestnet,
+    iconUrl: POLYGON_IMAGE,
+    tokenList: polygonZkEvmTestnetTokenList,
+    badgeColors: polygonBadgeColors,
+    faucetUrl: 'https://faucet.triangleplatform.com/polygonzkevm/testnet',
+};
+
 export const allChains: Chain[] = [
     ethereum,
     goerli,
@@ -227,6 +273,8 @@ export const allChains: Chain[] = [
     optimism,
     optimismGoerli,
     baseGoerli,
+    lineaTestnet,
+    polygonZkEvmTestnet,
 ];
 
 export const activeChains: Chain[] = [
@@ -238,6 +286,8 @@ export const activeChains: Chain[] = [
     arbitrumGoerli,
     optimismGoerli,
     baseGoerli,
+    lineaTestnet,
+    polygonZkEvmTestnet,
 ];
 
 export const chainIdToChain: Map<number, Chain> = allChains.reduce((prev, c) => {

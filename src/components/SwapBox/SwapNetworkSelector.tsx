@@ -38,7 +38,7 @@ const SwapNetworkSelector = ({
   useEffect(() => {
     if (!boxRef.current) return;
     if (modalController.isOpen) {
-      inputRef.current?.focus();
+      inputRef.current?.focus({ preventScroll: true });
       boxRef.current.animate(selectorShowKeyframes, selectorShowSettings);
       boxRef.current.style.transform = "translateY(0%)";
     } else {

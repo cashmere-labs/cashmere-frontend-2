@@ -1,7 +1,7 @@
 import { Logo } from "../../components";
 import { PATHS } from "../../constants/paths";
 // import { useModal } from "../../hooks";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from 'react';
 import { FaBars, FaTimes } from "react-icons/fa";
 import { IoMdMoon, IoMdSunny } from "react-icons/io";
 import { Link, useLocation } from "react-router-dom";
@@ -12,16 +12,20 @@ import styles from "./Navbar.module.scss";
 import { useInjection } from 'inversify-react';
 import ThemeStore from '../../store/ThemeStore';
 import { observer } from 'mobx-react-lite';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { useBalance } from 'wagmi';
+import { ConnectButton, useAccountModal, useChainModal } from '@rainbow-me/rainbowkit';
+import { useAccount, useBalance, useNetwork } from 'wagmi';
 import { formatValue } from '../../utils/formatValue';
 import { useInterval } from '../../hooks/useInterval';
 import { Api, SwapProgressEntry } from '../../utils/api';
+import PendingWindow from './PendingWindow';
+import useAsyncEffect from 'use-async-effect';
 
 const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
     const { pathname } = useLocation();
     const themeStore = useInjection(ThemeStore);
     const api = useInjection(Api);
+
+    const { address } = useAccount();
 
     const LINKS = useMemo(() => {
         return [
@@ -73,90 +77,96 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
         }
     };
 
+    const PendingTxsButton = observer(({ mobile }: { mobile: boolean }) => {
+        const color = themeStore.theme === "light" ? "black" : "black";
+
+        const [ pendingWindow, setPendingWindow ] = useState(false);
+        const [ pendingTxs, setPendingTxs ] = useState<SwapProgressEntry[]>([]);
+
+        useInterval(async () => {
+            address && setPendingTxs(await api.pendingTxs(address));
+        }, 10000);
+        useAsyncEffect(async () => {
+            address && setPendingTxs(await api.pendingTxs(address));
+        }, [address]);
+
+        return (
+            <div style={{ position: 'relative' }}>
+                {pendingTxs.length > 0 && (
+                    <Button
+                        height="40px"
+                        onClick={() => setPendingWindow(!pendingWindow)}
+                        color={color}
+                        className={clsnm(
+                            !mobile ? styles.themeChanger : styles.themeChangerMobile,
+                            styles.accountButton,
+                        )}
+                    >
+                        {pendingTxs.length} pending
+                    </Button>
+                )}
+                <PendingWindow open={pendingWindow} txs={pendingTxs} />
+            </div>
+        );
+    });
+
     const ConnectWalletButton = observer(({ mobile }: { mobile: boolean }) => {
         const color = themeStore.theme === "light" ? "black" : "black";
 
         return (
-            <ConnectButton.Custom>
-                {({
-                    account,
-                    chain,
-                    openAccountModal,
-                    openChainModal,
-                    openConnectModal,
-                    authenticationStatus,
-                    mounted,
-                }) => {
-                    const { data: balance } = useBalance({
-                        address: account?.address as any,
-                        cacheTime: 60,
-                    });
+            <>
+                <ConnectButton.Custom>
+                    {({
+                        account,
+                        chain,
+                        openAccountModal,
+                        openChainModal,
+                        openConnectModal,
+                        authenticationStatus,
+                        mounted,
+                    }) => {
+                        const ready = mounted && authenticationStatus !== 'loading';
+                        const connected =
+                            ready &&
+                            account &&
+                            chain &&
+                            (!authenticationStatus ||
+                                authenticationStatus === 'authenticated');
 
-                    const [ pendingTxs, setPendingTxs ] = useState<SwapProgressEntry[]>([]);
+                        return (
+                            <div
+                                {...(!ready ? {
+                                    'aria-hidden': true,
+                                    'style': {
+                                        opacity: 0,
+                                        pointerEvents: 'none',
+                                        userSelect: 'none',
+                                    },
+                                } : {
+                                    style: {
+                                        marginRight: '-5px',
+                                    }
+                                })}
+                            >
+                                {(() => {
+                                    if (!connected) {
+                                        return (
+                                            <Button
+                                                height="40px"
+                                                onClick={openConnectModal}
+                                                color={color}
+                                                className={clsnm(
+                                                    !mobile ? styles.themeChanger : styles.themeChangerMobile,
+                                                    styles.accountButton,
+                                                )}
+                                            >
+                                                Connect Wallet
+                                            </Button>
+                                        );
+                                    }
 
-                    useInterval(async () => {
-                        account && setPendingTxs(await api.pendingTxs(account.address));
-                    }, 10000, [account]);
-
-                    const ready = mounted && authenticationStatus !== 'loading';
-                    const connected =
-                        ready &&
-                        account &&
-                        chain &&
-                        (!authenticationStatus ||
-                            authenticationStatus === 'authenticated');
-
-                    return (
-                        <div
-                            {...(!ready ? {
-                                'aria-hidden': true,
-                                'style': {
-                                    opacity: 0,
-                                    pointerEvents: 'none',
-                                    userSelect: 'none',
-                                },
-                            } : {
-                                style: {
-                                    marginRight: '-5px',
-                                }
-                            })}
-                        >
-                            {(() => {
-                                if (!connected) {
-                                    return (
-                                        <Button
-                                            height="40px"
-                                            onClick={openConnectModal}
-                                            color={color}
-                                            className={clsnm(
-                                                !mobile ? styles.themeChanger : styles.themeChangerMobile,
-                                                styles.accountButton,
-                                            )}
-                                        >
-                                            Connect Wallet
-                                        </Button>
-                                    );
-                                }
-
-                                if (chain.unsupported) {
-                                    return (
-                                        <Button
-                                            height="40px"
-                                            onClick={openChainModal}
-                                            color={color}
-                                            className={clsnm(
-                                                !mobile ? styles.themeChanger : styles.themeChangerMobile,
-                                                styles.accountButton,
-                                            )}
-                                        >
-                                            Wrong Network
-                                        </Button>
-                                    );
-                                }
-
-                                return (
-                                    <div style={{ display: 'flex' }}>
-                                        {pendingTxs.length > 0 && (
+                                    if (chain.unsupported) {
+                                        return (
                                             <Button
                                                 height="40px"
                                                 onClick={openChainModal}
@@ -166,42 +176,47 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
                                                     styles.accountButton,
                                                 )}
                                             >
-                                                {pendingTxs.length} pending
+                                                Wrong Network
                                             </Button>
-                                        )}
-                                        {balance && (
+                                        );
+                                    }
+
+                                    return (
+                                        <div style={{ display: 'flex' }}>
+                                            {account.displayBalance && (
+                                                <Button
+                                                    height="40px"
+                                                    onClick={openChainModal}
+                                                    color={color}
+                                                    className={clsnm(
+                                                        !mobile ? styles.themeChanger : styles.themeChangerMobile,
+                                                        styles.accountButton,
+                                                    )}
+                                                >
+                                                    {chain.hasIcon && <img src={chain.iconUrl} alt={chain.name} />}
+                                                    {formatValue(account.balanceFormatted, 5, true)} {account.balanceSymbol}
+                                                </Button>
+                                            )}
                                             <Button
                                                 height="40px"
-                                                onClick={openChainModal}
+                                                onClick={openAccountModal}
                                                 color={color}
                                                 className={clsnm(
                                                     !mobile ? styles.themeChanger : styles.themeChangerMobile,
                                                     styles.accountButton,
                                                 )}
+                                                // style={{ cursor: 'default' }}
                                             >
-                                                {chain.hasIcon && <img src={chain.iconUrl} alt={chain.name} />}
-                                                {formatValue(balance.formatted, 5, true)} {balance.symbol}
+                                                {account.displayName}
                                             </Button>
-                                        )}
-                                        <Button
-                                            height="40px"
-                                            onClick={openAccountModal}
-                                            color={color}
-                                            className={clsnm(
-                                                !mobile ? styles.themeChanger : styles.themeChangerMobile,
-                                                styles.accountButton,
-                                            )}
-                                            // style={{ cursor: 'default' }}
-                                        >
-                                            {account.displayName}
-                                        </Button>
-                                    </div>
-                                );
-                            })()}
-                        </div>
-                    );
-                }}
-            </ConnectButton.Custom>
+                                        </div>
+                                    );
+                                })()}
+                            </div>
+                        );
+                    }}
+                </ConnectButton.Custom>
+            </>
         );
     });
 
@@ -246,6 +261,7 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
                     </div>
 
                     <div className={styles.buttons}>
+                        <PendingTxsButton mobile={false} />
                         <ConnectWalletButton mobile={false} />
                         <ThemeChangerButton mobile={false} />
                         {!show && (
@@ -294,6 +310,7 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
                         </div>
                     ))}
                     <div className={styles.connectWalletMobileWrapper}>
+                        <PendingTxsButton mobile={false} />
                         <ConnectWalletButton mobile={true} />
                     </div>
                 </div>

@@ -35,7 +35,7 @@ import FANTOM_IMAGE from '../assets/images/networks/phantom.png';
 import ARBITRUM_IMAGE from '../assets/images/networks/arbitrum.png';
 import OPTIMISM_IMAGE from '../assets/images/networks/optimism.png';
 import BASE_IMAGE from '../assets/images/networks/base.svg';
-import CONSENSYS_IMAGE from '../assets/images/networks/consensys.svg';
+import LINEA_IMAGE from '../assets/images/networks/linea.svg';
 
 export type BadgeColors = {
     bg: string;
@@ -86,9 +86,9 @@ const optimismBadgeColors: BadgeColors = {
 };
 
 const lineaBadgeColors: BadgeColors = {
-    bg: "#D1FFFF",
+    bg: "#B9F1FF",
     hoverBg: "#7c8cc2",
-    text: "#445AA8",
+    text: "#000",
 };
 
 const baseBadgeColors: BadgeColors = {
@@ -243,7 +243,7 @@ export const lineaTestnet: Chain = {
         }
     },
     testnet: true,
-    iconUrl: CONSENSYS_IMAGE,
+    iconUrl: LINEA_IMAGE,
     tokenList: lineaTestnetTokenList,
     badgeColors: lineaBadgeColors,
     faucetUrl: 'https://goerli.hop.exchange/#/send?token=ETH&sourceNetwork=ethereum&destNetwork=linea',

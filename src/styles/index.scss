@@ -13,8 +13,11 @@ body {
 }
 
 body {
-  --navbar-height: 78px;
   min-height: 100vh;
+}
+
+#root {
+  --navbar-height: 78px;
   padding-top: var(--navbar-height);
 }
 

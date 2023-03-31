@@ -1,0 +1,36 @@
+.wrapper {
+  border-radius: 12px;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  background: var(--navbar-bg);
+  padding: 0 1.25rem;
+  left: 0;
+  top: var(--navbar-height);
+  box-shadow: 1px 2px 2px #96969612;
+
+  .item {
+    padding: 1.25rem 0;
+    display: flex;
+    align-items: center;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid var(--swap-box-border);
+    }
+
+    .title {
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .more {
+      margin-left: 5px;
+      cursor: pointer;
+
+      img {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+}

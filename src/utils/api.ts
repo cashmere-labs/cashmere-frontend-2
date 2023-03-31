@@ -18,6 +18,10 @@ export type SwapProgressEntry = {
     lwsToken: string;
     hgsToken: string;
     dstToken: string;
+    srcChain: number;
+    dstChain: number;
+    srcDecimals: number;
+    dstDecimals: number;
 }
 
 export class Api {

@@ -12,6 +12,7 @@ export default class PendingTxStore {
     @observable entries: IObservableArray<string> = observable.array();
     @observable completeEntries: IObservableArray<string> = observable.array();
     lock: boolean = false;
+    @observable pendingWindowOpen = false;
 
     constructor(private readonly rootStore: RootStore) {
         makeObservable(this);
@@ -72,6 +73,10 @@ export default class PendingTxStore {
         this.txsMap.set(entry.id, entry);
         this.pendingEntries.push(entry.id);
         console.log('fake', entry);
+    }
+
+    @action setPendingWindowOpen(value: boolean) {
+        this.pendingWindowOpen = value;
     }
 
     @computed get txList() {

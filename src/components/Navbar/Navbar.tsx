@@ -13,18 +13,13 @@ import { useInjection } from 'inversify-react';
 import ThemeStore from '../../store/ThemeStore';
 import { observer } from 'mobx-react-lite';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { useAccount } from 'wagmi';
 import { formatValue } from '../../utils/formatValue';
-import { Api } from '../../utils/api';
 import PendingWindow from './PendingWindow';
 import PendingTxStore from '../../store/PendingTxStore';
 
 const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
     const { pathname } = useLocation();
     const themeStore = useInjection(ThemeStore);
-    const api = useInjection(Api);
-
-    const { address } = useAccount();
 
     const LINKS = useMemo(() => {
         return [
@@ -52,7 +47,7 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
                 url: PATHS.dao,
                 soon: false,
                 active: pathname.startsWith(PATHS.dao),
-            },
+            }
         ];
     }, [pathname]);
 
@@ -80,14 +75,13 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
         const color = themeStore.theme === "light" ? "black" : "black";
 
         const pendingTxStore = useInjection(PendingTxStore);
-        const [ pendingWindow, setPendingWindow ] = useState(false);
 
         return (
             <div style={{ position: 'relative' }}>
                 {pendingTxStore.txListPendingLength > 0 && (
                     <Button
                         height="40px"
-                        onClick={() => setPendingWindow(!pendingWindow)}
+                        onClick={() => pendingTxStore.setPendingWindowOpen(!pendingTxStore.pendingWindowOpen)}
                         color={color}
                         className={clsnm(
                             !mobile ? styles.themeChanger : styles.themeChangerMobile,
@@ -97,7 +91,7 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
                         {pendingTxStore.txListPendingLength} pending
                     </Button>
                 )}
-                <PendingWindow open={pendingWindow} />
+                <PendingWindow open={pendingTxStore.pendingWindowOpen} />
             </div>
         );
     });
@@ -250,6 +244,15 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
                                 {item.soon && <span className={styles.soon}>SOON</span>}
                             </div>
                         ))}
+                        <div className={styles.linkWrapper}>
+                            <a
+                                className={styles.link}
+                                href='https://forms.monday.com/forms/bd6ab4b322ed2db9a4f94df7706c7683?r=euc1'
+                                target='_blank' rel="noreferrer"
+                            >
+                                Troubleshoot
+                            </a>
+                        </div>
                     </div>
 
                     <div className={styles.buttons}>

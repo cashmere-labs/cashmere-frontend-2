@@ -184,19 +184,21 @@ const SwapConfirmation = observer(({
       const receipt = await signer?.sendTransaction(tx);
 
       setTransactionHash(receipt?.hash);
-      setIsConfirmed(true);
+      // setIsConfirmed(true);
 
+      modalController.close();
       pendingTxStore.addFakeTx(resp.entry);
+      pendingTxStore.setPendingWindowOpen(true);
 
-      const l0Interval = setInterval(async () => {
-        const r = await fetch(`https://api-testnet.layerzero-scan.com/tx/${receipt?.hash}`);
-        const data = await r.json();
-        if (data?.messages?.length) {
-          const m = data.messages[0];
-          setL0Link(`https://testnet.layerzeroscan.com/${m.srcChainId}/address/${m.srcUaAddress}/message/${m.dstChainId}/address/${m.dstUaAddress}/nonce/${m.srcUaNonce}`);
-          clearInterval(l0Interval);
-        }
-      }, 1000);
+      // const l0Interval = setInterval(async () => {
+      //   const r = await fetch(`https://api-testnet.layerzero-scan.com/tx/${receipt?.hash}`);
+      //   const data = await r.json();
+      //   if (data?.messages?.length) {
+      //     const m = data.messages[0];
+      //     setL0Link(`https://testnet.layerzeroscan.com/${m.srcChainId}/address/${m.srcUaAddress}/message/${m.dstChainId}/address/${m.dstUaAddress}/nonce/${m.srcUaNonce}`);
+      //     clearInterval(l0Interval);
+      //   }
+      // }, 1000);
     } catch (e) {
       console.error(e);
       if ((e as any).code === -32603) {  // insufficient funds
@@ -205,25 +207,16 @@ const SwapConfirmation = observer(({
     }
   };
 
-  useEffect(() => {
-    /**
-     * @dev Reset the state on close
-     */
-    if (!modalController.isOpen) {
-      setIsConfirmed(false);
-    }
-  }, [modalController.isOpen]);
+  // useEffect(() => {
+  //   /**
+  //    * @dev Reset the state on close
+  //    */
+  //   if (!modalController.isOpen) {
+  //     setIsConfirmed(false);
+  //   }
+  // }, [modalController.isOpen]);
 
-  return isConfirmed ? (
-    modalController.isOpen ? (
-      <Done
-          onDone={modalController.close}
-          link={`${from.network.blockExplorers?.default.url}/tx/${transactionHash}`}
-          l0Link={l0Link}
-          explorer={from.network.blockExplorers?.default.name}
-      />
-    ) : null
-  ) : (
+  return (
     <Modal
       bodyProps={{
         style: {

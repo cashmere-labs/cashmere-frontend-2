@@ -43,10 +43,10 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
             //         pathname.startsWith(PATHS.veCSM) || pathname.startsWith(PATHS.manage),
             // },
             {
-                name: "DAO",
-                url: PATHS.dao,
+                name: "Dashboard",
+                url: PATHS.dashboard,
                 soon: false,
-                active: pathname.startsWith(PATHS.dao),
+                active: pathname.startsWith(PATHS.dashboard),
             }
         ];
     }, [pathname]);

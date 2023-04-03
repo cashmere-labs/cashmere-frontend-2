@@ -39,7 +39,7 @@ const App = observer(() => {
                     <Route path={PATHS.swap} element={<Swap/>}/>
                     {/*<Route path={PATHS.pool} element={<Pool/>}/>*/}
                     {/*<Route path={PATHS.veCSM} element={<VeCSM/>}/>*/}
-                    <Route path={PATHS.dao} element={<DAO/>}/>
+                    <Route path={PATHS.dashboard} element={<DAO/>}/>
                     <Route path={`${PATHS.manage}/:id`} element={<ManagePage/>}/>
                     {/* <Route path={"/test"} element={<Test />} />
                         <Route path={"/test2"} element={<Test2 />} /> */}

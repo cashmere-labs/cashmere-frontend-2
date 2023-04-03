@@ -4,5 +4,5 @@ export enum PATHS {
   pool = "/pool",
   veCSM = "/vecsm",
   manage = "/manage",
-  dao = "/dao",
+  dashboard = "/dashboard",
 }

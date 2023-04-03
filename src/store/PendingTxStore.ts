@@ -15,7 +15,7 @@ export default class PendingTxStore {
 
     constructor(private readonly rootStore: RootStore) {
         makeObservable(this);
-        // setInterval(() => this.updateTxs(false), 10000);
+        setInterval(() => this.updateTxs(false), 10000);
     }
 
     @action private async updateTxs(reset: boolean) {

@@ -1,5 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { SwapProgressEntry } from '../../utils/api';
+import React, { useState } from 'react';
 import styles from './PendingWindow.module.scss';
 import { chainIdToChain } from '../../constants/chains';
 import Big from 'big.js';
@@ -13,70 +12,58 @@ import UNISWAP_ICON from '../../assets/images/uniswap.svg';
 import { observer } from 'mobx-react-lite';
 import { useInjection } from 'inversify-react';
 import ThemeStore from '../../store/ThemeStore';
-import useStateRef from 'react-usestateref';
+import PendingTxStore from '../../store/PendingTxStore';
 
 interface IPendingWindowProps {
     open: boolean;
-    txs: SwapProgressEntry[];
 }
 
-const PendingWindow = observer(({ open, txs }: IPendingWindowProps) => {
+const PendingWindow = observer(({ open }: IPendingWindowProps) => {
     const theme = useInjection(ThemeStore);
+    const pendingTxStore = useInjection(PendingTxStore);
     const modal = useModal();
-    const [ modalTx, setModalTx, modalTxRef ] = useStateRef<SwapProgressEntry>();
+
+    const [ selectedTxId, setSelectedTxId ] = useState<string>();
+    const selectedTx = selectedTxId ? pendingTxStore.txsMap.get(selectedTxId) : undefined;
 
     const getProgress = (step: number) => {
-        if ((modalTx?.step || 0) < step) return 'not_started';
-        else if ((modalTx?.step || 0) === step) return 'in_progress';
+        if ((selectedTx?.step || 0) < step) return 'not_started';
+        else if ((selectedTx?.step || 0) === step) return 'in_progress';
         else /*(tx.step > step)*/ return 'done';
     };
+    // @ts-ignore
+    const srcChain = chainIdToChain.get(selectedTx?.srcChain);
+    // @ts-ignore
+    const dstChain = chainIdToChain.get(selectedTx?.dstChain);
     const modalSteps: TransactionStep[] = [
         {
-            title: `Swapping ${Big(modalTx?.amount || 0).div(`1e${modalTx?.srcDecimals || 18}`).toFixed(5)} ${modalTx?.srcToken} to ${modalTx?.lwsToken}`,
+            title: `Swapping ${Big(selectedTx?.amount || 0).div(`1e${selectedTx?.srcDecimals || 18}`).toFixed(5)} ${selectedTx?.srcToken} to ${selectedTx?.lwsToken}`,
             image: UNISWAP_ICON,
             poweredBy: 'Uniswap',
             // url: UNISWAP_ICON,
-            progress: getProgress(1),
+            progress: getProgress(0),
         },
         {
-            title: `Swapping ${modalTx?.lwsToken} on source chain to ${modalTx?.hgsToken} on destination chain`,
+            title: `Swapping ${selectedTx?.lwsToken} on ${srcChain?.name} to ${selectedTx?.hgsToken} on ${dstChain?.name}`,
             image: theme.theme === 'dark' ? CASHMERE_WHITE_ICON : CASHMERE_GRAY_ICON,
             poweredBy: 'Cashmere',
             // url: '',
-            progress: getProgress(2),
+            progress: getProgress(1),
         },
         {
-            title: `Swapping ${modalTx?.hgsToken} to ${modalTx?.dstToken}`,
+            title: `Swapping ${selectedTx?.hgsToken} to ${selectedTx?.dstToken}`,
             image: UNISWAP_ICON,
             poweredBy: 'Uniswap',
             // url: UNISWAP_ICON,
-            progress: getProgress(2.5),
+            progress: getProgress(2),
         },
     ];
-
-    useEffect(() => {
-        if (!modalTxRef.current) return;
-        let txFound = false;
-        for (const tx of txs) {
-            if (tx.id === modalTxRef.current.id) {
-                txFound = true;
-                setModalTx(tx);
-                return;
-            }
-        }
-        if (!txFound) {
-            setModalTx({
-                ...modalTxRef.current,
-                step: 3,
-            });
-        }
-    }, [txs]);
 
     return (
         <>
             <TxProgressModal modalController={modal} steps={modalSteps} />
             <div className={styles.wrapper} style={{ opacity: open ? 1 : 0, pointerEvents: open ? 'all' : 'none' }}>
-                {txs.map(tx => {
+                {pendingTxStore.txList.map(tx => {
                     const srcChain = chainIdToChain.get(tx.srcChain);
                     const dstChain = chainIdToChain.get(tx.dstChain);
                     return (
@@ -85,7 +72,7 @@ const PendingWindow = observer(({ open, txs }: IPendingWindowProps) => {
                                 {Big(tx.amount).div(`1e${tx?.srcDecimals || 18}`).toFixed(5)} {tx.srcToken} from {srcChain?.name || 'SrcChain'} to {dstChain?.name || 'DstChain'}
                             </div>
                             <div className={styles.more} onClick={() => {
-                                setModalTx(tx);
+                                setSelectedTxId(tx.id);
                                 modal.open();
                             }}>
                                 <img src={ZOOM_ICON} alt='More' />

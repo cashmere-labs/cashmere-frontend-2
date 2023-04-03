@@ -16,6 +16,7 @@ import { useInjection } from 'inversify-react';
 import ThemeStore from './store/ThemeStore';
 import { useAccount, useDisconnect } from 'wagmi';
 import { watchAccount } from '@wagmi/core';
+import PendingTxHook from './store/components/PendingTxHook';
 
 const App = observer(() => {
     const themeStore = useInjection(ThemeStore);
@@ -47,6 +48,7 @@ const App = observer(() => {
                 <NavigationAnimator/>
                 <ToastContainer pauseOnHover={false} theme={themeStore.theme}/>
             </BrowserRouter>
+            <PendingTxHook/>
         </>
     );
 });

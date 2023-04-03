@@ -25,6 +25,7 @@ import ThemeStore from '../../store/ThemeStore';
 import { observer } from 'mobx-react-lite';
 import { Chain } from '../../constants/chains';
 import { erc20ABI, useAccount, useContract, useProvider, useSigner, useSignTypedData } from 'wagmi';
+import PendingTxStore from '../../store/PendingTxStore';
 
 type SwapConfirmationModal = {
   swapSettings: SwapSettings;
@@ -50,6 +51,7 @@ const SwapConfirmation = observer(({
   data,
 }: SwapConfirmationModal) => {
   const themeStore = useInjection(ThemeStore);
+  const pendingTxStore = useInjection(PendingTxStore);
   const [isConfirmed, setIsConfirmed] = useState<boolean>(false);
   const [ transactionHash, setTransactionHash ] = useState<string>();
   const { address: accountAddress } = useAccount();
@@ -91,6 +93,7 @@ const SwapConfirmation = observer(({
         fromToken: from.token.address,
         toChain: to.network.id.toString(),
         toToken: to.token.address,
+        receiver: accountAddress!,
       }));
       const resp = await r.json();
       console.log(resp);
@@ -182,6 +185,8 @@ const SwapConfirmation = observer(({
 
       setTransactionHash(receipt?.hash);
       setIsConfirmed(true);
+
+      pendingTxStore.addFakeTx(resp.entry);
 
       const l0Interval = setInterval(async () => {
         const r = await fetch(`https://api-testnet.layerzero-scan.com/tx/${receipt?.hash}`);

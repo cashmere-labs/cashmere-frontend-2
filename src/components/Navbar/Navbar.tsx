@@ -12,13 +12,12 @@ import styles from "./Navbar.module.scss";
 import { useInjection } from 'inversify-react';
 import ThemeStore from '../../store/ThemeStore';
 import { observer } from 'mobx-react-lite';
-import { ConnectButton, useAccountModal, useChainModal } from '@rainbow-me/rainbowkit';
-import { useAccount, useBalance, useNetwork } from 'wagmi';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { useAccount } from 'wagmi';
 import { formatValue } from '../../utils/formatValue';
-import { useInterval } from '../../hooks/useInterval';
-import { Api, SwapProgressEntry } from '../../utils/api';
+import { Api } from '../../utils/api';
 import PendingWindow from './PendingWindow';
-import useAsyncEffect from 'use-async-effect';
+import PendingTxStore from '../../store/PendingTxStore';
 
 const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
     const { pathname } = useLocation();
@@ -80,19 +79,12 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
     const PendingTxsButton = observer(({ mobile }: { mobile: boolean }) => {
         const color = themeStore.theme === "light" ? "black" : "black";
 
+        const pendingTxStore = useInjection(PendingTxStore);
         const [ pendingWindow, setPendingWindow ] = useState(false);
-        const [ pendingTxs, setPendingTxs ] = useState<SwapProgressEntry[]>([]);
-
-        useInterval(async () => {
-            address && setPendingTxs(await api.pendingTxs(address));
-        }, 10000);
-        useAsyncEffect(async () => {
-            address && setPendingTxs(await api.pendingTxs(address));
-        }, [address]);
 
         return (
             <div style={{ position: 'relative' }}>
-                {pendingTxs.length > 0 && (
+                {pendingTxStore.txListPendingLength > 0 && (
                     <Button
                         height="40px"
                         onClick={() => setPendingWindow(!pendingWindow)}
@@ -102,10 +94,10 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
                             styles.accountButton,
                         )}
                     >
-                        {pendingTxs.length} pending
+                        {pendingTxStore.txListPendingLength} pending
                     </Button>
                 )}
-                <PendingWindow open={pendingWindow} txs={pendingTxs} />
+                <PendingWindow open={pendingWindow} />
             </div>
         );
     });

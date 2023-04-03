@@ -22,6 +22,8 @@ export type SwapProgressEntry = {
     dstChain: number;
     srcDecimals: number;
     dstDecimals: number;
+    srcTokenAddress: string;
+    dstTokenAddress: string;
 }
 
 export class Api {

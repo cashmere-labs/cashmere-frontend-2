@@ -16,7 +16,7 @@ import { SwapSettings } from '../../components/SwapSettings/SwapSettings';
 import { SwapSettings as SwapSettingType } from '../../components/SwapSettings/useSwapSettings';
 
 import styles from './SwapBox.module.scss';
-import { ethers } from 'ethers';
+import { constants, ethers } from 'ethers';
 import Big from 'big.js';
 import { apiAddress } from '../../constants/utils';
 import { SwapBoxDetails } from './SwapBoxDetails';
@@ -157,6 +157,7 @@ const SwapBox = observer(({
             fromToken: state.fromToken.address,
             toChain: state.toChain.id.toString(),
             toToken: state.toToken.address,
+            receiver: constants.AddressZero,
         }));
         const resp = await r.json();
         if (!resp.error) {

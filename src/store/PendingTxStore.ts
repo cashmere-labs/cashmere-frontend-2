@@ -31,11 +31,16 @@ export default class PendingTxStore {
             if (!this.account)
                 return;
             const updatedEntries = await this.rootStore.api.pendingTxs(this.account);
-            for (const entry of this.entries) {
+            for (const entryId of this.entries) {
                 // finished and disappeared
-                if (updatedEntries.filter(e => e.id === entry).length === 0) {
-                    this.completeEntries.push(entry);
-                    this.entries.remove(entry);
+                if (updatedEntries.filter(e => e.id === entryId).length === 0) {
+                    const entry = { ...this.txsMap.get(entryId)! };
+                    const fakeKey = buildFakeKey(entry);
+                    entry.step = 3;
+                    this.txsMap.set(fakeKey, entry);
+                    this.txsMap.set(entry.id, entry);
+                    this.completeEntries.push(entryId);
+                    this.entries.remove(entryId);
                 }
             }
             for (const entry of updatedEntries) {

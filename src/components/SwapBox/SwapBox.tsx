@@ -27,47 +27,33 @@ import { observer } from 'mobx-react-lite';
 import { erc20ABI, useAccount, useNetwork, useSwitchNetwork } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { activeChains, Chain } from '../../constants/chains';
+import QuestsModal from '../Modals/QuestsModal/QuestsModal';
 
 const SwapBox = observer(({
-                     state,
-                     swapSettings,
-                     setState,
-                 }: {
+                              state,
+                              swapSettings,
+                              setState,
+                          }: {
     state: SwapState;
     setState: (to: SwapState) => void;
     swapSettings: SwapSettingType;
 }) => {
-
     const { chain } = useNetwork();
     const { switchNetworkAsync } = useSwitchNetwork();
     const account = useAccount();
     const { openConnectModal } = useConnectModal();
 
-    // const { auth, address: account.address } = useAccount();
-    // const { connect, disconnect } = useConnection();
-    // const { provider } = useProvider();
     const [method, setMethod] = useState<'stable' | 'aggregator'>('stable');
     const [toAmount, setToAmount] = useState('');
     const [minReceiveAmount, setMinReceiveAmount] = useState('');
     const [fee, setFee] = useState('');
     const [priceImpact, setPriceImpact] = useState('');
     const [estimateError, setEstimateError] = useState<string>();
-    // const [nativeFee, setNativeFee] = useState<Big>();
-    // const [nativeBalance, setNativeBalance] = useState<Big>();
-
-    // const [networkId, setNetworkId] = useState<number | undefined>();
-
-    // useEffect(() => {
-    //     setNetworkId(provider?.network.chainId);
-    // }, [provider]);
-    //
-    // useOnNetworkChange(() => {
-    //     setNetworkId(provider?.network.chainId);
-    // });
 
     const swapSettingsModal = useModal();
     const swapConfirmationModal = useModal();
     const themeStore = useInjection(ThemeStore);
+    const questModal = useModal();
 
     const rightNetwork = useMemo(() => chain?.id === state.fromChain.id, [chain?.id, state.fromChain]);
 
@@ -181,23 +167,6 @@ const SwapBox = observer(({
     }, [fromAmount, fromToken, fromChain, toToken, toChain, estimateAmountDebounced]);
 
     const insufficientBalance = useMemo(() => Number.isFinite(parseFloat(fromAmount)) && fromBalance?.lt(fromAmount), [fromAmount, fromBalance]);
-    // const notEnoughGas = useMemo(() => {
-    //     if (!fromBalance || !nativeFee || !nativeBalance)
-    //         return false;
-    //     let fee = nativeFee;
-    //     if (fromto.address === '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE') {
-    //         fee = fee.add(fromamount);
-    //     }
-    //     return nativeBalance.lt(fee);
-    // }, [fromBalance, nativeFee, nativeBalance, fromto.address, fromamount]);
-
-    /**
-     * @dev erc20Balance can be acquired a hook that is inside ethylene/hooks
-     *
-     * Check for docs:
-     * https://ethylene.itublockchain.com/docs/hooks/useERC20Balance
-     * const {balance} = useERC20Balance(props);
-     */
 
     const wrapperRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
@@ -255,25 +224,29 @@ const SwapBox = observer(({
             />
             <div className={styles.header}>
                 <div>
-          <span
-              className={styles.tab}
-              onClick={() => setMethod('stable')}
-              style={{
-                  color: method === 'stable' ? 'var(--text)' : 'var(--subtext)',
-              }}
-          >
-            Swap
-          </span>
                     <span
                         className={styles.tab}
-                        onClick={() => setMethod('aggregator')}
+                        // onClick={() => setMethod('stable')}
                         style={{
-                            color: method === 'aggregator' ? 'var(--text)' : 'var(--subtext)',
+                            // color: method === 'stable' ? 'var(--text)' : 'var(--subtext)',
+                            color: 'var(--text)',
+                            cursor: 'default',
+                        }}
+                    >
+                        Swap
+                    </span>
+                    <span
+                        className={styles.tab}
+                        // onClick={() => setMethod('aggregator')}
+                        onClick={() => questModal.open()}
+                        style={{
+                            // color: method === 'aggregator' ? 'var(--text)' : 'var(--subtext)',
+                            color: 'var(--subtext)',
                             cursor: 'pointer',
                         }}
                     >
-            Aggregator
-          </span>
+                        Show Quests
+                    </span>
                 </div>
 
                 <Icon
@@ -484,6 +457,7 @@ const SwapBox = observer(({
                 {getSwapButtonContent()}
             </Button>
             <PathRenderer path={[state.fromChain, state.toChain]}/>
+            <QuestsModal modal={questModal} />
         </div>
     );
 });

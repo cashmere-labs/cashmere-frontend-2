@@ -1,15 +1,15 @@
 import { ModalController } from "../../../hooks/useModal";
 import { ReactNode, useMemo } from "react";
-import { Network } from "../../../types/network";
 import { Modal, NetworkBadge } from "../../../ui";
 import { v4 as uuid } from "uuid";
 
 import styles from "./GasEstimatorModal.module.scss";
+import { Chain } from '../../../constants/chains';
 
 export type EstimateMapping = Map<
-  Network,
+  Chain,
   Map<
-    Network,
+    Chain,
     {
       native?: string;
       usd?: string;
@@ -60,7 +60,7 @@ const GasEstimatorModal = ({
               <div className={styles.bodyCellInner}>
                 <NetworkBadge
                   className={styles.tableNetwork}
-                  label={key.type}
+                  chain={key}
                 />
               </div>
             </td>

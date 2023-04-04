@@ -22,10 +22,10 @@ export default class RootStore {
     public container: Container;
 
     constructor() {
+        this.api = new Api();
         this.themeStore = new ThemeStore(this);
         this.veCsmStore = new VeCSMStore(this);
         this.pendingTxStore = new PendingTxStore(this);
-        this.api = new Api();
 
         this.container = new Container();
         this.container.bind(ThemeStore).toConstantValue(this.themeStore);
@@ -34,3 +34,5 @@ export default class RootStore {
         this.container.bind(Api).toConstantValue(this.api);
     }
 }
+
+export const rootStore = new RootStore();

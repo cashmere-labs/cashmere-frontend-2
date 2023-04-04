@@ -24,6 +24,7 @@ export type SwapProgressEntry = {
     dstDecimals: number;
     srcTokenAddress: string;
     dstTokenAddress: string;
+    startTxId: string;
 }
 
 export class Api {
@@ -37,6 +38,12 @@ export class Api {
         return (await this.client.get('/txsList', { params: {
             type: 'pending',
             account,
+        } })).data;
+    }
+
+    async getTxsProcessed(txIds: string[]): Promise<string[]> {
+        return (await this.client.get('/getTxsProcessed', { params: {
+            txIds: txIds.join(','),
         } })).data;
     }
 }

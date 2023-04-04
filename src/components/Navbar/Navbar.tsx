@@ -1,7 +1,7 @@
-import { Logo } from "../../components";
+import { Logo, TxProgressModal } from '../../components';
 import { PATHS } from "../../constants/paths";
 // import { useModal } from "../../hooks";
-import { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { FaBars, FaTimes } from "react-icons/fa";
 import { IoMdMoon, IoMdSunny } from "react-icons/io";
 import { Link, useLocation } from "react-router-dom";
@@ -16,10 +16,231 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { formatValue } from '../../utils/formatValue';
 import PendingWindow from './PendingWindow';
 import PendingTxStore from '../../store/PendingTxStore';
+import { reaction, runInAction } from 'mobx';
+import { chainIdToChain } from '../../constants/chains';
+import { TransactionStep } from '../../types/app';
+import Big from 'big.js';
+import UNISWAP_ICON from '../../assets/images/uniswap.svg';
+import CASHMERE_WHITE_ICON from '../../assets/images/cashmereWhite.png';
+import CASHMERE_GRAY_ICON from '../../assets/images/cashmereGray.png';
+import { useModal } from '../../hooks';
+
+const PendingTxsButton = observer(({ mobile }: { mobile: boolean }) => {
+    const themeStore = useInjection(ThemeStore);
+
+    const color = themeStore.theme === "light" ? "black" : "black";
+
+    const pendingTxStore = useInjection(PendingTxStore);
+    const pendingWindowOpen = pendingTxStore.pendingWindowOpen;
+
+    return (
+        <div style={{ position: 'relative' }}>
+            {pendingTxStore.txListPendingLength > 0 && (
+                <Button
+                    height="40px"
+                    onClick={() => runInAction(() => pendingTxStore.setPendingWindowOpen(!pendingTxStore.pendingWindowOpen))}
+                    color={color}
+                    className={clsnm(
+                        !mobile ? styles.themeChanger : styles.themeChangerMobile,
+                        styles.accountButton,
+                    )}
+                >
+                    {pendingTxStore.txListPendingLength} pending
+                </Button>
+            )}
+            <PendingWindow open={pendingWindowOpen} />
+        </div>
+    );
+});
+
+const PendingTxModal = observer(() => {
+    const theme = useInjection(ThemeStore);
+    const pendingTxStore = useInjection(PendingTxStore);
+    const modal = useModal();
+
+    useEffect(() => {
+        return reaction(
+            () => pendingTxStore.selectedTxId,
+            () => pendingTxStore.selectedTxId && modal.open(),
+        );
+    }, [modal]);
+
+    useEffect(() => {
+        if (!modal.isOpen)
+            pendingTxStore.setSelectedTxId(undefined);
+    }, [modal.isOpen]);
+
+    const selectedTxId = pendingTxStore.selectedTxId;
+    const selectedTx = selectedTxId ? pendingTxStore.txsMap.get(selectedTxId) : undefined;
+
+    const getProgress = (step: number) => {
+        if ((selectedTx?.step || 0) < step) return 'not_started';
+        else if ((selectedTx?.step || 0) === step) return 'in_progress';
+        else /*(tx.step > step)*/ return 'done';
+    };
+    // @ts-ignore
+    const srcChain = chainIdToChain.get(selectedTx?.srcChain);
+    // @ts-ignore
+    const dstChain = chainIdToChain.get(selectedTx?.dstChain);
+    const modalSteps: TransactionStep[] = [
+        {
+            title: `Swapping ${Big(selectedTx?.amount || 0).div(`1e${selectedTx?.srcDecimals || 18}`).toFixed(5)} ${selectedTx?.srcToken} to ${selectedTx?.lwsToken}`,
+            image: UNISWAP_ICON,
+            poweredBy: 'Uniswap',
+            // url: UNISWAP_ICON,
+            progress: getProgress(0),
+        },
+        {
+            title: `Swapping ${selectedTx?.lwsToken} on ${srcChain?.name} to ${selectedTx?.hgsToken} on ${dstChain?.name}`,
+            image: theme.theme === 'dark' ? CASHMERE_WHITE_ICON : CASHMERE_GRAY_ICON,
+            poweredBy: 'Cashmere',
+            // url: '',
+            progress: getProgress(1),
+        },
+        {
+            title: `Swapping ${selectedTx?.hgsToken} to ${selectedTx?.dstToken}`,
+            image: UNISWAP_ICON,
+            poweredBy: 'Uniswap',
+            // url: UNISWAP_ICON,
+            progress: getProgress(2),
+        },
+    ];
+
+    return (
+        <TxProgressModal modalController={modal} steps={modalSteps} />
+    );
+});
+
+const ConnectWalletButton = observer(({ mobile }: { mobile: boolean }) => {
+    const themeStore = useInjection(ThemeStore);
+
+    const color = themeStore.theme === "light" ? "black" : "black";
+
+    return (
+        <>
+            <ConnectButton.Custom>
+                {({
+                      account,
+                      chain,
+                      openAccountModal,
+                      openChainModal,
+                      openConnectModal,
+                      authenticationStatus,
+                      mounted,
+                  }) => {
+                    const ready = mounted && authenticationStatus !== 'loading';
+                    const connected =
+                        ready &&
+                        account &&
+                        chain &&
+                        (!authenticationStatus ||
+                            authenticationStatus === 'authenticated');
+
+                    return (
+                        <div
+                            {...(!ready ? {
+                                'aria-hidden': true,
+                                'style': {
+                                    opacity: 0,
+                                    pointerEvents: 'none',
+                                    userSelect: 'none',
+                                },
+                            } : {
+                                style: {
+                                    marginRight: '-5px',
+                                }
+                            })}
+                        >
+                            {(() => {
+                                if (!connected) {
+                                    return (
+                                        <Button
+                                            height="40px"
+                                            onClick={openConnectModal}
+                                            color={color}
+                                            className={clsnm(
+                                                !mobile ? styles.themeChanger : styles.themeChangerMobile,
+                                                styles.accountButton,
+                                            )}
+                                        >
+                                            Connect Wallet
+                                        </Button>
+                                    );
+                                }
+
+                                if (chain.unsupported) {
+                                    return (
+                                        <Button
+                                            height="40px"
+                                            onClick={openChainModal}
+                                            color={color}
+                                            className={clsnm(
+                                                !mobile ? styles.themeChanger : styles.themeChangerMobile,
+                                                styles.accountButton,
+                                            )}
+                                        >
+                                            Wrong Network
+                                        </Button>
+                                    );
+                                }
+
+                                return (
+                                    <div style={{ display: 'flex' }}>
+                                        {account.displayBalance && (
+                                            <Button
+                                                height="40px"
+                                                onClick={openChainModal}
+                                                color={color}
+                                                className={clsnm(
+                                                    !mobile ? styles.themeChanger : styles.themeChangerMobile,
+                                                    styles.accountButton,
+                                                )}
+                                            >
+                                                {chain.hasIcon && <img src={chain.iconUrl} alt={chain.name} />}
+                                                {formatValue(account.balanceFormatted, 5, true)} {account.balanceSymbol}
+                                            </Button>
+                                        )}
+                                        <Button
+                                            height="40px"
+                                            onClick={openAccountModal}
+                                            color={color}
+                                            className={clsnm(
+                                                !mobile ? styles.themeChanger : styles.themeChangerMobile,
+                                                styles.accountButton,
+                                            )}
+                                            // style={{ cursor: 'default' }}
+                                        >
+                                            {account.displayName}
+                                        </Button>
+                                    </div>
+                                );
+                            })()}
+                        </div>
+                    );
+                }}
+            </ConnectButton.Custom>
+        </>
+    );
+});
+
+const ThemeChangerButton = observer(({ mobile }: { mobile: boolean }) => {
+    const themeStore = useInjection(ThemeStore);
+
+    return (
+        <Icon
+            onClick={() => themeStore.toggle()}
+            className={mobile ? styles.themeChangerMobile : styles.themeChanger}
+            borderRadius="12px"
+            hoverSize={36}
+            hoverable
+        >
+            {themeStore.theme === "dark" ? <IoMdMoon /> : <IoMdSunny />}
+        </Icon>
+    );
+});
 
 const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
     const { pathname } = useLocation();
-    const themeStore = useInjection(ThemeStore);
 
     const LINKS = useMemo(() => {
         return [
@@ -70,155 +291,6 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
             });
         }
     };
-
-    const PendingTxsButton = observer(({ mobile }: { mobile: boolean }) => {
-        const color = themeStore.theme === "light" ? "black" : "black";
-
-        const pendingTxStore = useInjection(PendingTxStore);
-
-        return (
-            <div style={{ position: 'relative' }}>
-                {pendingTxStore.txListPendingLength > 0 && (
-                    <Button
-                        height="40px"
-                        onClick={() => pendingTxStore.setPendingWindowOpen(!pendingTxStore.pendingWindowOpen)}
-                        color={color}
-                        className={clsnm(
-                            !mobile ? styles.themeChanger : styles.themeChangerMobile,
-                            styles.accountButton,
-                        )}
-                    >
-                        {pendingTxStore.txListPendingLength} pending
-                    </Button>
-                )}
-                <PendingWindow open={pendingTxStore.pendingWindowOpen} />
-            </div>
-        );
-    });
-
-    const ConnectWalletButton = observer(({ mobile }: { mobile: boolean }) => {
-        const color = themeStore.theme === "light" ? "black" : "black";
-
-        return (
-            <>
-                <ConnectButton.Custom>
-                    {({
-                        account,
-                        chain,
-                        openAccountModal,
-                        openChainModal,
-                        openConnectModal,
-                        authenticationStatus,
-                        mounted,
-                    }) => {
-                        const ready = mounted && authenticationStatus !== 'loading';
-                        const connected =
-                            ready &&
-                            account &&
-                            chain &&
-                            (!authenticationStatus ||
-                                authenticationStatus === 'authenticated');
-
-                        return (
-                            <div
-                                {...(!ready ? {
-                                    'aria-hidden': true,
-                                    'style': {
-                                        opacity: 0,
-                                        pointerEvents: 'none',
-                                        userSelect: 'none',
-                                    },
-                                } : {
-                                    style: {
-                                        marginRight: '-5px',
-                                    }
-                                })}
-                            >
-                                {(() => {
-                                    if (!connected) {
-                                        return (
-                                            <Button
-                                                height="40px"
-                                                onClick={openConnectModal}
-                                                color={color}
-                                                className={clsnm(
-                                                    !mobile ? styles.themeChanger : styles.themeChangerMobile,
-                                                    styles.accountButton,
-                                                )}
-                                            >
-                                                Connect Wallet
-                                            </Button>
-                                        );
-                                    }
-
-                                    if (chain.unsupported) {
-                                        return (
-                                            <Button
-                                                height="40px"
-                                                onClick={openChainModal}
-                                                color={color}
-                                                className={clsnm(
-                                                    !mobile ? styles.themeChanger : styles.themeChangerMobile,
-                                                    styles.accountButton,
-                                                )}
-                                            >
-                                                Wrong Network
-                                            </Button>
-                                        );
-                                    }
-
-                                    return (
-                                        <div style={{ display: 'flex' }}>
-                                            {account.displayBalance && (
-                                                <Button
-                                                    height="40px"
-                                                    onClick={openChainModal}
-                                                    color={color}
-                                                    className={clsnm(
-                                                        !mobile ? styles.themeChanger : styles.themeChangerMobile,
-                                                        styles.accountButton,
-                                                    )}
-                                                >
-                                                    {chain.hasIcon && <img src={chain.iconUrl} alt={chain.name} />}
-                                                    {formatValue(account.balanceFormatted, 5, true)} {account.balanceSymbol}
-                                                </Button>
-                                            )}
-                                            <Button
-                                                height="40px"
-                                                onClick={openAccountModal}
-                                                color={color}
-                                                className={clsnm(
-                                                    !mobile ? styles.themeChanger : styles.themeChangerMobile,
-                                                    styles.accountButton,
-                                                )}
-                                                // style={{ cursor: 'default' }}
-                                            >
-                                                {account.displayName}
-                                            </Button>
-                                        </div>
-                                    );
-                                })()}
-                            </div>
-                        );
-                    }}
-                </ConnectButton.Custom>
-            </>
-        );
-    });
-
-    const ThemeChangerButton = observer(({ mobile }: { mobile: boolean }) => {
-        return (
-            <Icon
-                onClick={() => themeStore.toggle()}
-                className={mobile ? styles.themeChangerMobile : styles.themeChanger}
-                borderRadius="12px"
-                hoverSize={36}
-                hoverable
-            >
-                {themeStore.theme === "dark" ? <IoMdMoon /> : <IoMdSunny />}
-            </Icon>
-        );
-    });
 
     return (
         <header
@@ -305,7 +377,7 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
                         </div>
                     ))}
                     <div className={styles.connectWalletMobileWrapper}>
-                        <PendingTxsButton mobile={false} />
+                        <PendingTxsButton mobile={true} />
                         <ConnectWalletButton mobile={true} />
                     </div>
                 </div>
@@ -314,6 +386,7 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
                 className={clsnm(styles.layer, !show && styles.hide)}
                 onClick={navbarMenuHandler}
             ></div>
+            <PendingTxModal />
         </header>
     );
 };

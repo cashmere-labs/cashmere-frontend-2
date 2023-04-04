@@ -6,10 +6,9 @@ import '@rainbow-me/rainbowkit/styles.css';
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import RootStore from './store/RootStore';
+import { rootStore } from './store/RootStore';
 import RainbowKit from './RainbowKit';
 
-export const rootStore = new RootStore();
 const container = rootStore.container;
 
 ReactDOM.render(

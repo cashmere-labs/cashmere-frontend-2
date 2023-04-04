@@ -187,8 +187,10 @@ const SwapConfirmation = observer(({
       // setIsConfirmed(true);
 
       modalController.close();
+      resp.entry.startTxId = receipt?.hash;
       pendingTxStore.addFakeTx(resp.entry);
       pendingTxStore.setPendingWindowOpen(true);
+      pendingTxStore.setSelectedTxId(resp.entry.id);
 
       // const l0Interval = setInterval(async () => {
       //   const r = await fetch(`https://api-testnet.layerzero-scan.com/tx/${receipt?.hash}`);

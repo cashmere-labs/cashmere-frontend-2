@@ -49,4 +49,4 @@ const QuestsModal = observer(({ modal }: IQuestsModalProps) => {
     );
 });
 
-export default QuestsModal;
+export { QuestsModal };

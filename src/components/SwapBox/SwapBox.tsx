@@ -27,7 +27,7 @@ import { observer } from 'mobx-react-lite';
 import { erc20ABI, useAccount, useNetwork, useSwitchNetwork } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { activeChains, Chain } from '../../constants/chains';
-import QuestsModal from '../Modals/QuestsModal/QuestsModal';
+import { QuestsModal } from '../Modals/QuestsModal/QuestsModal';
 
 const SwapBox = observer(({
                               state,

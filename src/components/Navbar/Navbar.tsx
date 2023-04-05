@@ -24,6 +24,7 @@ import UNISWAP_ICON from '../../assets/images/uniswap.svg';
 import CASHMERE_WHITE_ICON from '../../assets/images/cashmereWhite.png';
 import CASHMERE_GRAY_ICON from '../../assets/images/cashmereGray.png';
 import { useModal } from '../../hooks';
+import { QuestsModal } from '../Modals/QuestsModal/QuestsModal';
 
 const PendingTxsButton = observer(({ mobile }: { mobile: boolean }) => {
     const themeStore = useInjection(ThemeStore);
@@ -274,7 +275,7 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
 
     const [show, setShow] = useState(false);
     const smallMenuRef = useRef<HTMLDivElement>(null);
-    // const modal = useModal();
+    const questsModal = useModal();
 
     const navbarMenuHandler = () => {
         setShow(!show);
@@ -323,6 +324,14 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
                                 target='_blank' rel="noreferrer"
                             >
                                 Troubleshoot
+                            </a>
+                        </div>
+                        <div className={styles.linkWrapper}>
+                            <a
+                                className={styles.link}
+                                onClick={() => questsModal.open()}
+                            >
+                                Quests
                             </a>
                         </div>
                     </div>
@@ -387,6 +396,7 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
                 onClick={navbarMenuHandler}
             ></div>
             <PendingTxModal />
+            <QuestsModal modal={questsModal} />
         </header>
     );
 };

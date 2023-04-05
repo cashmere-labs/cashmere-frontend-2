@@ -30,7 +30,6 @@ export {
 // } from "./VeCSM/PhoneTable/PhoneTable";
 
 // Modals
-export { Done } from "./Modals/Done/Done";
 export { Waiting } from "./Modals/BecomeValidatorError/Waiting/Waiting";
 export { Warning } from "./Modals/Warning/Warning";
 export { LiquidityStakeReward } from "./Pool/LiquidityStakeReward/LiquidityStakeReward";
@@ -72,6 +71,3 @@ export { GasEstimatorModal } from "./Modals/GasEstimatorModal/GasEstimatorModal"
 
 // Transaction Progress Modal
 export { TxProgressModal } from "./Modals/TxProgressModal/TxProgressModal";
-
-// AccountModal
-export { AccountModal } from "./Modals/AccountModal/AccountModal";

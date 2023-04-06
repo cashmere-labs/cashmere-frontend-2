@@ -297,3 +297,63 @@ export const polygonZkEvmTestnetTokenList = [
     iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
   },
 ];
+
+// export const zkSyncTestnetTokenList = [
+//   {
+//     asset: '0',
+//     type: 'ZK_SYNC',
+//     address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+//     name: 'ETH',
+//     symbol: 'ETH',
+//     decimals: 18,
+//     iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+//   },
+//   // {
+//   //   asset: '1',
+//   //   type: 'ZK_SYNC',
+//   //   address: '0x2ad78787CCaf7FA8FAe8953FD78ab9163f81DcC8',
+//   //   name: 'Wrapped ETH',
+//   //   symbol: 'WETH',
+//   //   decimals: 18,
+//   //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+//   // },
+//   // {
+//   //   asset: '2',
+//   //   type: 'ZK_SYNC',
+//   //   address: '0x557278364B136a8D7686016b1930c8C7136d8af9',
+//   //   name: 'USDC',
+//   //   symbol: 'USDC',
+//   //   decimals: 18,
+//   //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
+//   // },
+// ];
+
+export const metisGoerliTokenList = [
+  {
+    asset: '0',
+    type: 'METIS',
+    address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+    name: 'ETH',
+    symbol: 'ETH',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
+  {
+    asset: '1',
+    type: 'METIS',
+    address: '0x577dDC8c1bb948cdcF123Cd1f453Be80875Ec1F3',
+    name: 'Wrapped ETH',
+    symbol: 'WETH',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
+  {
+    asset: '2',
+    type: 'METIS',
+    address: '0x8EdB69919835e98b5a4f751FAdB78d66C880475C',
+    name: 'USDC',
+    symbol: 'USDC',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
+  },
+];

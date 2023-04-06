@@ -16,6 +16,8 @@ import {
     optimismGoerli as wagmiOptimismGoerli,
     baseGoerli as wagmiBaseGoerli,
     polygonZkEvmTestnet as wagmiPolygonZkEvmTestnet,
+    // zkSyncTestnet as wagmiZkSyncTestnet,
+    metisGoerli as wagmiMetisGoerli,
 
 } from 'wagmi/chains';
 import { Token } from '../types/token';
@@ -24,8 +26,8 @@ import {
     avalancheFujiTokenList, baseGoerliTokenList,
     bscTestnetTokenList,
     fantomTestnetTokenList,
-    goerliTokenList, lineaTestnetTokenList,
-    mumbaiTokenList, optimismGoerliTokenList, polygonZkEvmTestnetTokenList
+    goerliTokenList, lineaTestnetTokenList, metisGoerliTokenList,
+    mumbaiTokenList, optimismGoerliTokenList, polygonZkEvmTestnetTokenList, zkSyncTestnetTokenList
 } from './tokenLists';
 import ETHEREUM_IMAGE from '../assets/images/networks/ethereum.svg';
 import POLYGON_IMAGE from '../assets/images/networks/polygon.png';
@@ -257,6 +259,20 @@ export const polygonZkEvmTestnet: Chain = {
     faucetUrl: 'https://faucet.triangleplatform.com/polygonzkevm/testnet',
 };
 
+// export const zkSyncTestnet: Chain = {
+//     ...wagmiZkSyncTestnet,
+//     iconUrl: POLYGON_IMAGE,
+//     tokenList: zkSyncTestnetTokenList,
+//     badgeColors: polygonBadgeColors,
+// };
+
+export const metisGoerli: Chain = {
+    ...wagmiMetisGoerli,
+    iconUrl: POLYGON_IMAGE,
+    tokenList: metisGoerliTokenList,
+    badgeColors: polygonBadgeColors,
+};
+
 export const allChains: Chain[] = [
     ethereum,
     goerli,
@@ -275,6 +291,8 @@ export const allChains: Chain[] = [
     baseGoerli,
     lineaTestnet,
     polygonZkEvmTestnet,
+    // zkSyncTestnet,
+    metisGoerli,
 ];
 
 export const activeChains: Chain[] = [
@@ -288,6 +306,8 @@ export const activeChains: Chain[] = [
     baseGoerli,
     lineaTestnet,
     polygonZkEvmTestnet,
+    // zkSyncTestnet,
+    metisGoerli,
 ];
 
 export const chainIdToChain: Map<number, Chain> = allChains.reduce((prev, c) => {

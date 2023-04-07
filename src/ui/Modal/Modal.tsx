@@ -11,7 +11,7 @@ import { Chain } from '../../constants/chains';
 type ModalProps = {
     children: ReactNode;
     isOpen: boolean;
-    close: () => void;
+    close?: () => void;
     closeOnClickOutside?: boolean;
     className?: string;
     bodyProps?: ComponentPropsWithoutRef<'div'>;
@@ -41,7 +41,7 @@ const Modal = ({
 
     const outsideRef = useOnClickOutside<HTMLDivElement>(() => {
         if (closeOnClickOutside) {
-            close();
+            close?.();
         }
     });
 
@@ -63,14 +63,14 @@ const Modal = ({
                 {network != null && (
                     <NetworkBadge className={styles.network} chain={network}/>
                 )}
-                <Icon
+                {close && <Icon
                     hoverable
                     onClick={close}
                     className={styles.close}
                     borderRadius="50%"
                 >
                     <IoMdClose/>
-                </Icon>
+                </Icon>}
 
                 {children}
             </div>

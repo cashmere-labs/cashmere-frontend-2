@@ -58,3 +58,14 @@
 .arrowWrapper {
   position: relative;
 }
+
+.spinner {
+  border-color: var(--text);
+  border-top-color: var(--modal-bg);
+  border-width: 10px;
+}
+
+.confirm-modal {
+  display: flex;
+
+}

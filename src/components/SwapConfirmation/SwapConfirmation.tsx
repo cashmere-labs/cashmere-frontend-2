@@ -1,11 +1,11 @@
 import { RotateIcon } from "../../assets/icons";
-import { Done, Row } from "../../components";
-import { ModalController } from "../../hooks/useModal";
+import { Row } from "../../components";
+import { ModalController, useModal } from '../../hooks/useModal';
 import { ReactNode, useEffect, useState } from "react";
 import { FaChevronRight } from "react-icons/fa";
 import { SwapDetailsData } from "../../types/swap";
 import { Token } from "../../types/token";
-import { Button, Icon, Modal } from "../../ui";
+import { Button, Icon, Modal, Spinner } from '../../ui';
 import { TransactionRequest } from "@ethersproject/abstract-provider";
 
 // import { SwapBoxDetails } from "components/SwapBox/SwapBoxDetails";
@@ -52,21 +52,15 @@ const SwapConfirmation = observer(({
 }: SwapConfirmationModal) => {
   const themeStore = useInjection(ThemeStore);
   const pendingTxStore = useInjection(PendingTxStore);
-  const [isConfirmed, setIsConfirmed] = useState<boolean>(false);
-  const [ transactionHash, setTransactionHash ] = useState<string>();
   const { address: accountAddress } = useAccount();
   const provider = useProvider();
   const { data: signer } = useSigner();
   const { signTypedDataAsync } = useSignTypedData({});
-  const [ l0Link, setL0Link ] = useState('');
   const [ insufficientFunds, setInsufficientFunds ] = useState(false);
   const [ feeRequired, setFeeRequired ] = useState<Big>();
+  const [ waitingConfirmation, setWaitingConfirmation ] = useState(false);
 
   useEffect(() => setInsufficientFunds(false), [modalController.isOpen]);
-
-  useEffect(() => {
-    setL0Link('');
-  }, [modalController.isOpen]);
 
   const fromToken = useContract({
     address: from.token.address,
@@ -76,7 +70,7 @@ const SwapConfirmation = observer(({
 
   const _handleSwap = async () => {
     try {
-      setL0Link('');
+      setWaitingConfirmation(true);
       console.log(`dev: ${import.meta.env.DEV}`);
       console.log(data);
       console.log(from);
@@ -182,8 +176,6 @@ const SwapConfirmation = observer(({
       setFeeRequired(Big(tx.gasLimit!.toString()).div(Big(10).pow(18)));
       console.log("afterEstimate", tx);
       const receipt = await signer?.sendTransaction(tx);
-
-      setTransactionHash(receipt?.hash);
       // setIsConfirmed(true);
 
       modalController.close();
@@ -206,6 +198,8 @@ const SwapConfirmation = observer(({
       if ((e as any).code === -32603) {  // insufficient funds
         setInsufficientFunds(true);
       }
+    } finally {
+      setWaitingConfirmation(false);
     }
   };
 
@@ -229,6 +223,22 @@ const SwapConfirmation = observer(({
       isOpen={modalController.isOpen}
       close={modalController.close}
     >
+      <Modal
+          isOpen={waitingConfirmation}
+          bodyProps={{
+            style: {
+              padding: 62,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            },
+          }}
+          width="660px"
+      >
+        <h2 style={{ margin: 0 }}>Confirm swap</h2>
+        <div style={{ margin: '80px 0' }}><Spinner className={styles.spinner} size={120} /></div>
+        <div>Please, sign order using your wallet</div>
+      </Modal>
       <div className={styles.header}>
         <span>Confirm swap</span>
       </div>

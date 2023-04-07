@@ -27,7 +27,7 @@ import {
     bscTestnetTokenList,
     fantomTestnetTokenList,
     goerliTokenList, lineaTestnetTokenList, metisGoerliTokenList,
-    mumbaiTokenList, optimismGoerliTokenList, polygonZkEvmTestnetTokenList, zkSyncTestnetTokenList
+    mumbaiTokenList, optimismGoerliTokenList, polygonZkEvmTestnetTokenList,
 } from './tokenLists';
 import ETHEREUM_IMAGE from '../assets/images/networks/ethereum.svg';
 import POLYGON_IMAGE from '../assets/images/networks/polygon.png';
@@ -38,6 +38,7 @@ import ARBITRUM_IMAGE from '../assets/images/networks/arbitrum.png';
 import OPTIMISM_IMAGE from '../assets/images/networks/optimism.png';
 import BASE_IMAGE from '../assets/images/networks/base.svg';
 import LINEA_IMAGE from '../assets/images/networks/linea.svg';
+import METIS_IMAGE from '../assets/images/networks/metis.png';
 
 export type BadgeColors = {
     bg: string;
@@ -97,6 +98,12 @@ const baseBadgeColors: BadgeColors = {
     bg: "#B0CAFA",
     hoverBg: "#7985cb",
     text: "#0052FF",
+};
+
+const metisBadgeColors: BadgeColors = {
+    bg: "#00100B",
+    hoverBg: "#7985cb",
+    text: "#03D7CC",
 };
 
 
@@ -268,9 +275,9 @@ export const polygonZkEvmTestnet: Chain = {
 
 export const metisGoerli: Chain = {
     ...wagmiMetisGoerli,
-    iconUrl: POLYGON_IMAGE,
+    iconUrl: METIS_IMAGE,
     tokenList: metisGoerliTokenList,
-    badgeColors: polygonBadgeColors,
+    badgeColors: metisBadgeColors,
 };
 
 export const allChains: Chain[] = [

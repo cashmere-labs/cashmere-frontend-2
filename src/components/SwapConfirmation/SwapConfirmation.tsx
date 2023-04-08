@@ -26,6 +26,7 @@ import { observer } from 'mobx-react-lite';
 import { Chain } from '../../constants/chains';
 import { erc20ABI, useAccount, useContract, useProvider, useSigner, useSignTypedData } from 'wagmi';
 import PendingTxStore from '../../store/PendingTxStore';
+import { ErrorCode } from '@ethersproject/logger/src.ts';
 
 type SwapConfirmationModal = {
   swapSettings: SwapSettings;
@@ -195,7 +196,7 @@ const SwapConfirmation = observer(({
       // }, 1000);
     } catch (e) {
       console.error(e);
-      if ((e as any).code === -32603) {  // insufficient funds
+      if ((e as any).code === ErrorCode.INSUFFICIENT_FUNDS) {  // insufficient funds
         setInsufficientFunds(true);
       }
     } finally {

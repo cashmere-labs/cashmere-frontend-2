@@ -338,7 +338,10 @@ const SwapBox = observer(({
                     extendLeft
                     hideLeftBorder
                     value={state.fromAmount}
-                    onChange={e => setState({ ...state, fromAmount: e.target.value })}
+                    onChange={e => {
+                        const value = e.target.value.replace(/[^\d.]/, '').replace('..', '.');
+                        setState({ ...state, fromAmount: value });
+                    }}
                     rightEl={
                         <Button width="18px" color="white"
                                 onClick={() => setState({ ...state, fromAmount: fromBalance?.toString() || '' })}>

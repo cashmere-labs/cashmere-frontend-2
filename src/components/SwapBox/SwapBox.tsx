@@ -43,12 +43,12 @@ const SwapBox = observer(({
     const account = useAccount();
     const { openConnectModal } = useConnectModal();
 
-    const [method, setMethod] = useState<'stable' | 'aggregator'>('stable');
     const [toAmount, setToAmount] = useState('');
     const [minReceiveAmount, setMinReceiveAmount] = useState('');
     const [fee, setFee] = useState('');
     const [priceImpact, setPriceImpact] = useState('');
     const [estimateError, setEstimateError] = useState<string>();
+    const [ estimateLoading, setEstimateLoading ] = useState(false);
 
     const swapSettingsModal = useModal();
     const swapConfirmationModal = useModal();
@@ -134,35 +134,40 @@ const SwapBox = observer(({
     };
 
     const estimateAmount = useMemo(() => async () => {
-        if (!parseFloat(state.fromAmount))
-            return;
-        setEstimateError('Estimating...');
-        const r = await fetch(apiAddress + '/swapEstimateL0?' + new URLSearchParams({
-            fromAmount: Big(state.fromAmount).mul(Big(10).pow(state.fromToken.decimals)).toFixed(0),
-            fromChain: state.fromChain.id.toString(),
-            fromToken: state.fromToken.address,
-            toChain: state.toChain.id.toString(),
-            toToken: state.toToken.address,
-            receiver: constants.AddressZero,
-        }));
-        const resp = await r.json();
-        if (!resp.error) {
-            setToAmount(Big(resp.dstAmount).div(Big(10).pow(state.toToken.decimals)).toString());
-            setMinReceiveAmount(Big(resp.minReceivedDst).div(Big(10).pow(state.toToken.decimals)).toString());
-            setFee(resp.fee);
-            setPriceImpact(resp.priceImpact);
-            // setNativeFee(Big(resp.nativeFee));
-            setEstimateError(undefined);
-        } else if (resp.cause?.code === 'CALL_EXCEPTION' && resp.cause.reason) {
-            setEstimateError(resp.cause.reason);
+        try {
+            if (!parseFloat(state.fromAmount))
+                return;
+            setEstimateError('Estimating...');
+            const r = await fetch(apiAddress + '/swapEstimateL0?' + new URLSearchParams({
+                fromAmount: Big(state.fromAmount).mul(Big(10).pow(state.fromToken.decimals)).toFixed(0),
+                fromChain: state.fromChain.id.toString(),
+                fromToken: state.fromToken.address,
+                toChain: state.toChain.id.toString(),
+                toToken: state.toToken.address,
+                receiver: constants.AddressZero,
+            }));
+            const resp = await r.json();
+            if (!resp.error) {
+                setToAmount(Big(resp.dstAmount).div(Big(10).pow(state.toToken.decimals)).toString());
+                setMinReceiveAmount(Big(resp.minReceivedDst).div(Big(10).pow(state.toToken.decimals)).toString());
+                setFee(resp.fee);
+                setPriceImpact(resp.priceImpact);
+                // setNativeFee(Big(resp.nativeFee));
+                setEstimateError(undefined);
+            } else if (resp.cause?.code === 'CALL_EXCEPTION' && resp.cause.reason) {
+                setEstimateError(resp.cause.reason);
+            }
+        } finally {
+            setEstimateLoading(false);
         }
     }, [state]);
     const estimateAmountDebounced = useDebounce(estimateAmount);
 
     const { fromAmount, fromToken, fromChain, toToken, toChain } = state;
     useEffect(() => {
-        setToAmount('...');
-        setMinReceiveAmount('...');
+        setEstimateLoading(true);
+        // setToAmount('...');
+        // setMinReceiveAmount('...');
         estimateAmountDebounced();
     }, [fromAmount, fromToken, fromChain, toToken, toChain, estimateAmountDebounced]);
 
@@ -427,6 +432,7 @@ const SwapBox = observer(({
                     extendLeft
                     hideLeftBorder
                     // value={state.toamount}
+                    loading={estimateLoading}
                     value={formatValue(toAmount, 4)}
                     disabled
                     // onChange={e => setState({ ...state, fromamount: e.target.value, toamount: e.target.value })}

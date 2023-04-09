@@ -196,8 +196,12 @@ const SwapConfirmation = observer(({
       // }, 1000);
     } catch (e) {
       console.error(e);
-      if ((e as any).code === ErrorCode.INSUFFICIENT_FUNDS || (e as any).code === -32603) {  // insufficient funds
-        setInsufficientFunds(true);
+      const codes = [(e as any).code, (e as any).error.code];
+      for (const code of codes) {
+        if ([ErrorCode.INSUFFICIENT_FUNDS, -32603, -32000].includes(code)) {
+          setInsufficientFunds(true);
+          break;
+        }
       }
     } finally {
       setWaitingConfirmation(false);

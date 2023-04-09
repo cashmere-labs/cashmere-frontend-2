@@ -195,8 +195,8 @@ const SwapConfirmation = observer(({
       //   }
       // }, 1000);
     } catch (e) {
-      console.error(e);
-      const codes = [(e as any).code, (e as any).error.code];
+      console.error(JSON.parse(JSON.stringify(e)));
+      const codes = [(e as any).code, (e as any).error?.code, (e as any).error?.error?.code];
       for (const code of codes) {
         if ([ErrorCode.INSUFFICIENT_FUNDS, -32603, -32000].includes(code)) {
           setInsufficientFunds(true);

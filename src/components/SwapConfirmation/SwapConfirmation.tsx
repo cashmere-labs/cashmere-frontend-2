@@ -196,7 +196,7 @@ const SwapConfirmation = observer(({
       // }, 1000);
     } catch (e) {
       console.error(e);
-      if ((e as any).code === ErrorCode.INSUFFICIENT_FUNDS) {  // insufficient funds
+      if ((e as any).code === ErrorCode.INSUFFICIENT_FUNDS || (e as any).code === -32603) {  // insufficient funds
         setInsufficientFunds(true);
       }
     } finally {

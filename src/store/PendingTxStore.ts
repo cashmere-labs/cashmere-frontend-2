@@ -18,7 +18,7 @@ export default class PendingTxStore {
 
     constructor(private readonly rootStore: RootStore) {
         makeObservable(this);
-        setInterval(() => this.updateTxs(false), 10000);
+        setInterval(() => this.updateTxs(false), 2000);
 
         let fakeTxs: (SwapProgressEntry)[] = store.get('fakeTxs', []);
         if (fakeTxs.length > 0) {

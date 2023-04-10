@@ -7,6 +7,8 @@ import { Icon, Modal, Spinner } from '../../../ui';
 import { clsnm } from '../../../utils/clsnm';
 import OkIcon from '../../../assets/icons/ok.svg';
 import OkIconDark from '../../../assets/icons/ok-dark.svg';
+import FailIcon from '../../../assets/icons/fail.svg';
+import FailIconDark from '../../../assets/icons/fail-dark.svg';
 
 import styles from './TxProgressModal.module.scss';
 import { observer } from 'mobx-react-lite';
@@ -94,6 +96,12 @@ const RenderProgress = observer(({
         return (
             <Wrapper>
                 <Spinner className={styles.spinner} size={20}/>
+            </Wrapper>
+        );
+    } else if (progress === 'failed') {
+        return (
+            <Wrapper>
+                <img src={theme.theme === 'dark' ? FailIconDark : FailIcon} width={52} style={{ margin: -10 }}/>
             </Wrapper>
         );
     } else {

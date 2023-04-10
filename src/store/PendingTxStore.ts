@@ -3,8 +3,9 @@ import { SwapProgressEntry } from '../utils/api';
 import RootStore from './RootStore';
 import { IObservableArray } from 'mobx/src/internal';
 import store from 'store2';
+import { getProvider, Provider } from '@wagmi/core';
 
-const buildFakeKey = (entry: SwapProgressEntry) => `${entry.amount}${entry.srcTokenAddress}${entry.dstTokenAddress}${entry.srcChain}${entry.dstChain}${entry.startTxId}`;
+const buildFakeKey = (entry: SwapProgressEntry) => `${entry.amount}-${entry.srcTokenAddress}-${entry.dstTokenAddress}-${entry.srcChain}-${entry.dstChain}-${entry.startTxId}`;
 
 export default class PendingTxStore {
     @observable account?: string = undefined;
@@ -15,23 +16,27 @@ export default class PendingTxStore {
     lock: boolean = false;
     @observable pendingWindowOpen = false;
     @observable selectedTxId?: string = undefined;
+    @observable provider?: Provider = undefined;
 
     constructor(private readonly rootStore: RootStore) {
         makeObservable(this);
         setInterval(() => this.updateTxs(false), 2000);
 
         let fakeTxs: (SwapProgressEntry)[] = store.get('fakeTxs', []);
+        console.log('fake', fakeTxs);
         if (fakeTxs.length > 0) {
             rootStore.api.getTxsProcessed(fakeTxs.map(tx => tx.startTxId)).then(processedTxs => {
                 processedTxs.forEach(txid => {
                     fakeTxs = fakeTxs.filter(fakeTx => fakeTx.startTxId !== txid);
                 });
+                console.log(fakeTxs);
                 fakeTxs.forEach(tx => {
                     runInAction(() => {
                         this.txsMap.set(tx.id, tx);
                         this.pendingEntries.push(tx.id);
                     });
                 });
+                store.set('fakeTxs', fakeTxs, true);
             });
         }
     }
@@ -75,9 +80,25 @@ export default class PendingTxStore {
                     }
                 }
             });
+
+            let fakeTxs = store.get('fakeTxs', []);
+            await Promise.all(fakeTxs.map(async (tx: SwapProgressEntry) => {
+                const receipt = await getProvider({ chainId: tx.srcChain }).getTransactionReceipt(tx.startTxId);
+                if (receipt && !receipt.status) {
+                    const entry = this.txsMap.get(tx.id);
+                    if (entry) {
+                        entry.failed = 1;
+                        this.txsMap.set(tx.id, entry);
+                        fakeTxs = fakeTxs.filter((t: SwapProgressEntry) => t.id !== tx.id);
+                    }
+                }
+            }));
+            store.set('fakeTxs', fakeTxs);
         } finally {
             this.lock = false;
         }
+
+        console.log(await getProvider().getTransactionReceipt('0x359c2bda2e18d7756dd8240b5017c8e86f014b2d81a4b7f6f8a04594c5bfaa9a'))
     }
 
     @action async updateAccount(newAccount?: string) {
@@ -102,6 +123,10 @@ export default class PendingTxStore {
 
     @action setSelectedTxId(value?: string) {
         this.selectedTxId = value;
+    }
+
+    @action setProvider(provider: Provider) {
+        this.provider = provider;
     }
 
     @computed get txList() {

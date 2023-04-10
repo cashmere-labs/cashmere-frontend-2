@@ -21,7 +21,7 @@ export type TransactionStep = {
   image: string;
   poweredBy: string;
   url?: string;
-  progress: "not_started" | "done" | "in_progress";
+  progress: "not_started" | "done" | "in_progress" | 'failed';
 };
 
 export type AccountBalance = {

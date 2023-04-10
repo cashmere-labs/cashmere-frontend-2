@@ -75,7 +75,8 @@ const PendingTxModal = observer(() => {
     const selectedTx = selectedTxId ? pendingTxStore.txsMap.get(selectedTxId) : undefined;
 
     const getProgress = (step: number) => {
-        if ((selectedTx?.step || 0) < step) return 'not_started';
+        if (selectedTx?.failed === step) return 'failed';
+        else if ((selectedTx?.step || 0) < step) return 'not_started';
         else if ((selectedTx?.step || 0) === step) return 'in_progress';
         else /*(tx.step > step)*/ return 'done';
     };

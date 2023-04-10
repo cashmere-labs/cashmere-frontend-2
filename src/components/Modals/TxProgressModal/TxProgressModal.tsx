@@ -41,9 +41,11 @@ const TxProgressModal = ({ modalController, steps }: TxProgressModalProps) => {
                                 <Row>
                                     <span className={styles.title}>{item.title}</span>
                                     {item.url && (
-                                        <Icon className={styles.link} size={20}>
-                                            <BiLinkExternal/>
-                                        </Icon>
+                                        <a href={item.url} target='_blank' rel='noreferrer'>
+                                            <Icon className={styles.link} size={20}>
+                                                <BiLinkExternal/>
+                                            </Icon>
+                                        </a>
                                     )}
                                 </Row>
                             </span>

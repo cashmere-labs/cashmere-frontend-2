@@ -37,14 +37,16 @@ const TxProgressModal = ({ modalController, steps }: TxProgressModalProps) => {
                             <RenderProgress progress={item.progress}/>
                         </div>
                         <div className={styles.content}>
-              <span className={styles.titleWrapper}>
-                <Row>
-                  <span className={styles.title}>{item.title}</span>
-                    {/*<Icon className={styles.link} size={20}>*/}
-                    {/*  <BiLinkExternal />*/}
-                    {/*</Icon>*/}
-                </Row>
-              </span>
+                              <span className={styles.titleWrapper}>
+                                <Row>
+                                    <span className={styles.title}>{item.title}</span>
+                                    {item.url && (
+                                        <Icon className={styles.link} size={20}>
+                                            <BiLinkExternal/>
+                                        </Icon>
+                                    )}
+                                </Row>
+                            </span>
                             <div className={styles.label}>
                                 <img src={item.image}/>
                                 <span>Powered by {item.poweredBy}</span>
@@ -55,7 +57,7 @@ const TxProgressModal = ({ modalController, steps }: TxProgressModalProps) => {
             </div>
 
             <div className={styles.footer}>
-                This usually takes ~4minutes
+                This usually takes ~4 minutes
                 <br/> but sometimes the wait is longer.
             </div>
         </Modal>

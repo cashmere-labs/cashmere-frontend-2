@@ -25,6 +25,8 @@ export type SwapProgressEntry = {
     srcTokenAddress: string;
     dstTokenAddress: string;
     startTxId: string;
+    l0Path?: string;
+    continueTxId?: string;
 }
 
 export class Api {

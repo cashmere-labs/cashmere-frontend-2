@@ -6,6 +6,7 @@ import ZOOM_ICON from '../../assets/icons/zoom.svg';
 import { observer } from 'mobx-react-lite';
 import { useInjection } from 'inversify-react';
 import PendingTxStore from '../../store/PendingTxStore';
+import TimeCounter from '../TimeCounter/TimeCounter';
 
 interface IPendingWindowProps {
     open: boolean;
@@ -30,6 +31,9 @@ const PendingWindow = observer(({ open }: IPendingWindowProps) => {
                         <div key={tx.id} className={styles.item}>
                             <div className={styles.title}>
                                 {Big(tx.amount).div(`1e${tx?.srcDecimals || 18}`).toFixed(5)} {tx.srcToken} from {srcChain?.name || 'SrcChain'} to {dstChain?.name || 'DstChain'}
+                            </div>
+                            <div className={styles.title}>
+                                Estimated time: <TimeCounter minutes toTimestamp={(tx.startTxTimestamp || 0) + 6*40} />m
                             </div>
                             <div className={styles.more} onClick={() => {
                                 pendingTxStore.setSelectedTxId(txId);

@@ -21,6 +21,7 @@ export default class PendingTxStore {
     constructor(private readonly rootStore: RootStore) {
         makeObservable(this);
         setInterval(() => this.updateTxs(false), 2000);
+        setInterval(() => this.checkFailedTxs(), 10000);
 
         let fakeTxs: (SwapProgressEntry)[] = store.get('fakeTxs', []);
         console.log('fake', fakeTxs);
@@ -80,10 +81,18 @@ export default class PendingTxStore {
                     }
                 }
             });
+        } finally {
+            this.lock = false;
+        }
 
-            let fakeTxs = store.get('fakeTxs', []);
-            await Promise.all(fakeTxs.map(async (tx: SwapProgressEntry) => {
-                const receipt = await getProvider({ chainId: tx.srcChain }).getTransactionReceipt(tx.startTxId);
+        console.log(await getProvider().getTransactionReceipt('0x359c2bda2e18d7756dd8240b5017c8e86f014b2d81a4b7f6f8a04594c5bfaa9a'))
+    }
+
+    @action private async checkFailedTxs() {
+        let fakeTxs = store.get('fakeTxs', []);
+        await Promise.all(fakeTxs.map(async (tx: SwapProgressEntry) => {
+            const receipt = await getProvider({ chainId: tx.srcChain }).getTransactionReceipt(tx.startTxId);
+            runInAction(() => {
                 if (receipt && !receipt.status) {
                     const entry = this.txsMap.get(tx.id);
                     if (entry) {
@@ -92,13 +101,9 @@ export default class PendingTxStore {
                         fakeTxs = fakeTxs.filter((t: SwapProgressEntry) => t.id !== tx.id);
                     }
                 }
-            }));
-            store.set('fakeTxs', fakeTxs);
-        } finally {
-            this.lock = false;
-        }
-
-        console.log(await getProvider().getTransactionReceipt('0x359c2bda2e18d7756dd8240b5017c8e86f014b2d81a4b7f6f8a04594c5bfaa9a'))
+            });
+        }));
+        store.set('fakeTxs', fakeTxs);
     }
 
     @action async updateAccount(newAccount?: string) {

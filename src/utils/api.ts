@@ -27,6 +27,7 @@ export type SwapProgressEntry = {
     startTxId: string;
     l0Path?: string;
     continueTxId?: string;
+    startTxTimestamp?: number;
 
     failed?: number;
 }

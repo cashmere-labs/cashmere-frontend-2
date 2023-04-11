@@ -10,7 +10,7 @@ const TimeCounter = ({ toTimestamp, minutes }: ITimeCounterProps) => {
     const [ displayValue, setDisplayValue ] = useState('');
 
     useInterval(() => {
-        const now = Math.round(+new Date() / 1000);
+        const now = Math.round(new Date().getTime());
         if (minutes) {
             setDisplayValue(`${Math.ceil(Math.max(0, (toTimestamp - now) / 60))}`);
         }

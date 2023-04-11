@@ -3,7 +3,7 @@ import { useInterval } from '../../hooks/useInterval';
 
 interface ITimeCounterProps {
     toTimestamp: number;
-    minutes: boolean;
+    minutes?: boolean;
 }
 
 const TimeCounter = ({ toTimestamp, minutes }: ITimeCounterProps) => {
@@ -12,7 +12,7 @@ const TimeCounter = ({ toTimestamp, minutes }: ITimeCounterProps) => {
     useInterval(() => {
         const now = Math.round(+new Date() / 1000);
         if (minutes) {
-            setDisplayValue(`${Math.max(0, (toTimestamp - now) / 60)}`)
+            setDisplayValue(`${Math.ceil(Math.max(0, (toTimestamp - now) / 60))}`);
         }
     }, 1000);
 

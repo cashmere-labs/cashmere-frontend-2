@@ -42,7 +42,7 @@ const PendingWindow = observer(({ open }: IPendingWindowProps) => {
                             </div>
                             <div className={styles.row}>
                                 <div className={styles.title}>
-                                    Estimated time: <TimeCounter minutes toTimestamp={(tx.startTxTimestamp || 0) + 6*40} />m
+                                    Estimated time: <TimeCounter minutes toTimestamp={(tx.startTxTimestamp || 0) + 4*60000} />m
                                 </div>
                             </div>
                         </div>

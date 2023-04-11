@@ -29,17 +29,21 @@ const PendingWindow = observer(({ open }: IPendingWindowProps) => {
                     const txId = tx.id;
                     return (
                         <div key={tx.id} className={styles.item}>
-                            <div className={styles.title}>
-                                {Big(tx.amount).div(`1e${tx?.srcDecimals || 18}`).toFixed(5)} {tx.srcToken} from {srcChain?.name || 'SrcChain'} to {dstChain?.name || 'DstChain'}
+                            <div className={styles.row}>
+                                <div className={styles.title}>
+                                    {Big(tx.amount).div(`1e${tx?.srcDecimals || 18}`).toFixed(5)} {tx.srcToken} from {srcChain?.name || 'SrcChain'} to {dstChain?.name || 'DstChain'}
+                                </div>
+                                <div className={styles.more} onClick={() => {
+                                    pendingTxStore.setSelectedTxId(txId);
+                                    // modal.open();
+                                }}>
+                                    <img src={ZOOM_ICON} alt='More' />
+                                </div>
                             </div>
-                            <div className={styles.title}>
-                                Estimated time: <TimeCounter minutes toTimestamp={(tx.startTxTimestamp || 0) + 6*40} />m
-                            </div>
-                            <div className={styles.more} onClick={() => {
-                                pendingTxStore.setSelectedTxId(txId);
-                                // modal.open();
-                            }}>
-                                <img src={ZOOM_ICON} alt='More' />
+                            <div className={styles.row}>
+                                <div className={styles.title}>
+                                    Estimated time: <TimeCounter minutes toTimestamp={(tx.startTxTimestamp || 0) + 6*40} />m
+                                </div>
                             </div>
                         </div>
                     );

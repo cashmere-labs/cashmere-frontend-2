@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useInterval } from '../../hooks/useInterval';
+import { DateTime } from 'luxon';
 
 interface ITimeCounterProps {
     toTimestamp: number;
@@ -10,7 +11,7 @@ const TimeCounter = ({ toTimestamp, minutes }: ITimeCounterProps) => {
     const [ displayValue, setDisplayValue ] = useState('');
 
     useInterval(() => {
-        const now = Math.round(new Date().getTime());
+        const now = DateTime.now().toUnixInteger();
         if (minutes) {
             setDisplayValue(`${Math.ceil(Math.max(0, (toTimestamp - now) / 60))}`);
         }

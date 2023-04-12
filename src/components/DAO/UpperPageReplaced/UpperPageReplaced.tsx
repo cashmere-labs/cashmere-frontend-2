@@ -56,7 +56,7 @@ const UpperPageReplaced = observer(() => {
                             </Icon>
                         </Tooltip>
                     </div>
-                    <div>${Big(stats?.fees || 0).toFixed(2)}</div>
+                    <div>${Big(stats?.volume || 0).times('.0004').toFixed(2)}</div>
                     {/*<div>*/}
                     {/*  <div>CSM</div>*/}
                     {/*  <div>(23.24%)</div>*/}

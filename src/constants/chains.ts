@@ -278,6 +278,7 @@ export const metisGoerli: Chain = {
     iconUrl: METIS_IMAGE,
     tokenList: metisGoerliTokenList,
     badgeColors: metisBadgeColors,
+    faucetUrl: 'https://goerli.faucet.metisdevops.link/',
 };
 
 export const allChains: Chain[] = [

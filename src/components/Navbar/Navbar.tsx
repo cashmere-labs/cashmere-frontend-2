@@ -300,6 +300,16 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
                                 Quests
                             </a>
                         </div>
+                        <div className={styles.linkWrapper}>
+                            <a
+                                className={styles.link}
+                                href='https://docs.cashmere.exchange'
+                                target='_blank'
+                                rel='noreferrer'
+                            >
+                                Docs
+                            </a>
+                        </div>
                     </div>
 
                     <div className={styles.buttons}>

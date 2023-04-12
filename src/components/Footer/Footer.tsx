@@ -14,15 +14,15 @@ const Footer = () => {
   const footerLinks = [
     {
       name: "Contact",
-      url: "#",
+      url: "mailto:contact@cashmere.exchange",
     },
     {
       name: "Whitepaper",
-      url: "#",
+      url: "https://www.dropbox.com/s/9wphe0hp4t00qn6/cashmere_wp.pdf?dl=0",
     },
     {
-      name: "Develop",
-      url: "#",
+      name: "Developers",
+      url: "https://docs.cashmere.exchange",
     },
     {
       name: "Terms",
@@ -33,27 +33,27 @@ const Footer = () => {
   const footerSocial = [
     {
       name: "Twitter",
-      url: "#",
+      url: "https://twitter.com/cashmerelabs",
       icon: <FaTwitter />,
     },
     {
       name: "Telegram",
-      url: "#",
+      url: "https://t.me/cashmerelabs",
       icon: <FaTelegram />,
     },
     {
       name: "Discord",
-      url: "#",
+      url: "https://discord.com/invite/dherf6VbRX",
       icon: <FaDiscord />,
     },
     {
       name: "Medium",
-      url: "#",
+      url: "https://cashmerelabs.medium.com/",
       icon: <FaMediumM />,
     },
     {
       name: "Github",
-      url: "#",
+      url: "https://github.com/cashmere-labs",
       icon: <FaGithub />,
     },
   ];
@@ -65,7 +65,7 @@ const Footer = () => {
           {footerLinks.map((item) => {
             return (
               <div key={item.name} className={styles.linkWrapper}>
-                <a className={clsnm(styles.link, "link")} href={item.url}>
+                <a className={clsnm(styles.link, "link")} href={item.url} target='_blank' rel='noreferrer'>
                   {item.name}
                 </a>
               </div>
@@ -79,7 +79,7 @@ const Footer = () => {
                 key={item.name}
                 className={clsnm(styles.linkWrapper, styles.social)}
               >
-                <a className={clsnm(styles.icon, "link")} href={item.url}>
+                <a className={clsnm(styles.icon, "link")} href={item.url} target='_blank' rel='noreferrer'>
                   <Icon>{item.icon}</Icon>
                 </a>
               </div>

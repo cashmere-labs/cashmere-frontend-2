@@ -90,19 +90,19 @@ export default class PendingTxStore {
 
     @action private async checkFailedTxs() {
         let fakeTxs = store.get('fakeTxs', []);
-        await Promise.all(fakeTxs.map(async (tx: SwapProgressEntry) => {
+        for (const tx of fakeTxs) {
             const receipt = await getProvider({ chainId: tx.srcChain }).getTransactionReceipt(tx.startTxId);
             runInAction(() => {
                 if (receipt && !receipt.status) {
                     const entry = this.txsMap.get(tx.id);
                     if (entry) {
-                        entry.failed = 1;
+                        entry.failed = 0;
                         this.txsMap.set(tx.id, entry);
                         fakeTxs = fakeTxs.filter((t: SwapProgressEntry) => t.id !== tx.id);
                     }
                 }
             });
-        }));
+        }
         store.set('fakeTxs', fakeTxs);
     }
 

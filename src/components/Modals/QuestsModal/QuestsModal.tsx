@@ -17,7 +17,7 @@ const QuestsModal = observer(({ modal }: IQuestsModalProps) => {
     const color = themeStore.theme === 'dark' ? 'white' : 'black';
 
     const QuestsButton = ({ href, ...props }: ButtonProps & { href: string }) => (
-        <a href={href} target='_blank' rel='noreferrer'>
+        <a /*href={href} target='_blank' rel='noreferrer'*/>
             <Button
                 {...props}
                 style={{ marginTop: '1rem' }}

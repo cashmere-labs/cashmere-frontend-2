@@ -166,7 +166,7 @@ const SwapConfirmation = observer(({
       const tx: TransactionRequest = {
         data: txData,
         from: accountAddress,
-        gasPrice: await provider?.getGasPrice(),
+        gasPrice: Big((await provider!.getGasPrice()).toString()).mul('1.25').toFixed(0),
         to: resp.to,
         value: resp.value,
         gasLimit: 8000000,

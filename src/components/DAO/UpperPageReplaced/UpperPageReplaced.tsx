@@ -36,7 +36,7 @@ const UpperPageReplaced = observer(() => {
                             </Icon>
                         </Tooltip>
                     </div>
-                    <div>${Big(stats?.volume || 0).toFixed(2)}</div>
+                    <div>${formatValue(Big(stats?.volume || 0).toFixed(2), 2, true)}</div>
                     <div>
                         <span>Total Unique Users</span>
                         <Tooltip placement="top" content="Content coming here">
@@ -83,6 +83,17 @@ const UpperPageReplaced = observer(() => {
                     </Tooltip>
                 </div>
                 <div className={styles.value}>{stats?.transactions || 0}</div>
+                <div className={styles.line}></div>
+                <div className={styles.line}></div>
+                <div className={styles.title}>
+                    <div>Amount of MEV loss can be prevented</div>
+                    <Tooltip placement="top" content="Content coming here">
+                        <Icon size={16}>
+                            <InfoIcon/>
+                        </Icon>
+                    </Tooltip>
+                </div>
+                <div className={styles.value}>{Big(stats?.volume || 0).times('.0001').toFixed(2)}</div>
             </div>
             <div className={styles.faucets}>
                 <div className={styles.title}>

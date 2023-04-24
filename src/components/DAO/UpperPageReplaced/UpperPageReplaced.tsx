@@ -30,31 +30,31 @@ const UpperPageReplaced = observer(() => {
                 <div className={styles.apr}>
                     <div>
                         <span>Total Volume</span>
-                        <Tooltip placement="top" content="Content coming here">
-                            <Icon size={16}>
-                                <InfoIcon/>
-                            </Icon>
-                        </Tooltip>
+                        {/*<Tooltip placement="top" content="Content coming here">*/}
+                        {/*    <Icon size={16}>*/}
+                        {/*        <InfoIcon/>*/}
+                        {/*    </Icon>*/}
+                        {/*</Tooltip>*/}
                     </div>
                     <div>${formatValue(Big(stats?.volume || 0).toFixed(2), 2, true)}</div>
                     <div>
                         <span>Total Unique Users</span>
-                        <Tooltip placement="top" content="Content coming here">
-                            <Icon size={16}>
-                                <InfoIcon/>
-                            </Icon>
-                        </Tooltip>
+                        {/*<Tooltip placement="top" content="Content coming here">*/}
+                        {/*    <Icon size={16}>*/}
+                        {/*        <InfoIcon/>*/}
+                        {/*    </Icon>*/}
+                        {/*</Tooltip>*/}
                     </div>
                     <div>{stats?.users || 0}</div>
                 </div>
                 <div className={styles.totalStaked}>
                     <div>
                         <span>Generated Fees</span>
-                        <Tooltip placement="top" content="Content coming here">
-                            <Icon size={16}>
-                                <InfoIcon/>
-                            </Icon>
-                        </Tooltip>
+                        {/*<Tooltip placement="top" content="Content coming here">*/}
+                        {/*    <Icon size={16}>*/}
+                        {/*        <InfoIcon/>*/}
+                        {/*    </Icon>*/}
+                        {/*</Tooltip>*/}
                     </div>
                     <div>${Big(stats?.volume || 0).times('.0004').toFixed(2)}</div>
                     {/*<div>*/}
@@ -66,27 +66,27 @@ const UpperPageReplaced = observer(() => {
             <div className={styles.yourProfit}>
                 <div className={styles.title}>
                     <div>TVL</div>
-                    <Tooltip placement="top" content="Content coming here">
-                        <Icon size={16}>
-                            <InfoIcon/>
-                        </Icon>
-                    </Tooltip>
+                    {/*<Tooltip placement="top" content="Content coming here">*/}
+                    {/*    <Icon size={16}>*/}
+                    {/*        <InfoIcon/>*/}
+                    {/*    </Icon>*/}
+                    {/*</Tooltip>*/}
                 </div>
                 <div className={styles.value}>${formatValue(stats?.tvl || '0', 2, true)}</div>
                 <div className={styles.line}></div>
                 <div className={styles.title}>
                     <div>Total Transactions</div>
-                    <Tooltip placement="top" content="Content coming here">
-                        <Icon size={16}>
-                            <InfoIcon/>
-                        </Icon>
-                    </Tooltip>
+                    {/*<Tooltip placement="top" content="Content coming here">*/}
+                    {/*    <Icon size={16}>*/}
+                    {/*        <InfoIcon/>*/}
+                    {/*    </Icon>*/}
+                    {/*</Tooltip>*/}
                 </div>
                 <div className={styles.value}>{stats?.transactions || 0}</div>
                 <div className={styles.line}></div>
                 <div className={styles.title}>
                     <div>Amount of MEV prevented by Cashmere</div>
-                    <Tooltip placement="top" content="Content coming here">
+                    <Tooltip placement="top" content="Amount by securing from MEV attacks if the transactions were performed on mainnet">
                         <Icon size={16}>
                             <InfoIcon/>
                         </Icon>

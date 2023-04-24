@@ -92,7 +92,7 @@ const UpperPageReplaced = observer(() => {
                         </Icon>
                     </Tooltip>
                 </div>
-                <div className={styles.value}>{Big(stats?.volume || 0).times('.0001').toFixed(2)}</div>
+                <div className={styles.value}>{formatValue(Big(stats?.volume || 0).times('.0001').toFixed(2), 2, true)}</div>
             </div>
             <div className={styles.faucets}>
                 <div className={styles.title}>

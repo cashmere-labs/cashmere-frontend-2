@@ -84,7 +84,6 @@ const UpperPageReplaced = observer(() => {
                 </div>
                 <div className={styles.value}>{stats?.transactions || 0}</div>
                 <div className={styles.line}></div>
-                <div className={styles.line}></div>
                 <div className={styles.title}>
                     <div>Amount of MEV prevented by Cashmere</div>
                     <Tooltip placement="top" content="Content coming here">

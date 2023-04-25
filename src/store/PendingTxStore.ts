@@ -32,16 +32,14 @@ export default class PendingTxStore {
         let fakeTxs: (SwapData)[] = store.get('fakeTxs', []);
         console.log('fake', fakeTxs);
         if (fakeTxs.length > 0) {
-            rootStore.api.getUndetectedTxids(fakeTxs.map(tx => tx.swapInitiatedTxid)).then(processedTxs => {
-                processedTxs.forEach(txid => {
-                    fakeTxs = fakeTxs.filter(fakeTx => fakeTx.swapInitiatedTxid !== txid);
-                });
-                console.log(fakeTxs);
-                fakeTxs.forEach(tx => {
+            rootStore.api.getUndetectedTxids(fakeTxs.map(tx => tx.swapInitiatedTxid)).then(undetectedTxids => {
+                fakeTxs = undetectedTxids.map(txid => {
+                    let tx = fakeTxs.filter(tx => tx.swapInitiatedTxid === txid)[0];
                     runInAction(() => {
                         this.txsMap.set(tx.swapId, tx);
                         this.pendingSwaps.push(tx.swapId);
                     });
+                    return tx;
                 });
                 store.set('fakeTxs', fakeTxs, true);
             });
@@ -62,23 +60,23 @@ export default class PendingTxStore {
                 return;
             const updatedEntries = await this.rootStore.api.pendingTransactionsList(this.account);
             runInAction(() => {
-                for (const swaps of this.swaps) {
+                for (const swap of this.swaps) {
                     // finished and disappeared
-                    if (updatedEntries.filter(e => e.swapId === swaps).length === 0) {
-                        const entry = { ...this.txsMap.get(swaps)! };
-                        const fakeKey = buildFakeKey(entry);
-                        this.txsMap.set(fakeKey, entry);
+                    if (updatedEntries.filter(e => e.swapId === swap).length === 0) {
+                        const entry: SwapData = { ...this.txsMap.get(swap)!, swapContinueConfirmed: true };
                         this.txsMap.set(entry.swapId, entry);
-                        this.completeSwaps.push(swaps);
-                        this.swaps.remove(swaps);
+                        this.completeSwaps.push(swap);
+                        this.swaps.remove(swap);
                     }
                 }
                 for (const entry of updatedEntries) {
                     // new tx appeared
                     const fakeKey = buildFakeKey(entry);
-                    if (this.pendingSwaps.includes(fakeKey))
+                    if (this.pendingSwaps.includes(fakeKey)) {
                         this.pendingSwaps.remove(fakeKey);
-                    this.txsMap.set(fakeKey, entry);
+                        if (this.pendingWindowOpen && this.selectedTxId === fakeKey)
+                            this.selectedTxId = entry.swapId;
+                    }
                     this.txsMap.set(entry.swapId, entry);
                     if (!this.swaps.includes(entry.swapId)) {
                         this.swaps.push(entry.swapId);
@@ -92,15 +90,15 @@ export default class PendingTxStore {
     }
 
     @action private async checkFailedTxs() {
-        let fakeTxs = store.get('fakeTxs', []);
+        let fakeTxs: SwapData[] = store.get('fakeTxs', []);
         for (const tx of fakeTxs) {
-            const receipt = await getProvider({ chainId: tx.srcChain }).getTransactionReceipt(tx.startTxId);
+            const receipt = await getProvider({ chainId: tx.srcChainId }).getTransactionReceipt(tx.swapInitiatedTxid);
             runInAction(() => {
                 if (receipt && !receipt.status) {
-                    const entry = this.txsMap.get(tx.id);
+                    const entry = this.txsMap.get(tx.swapId);
                     if (entry) {
                         entry.failed = 0;
-                        this.txsMap.set(tx.id, entry);
+                        this.txsMap.set(tx.swapId, entry);
                         fakeTxs = fakeTxs.filter((t: SwapData) => t.swapId !== tx.swapId);
                     }
                 }

@@ -46,6 +46,12 @@ export type SwapData = {
     // progress info
     srcAmount: string;
     srcToken: Address;
+    srcDecimals?: number;
+    srcTokenSymbol?: string;
+    lwsTokenSymbol?: string;
+    hgsTokenSymbol?: string;
+    dstTokenSymbol?: string;
+
     failed?: number;
     fake?: boolean;
 }

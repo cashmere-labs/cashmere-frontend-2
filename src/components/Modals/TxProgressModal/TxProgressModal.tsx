@@ -20,7 +20,6 @@ import UNISWAP_ICON from '../../../assets/images/uniswap.svg';
 import CASHMERE_WHITE_ICON from '../../../assets/images/cashmereWhite.png';
 import CASHMERE_GRAY_ICON from '../../../assets/images/cashmereGray.png';
 import { SwapData } from '../../../utils/api';
-import { useCache } from '../../../store/CacheStore';
 
 type TxProgressModalProps = {
     modalController: ModalController;
@@ -31,23 +30,23 @@ const TxProgressModal = observer(({ modalController, selectedTx }: TxProgressMod
     const themeStore = useInjection(ThemeStore);
 
     // @ts-ignore
-    const srcChain = chainIdToChain.get(selectedTx?.srcChain);
+    const srcChain = chainIdToChain.get(selectedTx?.srcChainId);
     // @ts-ignore
-    const dstChain = chainIdToChain.get(selectedTx?.dstChain);
+    const dstChain = chainIdToChain.get(selectedTx?.dstChainId);
     const steps: TransactionStep[] = [
         {
-            title: `Swapping ${Big(selectedTx?.srcAmount || 0).div(`1e${selectedTx?.srcDecimals || 18}`).toFixed(5)} ${selectedTx?.srcToken} to ${selectedTx?.lwsToken}`,
+            title: `Swapping ${Big(selectedTx?.srcAmount || 0).div(`1e${selectedTx?.srcDecimals || 18}`).toFixed(5)} ${selectedTx?.srcTokenSymbol} to ${selectedTx?.lwsTokenSymbol}`,
             image: UNISWAP_ICON,
             poweredBy: 'Uniswap',
             url: `${srcChain?.blockExplorers?.default.url}/tx/${selectedTx?.swapInitiatedTxid}`,
             // url: UNISWAP_ICON,
             progress: (() => {
-                if (typeof selectedTx?.failed === 'undefined') return 'failed';
+                if (typeof selectedTx?.failed !== 'undefined') return 'failed';
                 return selectedTx?.fake ? 'in_progress' : 'done';
             })(),
         },
         {
-            title: `Swapping ${selectedTx?.lwsToken} on ${srcChain?.name} to ${selectedTx?.hgsToken} on ${dstChain?.name}`,
+            title: `Swapping ${selectedTx?.lwsTokenSymbol} on ${srcChain?.name} to ${selectedTx?.hgsTokenSymbol} on ${dstChain?.name}`,
             image: themeStore.theme === 'dark' ? CASHMERE_WHITE_ICON : CASHMERE_GRAY_ICON,
             poweredBy: 'Cashmere',
             url: selectedTx?.l0Link && `https://testnet.layerzeroscan.com/${selectedTx.l0Link}`,
@@ -58,7 +57,7 @@ const TxProgressModal = observer(({ modalController, selectedTx }: TxProgressMod
             })(),
         },
         {
-            title: `Swapping ${selectedTx?.hgsToken} to ${selectedTx?.dstToken}`,
+            title: `Swapping ${selectedTx?.hgsTokenSymbol} to ${selectedTx?.dstTokenSymbol}`,
             image: UNISWAP_ICON,
             poweredBy: 'Uniswap',
             url: selectedTx?.swapContinueTxid && `${dstChain?.blockExplorers?.default.url}/tx/${selectedTx.swapContinueTxid}`,

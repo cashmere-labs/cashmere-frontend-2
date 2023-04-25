@@ -31,7 +31,7 @@ const PendingWindow = observer(({ open }: IPendingWindowProps) => {
                         <div key={tx.swapId} className={styles.item}>
                             <div className={styles.row}>
                                 <div className={styles.title}>
-                                    {Big(tx.srcAmount).div(`1e${tx?.srcDecimals || 18}`).toFixed(5)} {tx.srcToken} from {srcChain?.name || 'SrcChain'} to {dstChain?.name || 'DstChain'}
+                                    {Big(tx.srcAmount || 0).div(`1e${tx?.srcDecimals || 18}`).toFixed(5)} {tx.srcTokenSymbol} on {srcChain?.name || 'SrcChain'} to {tx.dstTokenSymbol} on {dstChain?.name || 'DstChain'}
                                 </div>
                                 <div className={styles.more} onClick={() => {
                                     pendingTxStore.setSelectedTxId(txId);

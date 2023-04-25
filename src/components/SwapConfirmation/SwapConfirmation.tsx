@@ -174,7 +174,7 @@ const SwapConfirmation = observer(({
 
       console.log("beforeEstimate", tx);
       setFeeRequired(Big(resp.value).div(Big(10).pow(18)));
-      tx.gasLimit = await provider?.estimateGas(tx);
+      tx.gasLimit = (await provider!.estimateGas(tx)).mul(3).div(2);  // x1.5
       setFeeRequired(Big(tx.gasLimit!.toString()).mul(tx.gasPrice!.toString()).div(Big(10).pow(18)));
       console.log("afterEstimate", tx);
       const receipt = await signer?.sendTransaction(tx);

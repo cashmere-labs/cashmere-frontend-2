@@ -1,6 +1,6 @@
 import { RotateIcon } from "../../assets/icons";
 import { Row } from "../../components";
-import { ModalController, useModal } from '../../hooks/useModal';
+import { ModalController } from '../../hooks/useModal';
 import { ReactNode, useEffect, useState } from "react";
 import { FaChevronRight } from "react-icons/fa";
 import { SwapDetailsData } from "../../types/swap";
@@ -19,7 +19,6 @@ import { BigNumber, constants, ethers } from "ethers";
 // import CashmereRouter2L0ABI from "../../abi/CashmereRouter2L0.abi.json";
 import { ContractContext as CashmereAggregatorUniswapContext } from "../../abi/CashmereAggregatorUniswap";
 import CashmereAggregatorUniswapABI from "../../abi/CashmereAggregatorUniswap.json";
-import { apiAddress } from '../../constants/utils';
 import { useInjection } from 'inversify-react';
 import ThemeStore from '../../store/ThemeStore';
 import { observer } from 'mobx-react-lite';
@@ -27,6 +26,7 @@ import { Chain } from '../../constants/chains';
 import { erc20ABI, useAccount, useContract, useProvider, useSigner, useSignTypedData } from 'wagmi';
 import PendingTxStore from '../../store/PendingTxStore';
 import { ErrorCode } from '@ethersproject/logger/src.ts';
+import { Api } from '../../utils/api';
 
 type SwapConfirmationModal = {
   swapSettings: SwapSettings;
@@ -53,6 +53,7 @@ const SwapConfirmation = observer(({
 }: SwapConfirmationModal) => {
   const themeStore = useInjection(ThemeStore);
   const pendingTxStore = useInjection(PendingTxStore);
+  const api = useInjection(Api);
   const { address: accountAddress } = useAccount();
   const provider = useProvider();
   const { data: signer } = useSigner();
@@ -82,15 +83,8 @@ const SwapConfirmation = observer(({
       // ));
 
       const fromAmount = new Big(from.amount).mul(new Big(10).pow(from.token.decimals)).toFixed(0);
-      const r = await fetch(apiAddress + '/swapParamsL0?' + new URLSearchParams({
-        fromAmount,
-        fromChain: from.network.id.toString(),
-        fromToken: from.token.address,
-        toChain: to.network.id.toString(),
-        toToken: to.token.address,
-        receiver: accountAddress!,
-      }));
-      const resp = await r.json();
+
+      const resp = await api.getSwapParams(from.network.id, from.token.address, fromAmount, to.network.id, to.token.address, accountAddress!);
       console.log(resp);
 
       if (from.token.address !== '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE') {
@@ -119,8 +113,8 @@ const SwapConfirmation = observer(({
         },
         value: {
             receiver: accountAddress!,
-            lwsPoolId: resp.args.lwsPoolId,
-            hgsPoolId: resp.args.hgsPoolId,
+            lwsPoolId: parseInt(resp.args.lwsPoolId),
+            hgsPoolId: parseInt(resp.args.hgsPoolId),
             dstToken: resp.args.dstToken,
             minHgsAmount: BigNumber.from(resp.args.minHgsAmount).mul("9").div("10")
         }
@@ -181,10 +175,10 @@ const SwapConfirmation = observer(({
       // setIsConfirmed(true);
 
       modalController.close();
-      resp.entry.startTxId = receipt?.hash;
-      pendingTxStore.addFakeTx(resp.entry);
+      resp.swapData.swapInitiatedTxid = receipt?.hash as `0x${string}`;
+      pendingTxStore.addFakeTx(resp.swapData);
       pendingTxStore.setPendingWindowOpen(true);
-      pendingTxStore.setSelectedTxId(resp.entry.id);
+      pendingTxStore.setSelectedTxId(resp.swapData.swapId);
 
       // const l0Interval = setInterval(async () => {
       //   const r = await fetch(`https://api-testnet.layerzero-scan.com/tx/${receipt?.hash}`);

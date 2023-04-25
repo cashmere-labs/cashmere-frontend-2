@@ -14,53 +14,61 @@ import styles from './TxProgressModal.module.scss';
 import { observer } from 'mobx-react-lite';
 import { useInjection } from 'inversify-react';
 import ThemeStore from '../../../store/ThemeStore';
-import { SwapProgressEntry } from '../../../utils/api';
 import { chainIdToChain } from '../../../constants/chains';
 import Big from 'big.js';
 import UNISWAP_ICON from '../../../assets/images/uniswap.svg';
 import CASHMERE_WHITE_ICON from '../../../assets/images/cashmereWhite.png';
 import CASHMERE_GRAY_ICON from '../../../assets/images/cashmereGray.png';
+import { SwapData } from '../../../utils/api';
+import { useCache } from '../../../store/CacheStore';
 
 type TxProgressModalProps = {
     modalController: ModalController;
-    selectedTx?: SwapProgressEntry;
+    selectedTx?: SwapData;
 };
 
 const TxProgressModal = observer(({ modalController, selectedTx }: TxProgressModalProps) => {
     const themeStore = useInjection(ThemeStore);
 
-    const getProgress = (step: number) => {
-        if (selectedTx?.failed === step) return 'failed';
-        else if ((selectedTx?.step || 0) < step) return 'not_started';
-        else if ((selectedTx?.step || 0) === step) return 'in_progress';
-        else /*(tx.step > step)*/ return 'done';
-    };
     // @ts-ignore
     const srcChain = chainIdToChain.get(selectedTx?.srcChain);
     // @ts-ignore
     const dstChain = chainIdToChain.get(selectedTx?.dstChain);
     const steps: TransactionStep[] = [
         {
-            title: `Swapping ${Big(selectedTx?.amount || 0).div(`1e${selectedTx?.srcDecimals || 18}`).toFixed(5)} ${selectedTx?.srcToken} to ${selectedTx?.lwsToken}`,
+            title: `Swapping ${Big(selectedTx?.srcAmount || 0).div(`1e${selectedTx?.srcDecimals || 18}`).toFixed(5)} ${selectedTx?.srcToken} to ${selectedTx?.lwsToken}`,
             image: UNISWAP_ICON,
             poweredBy: 'Uniswap',
-            url: `${srcChain?.blockExplorers?.default.url}/tx/${selectedTx?.startTxId}`,
+            url: `${srcChain?.blockExplorers?.default.url}/tx/${selectedTx?.swapInitiatedTxid}`,
             // url: UNISWAP_ICON,
-            progress: getProgress(0),
+            progress: (() => {
+                if (typeof selectedTx?.failed === 'undefined') return 'failed';
+                return selectedTx?.fake ? 'in_progress' : 'done';
+            })(),
         },
         {
             title: `Swapping ${selectedTx?.lwsToken} on ${srcChain?.name} to ${selectedTx?.hgsToken} on ${dstChain?.name}`,
             image: themeStore.theme === 'dark' ? CASHMERE_WHITE_ICON : CASHMERE_GRAY_ICON,
             poweredBy: 'Cashmere',
-            url: selectedTx?.l0Path && `https://testnet.layerzeroscan.com/${selectedTx.l0Path}`,
-            progress: getProgress(1),
+            url: selectedTx?.l0Link && `https://testnet.layerzeroscan.com/${selectedTx.l0Link}`,
+            progress: (() => {
+                if (selectedTx?.swapPerformedTxid) return 'done';
+                if (!selectedTx?.fake) return 'in_progress';
+                return 'not_started';
+            })(),
         },
         {
             title: `Swapping ${selectedTx?.hgsToken} to ${selectedTx?.dstToken}`,
             image: UNISWAP_ICON,
             poweredBy: 'Uniswap',
-            url: selectedTx?.continueTxId && `${dstChain?.blockExplorers?.default.url}/tx/${selectedTx.continueTxId}`,
-            progress: getProgress(2),
+            url: selectedTx?.swapContinueTxid && `${dstChain?.blockExplorers?.default.url}/tx/${selectedTx.swapContinueTxid}`,
+            progress: (() => {
+                if (selectedTx?.swapContinueTxid) {
+                    if (selectedTx?.swapContinueConfirmed) return 'done';
+                    return 'in_progress';
+                }
+                return 'not_started';
+            })(),
         },
     ];
 

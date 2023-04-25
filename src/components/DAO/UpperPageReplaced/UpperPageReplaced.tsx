@@ -22,7 +22,7 @@ const UpperPageReplaced = observer(() => {
     const waitingModal = useModal();
 
     useEffect(() => {
-        api.daoStats().then(data => setStats(data));
+        api.stats().then(data => setStats(data));
     }, [api]);
     return (
         <div className={styles.wrapper}>

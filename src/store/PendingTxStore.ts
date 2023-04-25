@@ -1,18 +1,18 @@
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';
-import { SwapProgressEntry } from '../utils/api';
 import RootStore from './RootStore';
 import { IObservableArray } from 'mobx/src/internal';
 import store from 'store2';
 import { getProvider, Provider } from '@wagmi/core';
+import { SwapData } from '../utils/api';
 
-const buildFakeKey = (entry: SwapProgressEntry) => `${entry.amount}-${entry.srcTokenAddress}-${entry.dstTokenAddress}-${entry.srcChain}-${entry.dstChain}-${entry.startTxId}`;
+const buildFakeKey = (swapData: SwapData): `0x${string}` => `${swapData.swapInitiatedTxid}-${swapData.srcChainId}`;
 
 export default class PendingTxStore {
     @observable account?: string = undefined;
-    @observable txsMap = observable.map<string, SwapProgressEntry>();
-    @observable pendingEntries: IObservableArray<string> = observable.array();
-    @observable entries: IObservableArray<string> = observable.array();
-    @observable completeEntries: IObservableArray<string> = observable.array();
+    @observable txsMap = observable.map<string, SwapData>();
+    @observable pendingSwaps: IObservableArray<string> = observable.array();
+    @observable swaps: IObservableArray<string> = observable.array();
+    @observable completeSwaps: IObservableArray<string> = observable.array();
     lock: boolean = false;
     @observable pendingWindowOpen = false;
     @observable selectedTxId?: string = undefined;
@@ -23,18 +23,24 @@ export default class PendingTxStore {
         setInterval(() => this.updateTxs(false), 2000);
         setInterval(() => this.checkFailedTxs(), 10000);
 
-        let fakeTxs: (SwapProgressEntry)[] = store.get('fakeTxs', []);
+        let storageVersion = store.get('storageVersion', 0);
+        if (storageVersion === 0) {
+            store.set('fakeTxs', []);
+            store.set('storageVersion', 1);
+        }
+
+        let fakeTxs: (SwapData)[] = store.get('fakeTxs', []);
         console.log('fake', fakeTxs);
         if (fakeTxs.length > 0) {
-            rootStore.api.getTxsProcessed(fakeTxs.map(tx => tx.startTxId)).then(processedTxs => {
+            rootStore.api.getUndetectedTxids(fakeTxs.map(tx => tx.swapInitiatedTxid)).then(processedTxs => {
                 processedTxs.forEach(txid => {
-                    fakeTxs = fakeTxs.filter(fakeTx => fakeTx.startTxId !== txid);
+                    fakeTxs = fakeTxs.filter(fakeTx => fakeTx.swapInitiatedTxid !== txid);
                 });
                 console.log(fakeTxs);
                 fakeTxs.forEach(tx => {
                     runInAction(() => {
-                        this.txsMap.set(tx.id, tx);
-                        this.pendingEntries.push(tx.id);
+                        this.txsMap.set(tx.swapId, tx);
+                        this.pendingSwaps.push(tx.swapId);
                     });
                 });
                 store.set('fakeTxs', fakeTxs, true);
@@ -49,34 +55,33 @@ export default class PendingTxStore {
         try {
             if (reset) {
                 this.txsMap.clear();
-                this.pendingEntries.clear();
-                this.entries.clear();
+                this.pendingSwaps.clear();
+                this.swaps.clear();
             }
             if (!this.account)
                 return;
-            const updatedEntries = await this.rootStore.api.pendingTxs(this.account);
+            const updatedEntries = await this.rootStore.api.pendingTransactionsList(this.account);
             runInAction(() => {
-                for (const entryId of this.entries) {
+                for (const swaps of this.swaps) {
                     // finished and disappeared
-                    if (updatedEntries.filter(e => e.id === entryId).length === 0) {
-                        const entry = { ...this.txsMap.get(entryId)! };
+                    if (updatedEntries.filter(e => e.swapId === swaps).length === 0) {
+                        const entry = { ...this.txsMap.get(swaps)! };
                         const fakeKey = buildFakeKey(entry);
-                        entry.step = 3;
                         this.txsMap.set(fakeKey, entry);
-                        this.txsMap.set(entry.id, entry);
-                        this.completeEntries.push(entryId);
-                        this.entries.remove(entryId);
+                        this.txsMap.set(entry.swapId, entry);
+                        this.completeSwaps.push(swaps);
+                        this.swaps.remove(swaps);
                     }
                 }
                 for (const entry of updatedEntries) {
                     // new tx appeared
                     const fakeKey = buildFakeKey(entry);
-                    if (this.pendingEntries.includes(fakeKey))
-                        this.pendingEntries.remove(fakeKey);
+                    if (this.pendingSwaps.includes(fakeKey))
+                        this.pendingSwaps.remove(fakeKey);
                     this.txsMap.set(fakeKey, entry);
-                    this.txsMap.set(entry.id, entry);
-                    if (!this.entries.includes(entry.id)) {
-                        this.entries.push(entry.id);
+                    this.txsMap.set(entry.swapId, entry);
+                    if (!this.swaps.includes(entry.swapId)) {
+                        this.swaps.push(entry.swapId);
                         console.log('new real', entry, fakeKey);
                     }
                 }
@@ -84,8 +89,6 @@ export default class PendingTxStore {
         } finally {
             this.lock = false;
         }
-
-        console.log(await getProvider().getTransactionReceipt('0x359c2bda2e18d7756dd8240b5017c8e86f014b2d81a4b7f6f8a04594c5bfaa9a'))
     }
 
     @action private async checkFailedTxs() {
@@ -98,7 +101,7 @@ export default class PendingTxStore {
                     if (entry) {
                         entry.failed = 0;
                         this.txsMap.set(tx.id, entry);
-                        fakeTxs = fakeTxs.filter((t: SwapProgressEntry) => t.id !== tx.id);
+                        fakeTxs = fakeTxs.filter((t: SwapData) => t.swapId !== tx.swapId);
                     }
                 }
             });
@@ -114,10 +117,11 @@ export default class PendingTxStore {
         }
     }
 
-    @action addFakeTx(entry: SwapProgressEntry) {
-        entry.id = buildFakeKey(entry);
-        this.txsMap.set(entry.id, entry);
-        this.pendingEntries.push(entry.id);
+    @action addFakeTx(entry: SwapData) {
+        entry.swapId = buildFakeKey(entry);
+        entry.fake = true;
+        this.txsMap.set(entry.swapId, entry);
+        this.pendingSwaps.push(entry.swapId);
         console.log('fake', entry);
         store.add('fakeTxs', [entry]);
     }
@@ -135,10 +139,10 @@ export default class PendingTxStore {
     }
 
     @computed get txList() {
-        return this.pendingEntries.concat(this.entries).map(id => this.txsMap.get(id)!);
+        return this.pendingSwaps.concat(this.swaps).map(id => this.txsMap.get(id)!);
     }
 
     @computed get txListPendingLength() {
-        return this.pendingEntries.length + this.entries.length;
+        return this.pendingSwaps.length + this.swaps.length;
     }
 }

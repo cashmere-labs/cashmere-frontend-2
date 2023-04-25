@@ -24,14 +24,14 @@ const PendingWindow = observer(({ open }: IPendingWindowProps) => {
         <>
             <div className={styles.wrapper} style={{ opacity: open ? 1 : 0, pointerEvents: open ? 'all' : 'none' }}>
                 {pendingTxStore.txList.map(tx => {
-                    const srcChain = chainIdToChain.get(tx.srcChain);
-                    const dstChain = chainIdToChain.get(tx.dstChain);
-                    const txId = tx.id;
+                    const srcChain = chainIdToChain.get(tx.srcChainId);
+                    const dstChain = chainIdToChain.get(tx.dstChainId);
+                    const txId = tx.swapId;
                     return (
-                        <div key={tx.id} className={styles.item}>
+                        <div key={tx.swapId} className={styles.item}>
                             <div className={styles.row}>
                                 <div className={styles.title}>
-                                    {Big(tx.amount).div(`1e${tx?.srcDecimals || 18}`).toFixed(5)} {tx.srcToken} from {srcChain?.name || 'SrcChain'} to {dstChain?.name || 'DstChain'}
+                                    {Big(tx.srcAmount).div(`1e${tx?.srcDecimals || 18}`).toFixed(5)} {tx.srcToken} from {srcChain?.name || 'SrcChain'} to {dstChain?.name || 'DstChain'}
                                 </div>
                                 <div className={styles.more} onClick={() => {
                                     pendingTxStore.setSelectedTxId(txId);
@@ -42,7 +42,7 @@ const PendingWindow = observer(({ open }: IPendingWindowProps) => {
                             </div>
                             <div className={styles.row}>
                                 <div className={styles.title}>
-                                    Estimated time: <TimeCounter minutes toTimestamp={(tx.startTxTimestamp || 0) + 4*60000} />m
+                                    Estimated time: <TimeCounter minutes toTimestamp={(tx.swapInitiatedTimestamp || 0) + 4*60000} />m
                                 </div>
                             </div>
                         </div>

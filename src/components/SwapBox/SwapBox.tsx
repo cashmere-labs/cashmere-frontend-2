@@ -1,8 +1,6 @@
 import { RotateIcon, SettingsIcon } from '../../assets/icons';
-import { Row } from '../../components';
+import { Row } from '../Row/Row';
 import { SwapConfirmation, TokenOrNetworkRenderer } from '../../components';
-// import { ETHEREUM, POLYGON } from "constants/networks";
-// import { tokenOptions } from "constants/tokenOptions";
 import { useDebounce, useModal } from '../../hooks';
 import { SwapState } from '../../pages/Swap/Swap';
 import { ReactElement, useEffect, useMemo, useRef, useState } from 'react';
@@ -10,15 +8,13 @@ import { FaChevronRight } from 'react-icons/fa';
 import { Token } from '../../types/token';
 import { Button, Icon, Input, Select } from '../../ui';
 
-// import { SwapBoxDetails } from "components/SwapBox/SwapBoxDetails";
-import { SwapNetworkSelector } from '../../components/SwapBox/SwapNetworkSelector';
-import { SwapSettings } from '../../components/SwapSettings/SwapSettings';
+import { SwapNetworkSelector } from './SwapNetworkSelector';
+import { SwapSettings } from '../SwapSettings/SwapSettings';
 import { SwapSettings as SwapSettingType } from '../../components/SwapSettings/useSwapSettings';
 
 import styles from './SwapBox.module.scss';
-import { constants, ethers } from 'ethers';
+import { ethers } from 'ethers';
 import Big from 'big.js';
-import { apiAddress } from '../../constants/utils';
 import { SwapBoxDetails } from './SwapBoxDetails';
 import { formatValue } from '../../utils/formatValue';
 import { useInjection } from 'inversify-react';
@@ -28,6 +24,7 @@ import { erc20ABI, useAccount, useNetwork, useSwitchNetwork } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { activeChains, Chain } from '../../constants/chains';
 import { QuestsModal } from '../Modals/QuestsModal/QuestsModal';
+import { Api } from '../../utils/api';
 
 const SwapBox = observer(({
                               state,
@@ -53,6 +50,7 @@ const SwapBox = observer(({
     const swapSettingsModal = useModal();
     const swapConfirmationModal = useModal();
     const themeStore = useInjection(ThemeStore);
+    const api = useInjection(Api);
     const questModal = useModal();
 
     const rightNetwork = useMemo(() => chain?.id === state.fromChain.id, [chain?.id, state.fromChain]);
@@ -138,15 +136,7 @@ const SwapBox = observer(({
             if (!parseFloat(state.fromAmount))
                 return;
             setEstimateError('Estimating...');
-            const r = await fetch(apiAddress + '/swapEstimateL0?' + new URLSearchParams({
-                fromAmount: Big(state.fromAmount).mul(Big(10).pow(state.fromToken.decimals)).toFixed(0),
-                fromChain: state.fromChain.id.toString(),
-                fromToken: state.fromToken.address,
-                toChain: state.toChain.id.toString(),
-                toToken: state.toToken.address,
-                receiver: constants.AddressZero,
-            }));
-            const resp = await r.json();
+            const resp = await api.getSwapEstimate(state.fromChain.id, state.fromToken.address, Big(state.fromAmount).mul(Big(10).pow(state.fromToken.decimals)).toFixed(0), state.toChain.id, state.toToken.address);
             if (!resp.error) {
                 setToAmount(Big(resp.dstAmount).div(Big(10).pow(state.toToken.decimals)).toString());
                 setMinReceiveAmount(Big(resp.minReceivedDst).div(Big(10).pow(state.toToken.decimals)).toString());

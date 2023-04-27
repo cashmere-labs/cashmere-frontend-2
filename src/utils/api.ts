@@ -109,4 +109,8 @@ export class Api {
     async getSwapEstimate(srcChainId: number, srcToken: string, amount: string, dstChainId: number, dstToken: string): Promise<SwapEstimateResponse> {
         return (await this.client.get('/api/estimate', { params: { srcChainId, srcToken, amount, dstChainId, dstToken } })).data;
     }
+
+    async submitSwapTx(srcChainId: number, txid: Hash) {
+        await this.client.post('/api/submitSwapTx', {}, { params: { srcChainId, txid } });
+    }
 }

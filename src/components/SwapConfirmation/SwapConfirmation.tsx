@@ -171,8 +171,9 @@ const SwapConfirmation = observer(({
       tx.gasLimit = (await provider!.estimateGas(tx)).mul(3).div(2);  // x1.5
       setFeeRequired(Big(tx.gasLimit!.toString()).mul(tx.gasPrice!.toString()).div(Big(10).pow(18)));
       console.log("afterEstimate", tx);
-      const receipt = await signer?.sendTransaction(tx);
+      const receipt = await signer!.sendTransaction(tx);
       // setIsConfirmed(true);
+      receipt.wait().then(async (receipt) => api.submitSwapTx(from.network.id, receipt.transactionHash as `0x${string}`));
 
       modalController.close();
       resp.swapData.swapInitiatedTxid = receipt?.hash as `0x${string}`;

@@ -321,7 +321,7 @@ export const activeChains: Chain[] = [
     lineaTestnet,
     polygonZkEvmTestnet,
     // zkSyncTestnet,
-    metisGoerli,
+    // metisGoerli,
 ];
 
 export const chainIdToChain: Map<number, Chain> = allChains.reduce((prev, c) => {

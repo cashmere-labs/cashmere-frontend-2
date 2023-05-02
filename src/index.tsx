@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider as InversifyProvider } from 'inversify-react';
 import './styles/index.scss';
 import '@rainbow-me/rainbowkit/styles.css';
+import 'intersection-observer';
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';

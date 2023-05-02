@@ -80,7 +80,7 @@ const TxProgressModal = observer(({ modalController, selectedTx }: TxProgressMod
             close={modalController.close}
         >
             <div className={styles.header}>
-                <span>Transaction in Progress</span>
+                <span>{selectedTx?.swapContinueConfirmed ? 'Transaction complete' : 'Transaction in Progress'}</span>
             </div>
             <div className={styles.body}>
                 {steps.map((item, key) => (
@@ -111,8 +111,14 @@ const TxProgressModal = observer(({ modalController, selectedTx }: TxProgressMod
             </div>
 
             <div className={styles.footer}>
-                This usually takes ~4 minutes
-                <br/> but sometimes the wait is longer.
+                {!selectedTx?.swapContinueConfirmed && (
+                    <div>
+                        This usually takes ~4 minutes<br/> but sometimes the wait is longer.
+                    </div>
+                )}
+                <div className={styles.swapidfooter}>
+                    Swap ID: {selectedTx?.swapId}
+                </div>
             </div>
         </Modal>
     );

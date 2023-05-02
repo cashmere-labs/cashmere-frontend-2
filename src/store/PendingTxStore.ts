@@ -14,13 +14,16 @@ export default class PendingTxStore {
     @observable swaps: IObservableArray<string> = observable.array();
     @observable completeSwaps: IObservableArray<string> = observable.array();
     lock: boolean = false;
+    historyLock: boolean = false;
     @observable pendingWindowOpen = false;
     @observable selectedTxId?: string = undefined;
     @observable provider?: Provider = undefined;
+    historyPage: number = 0;
+    @observable moreHistory: boolean = true;
 
     constructor(private readonly rootStore: RootStore) {
         makeObservable(this);
-        setInterval(() => this.updateTxs(false), 2000);
+        setInterval(() => this.updateTxs(), 2000);
         setInterval(() => this.checkFailedTxs(), 10000);
 
         let storageVersion = store.get('storageVersion', 0);
@@ -46,7 +49,34 @@ export default class PendingTxStore {
         }
     }
 
-    @action private async updateTxs(reset: boolean) {
+    @action async loadHistory(reset = false) {
+        if (this.historyLock)
+            return;
+        this.historyLock = true;
+        try {
+            if (reset) {
+                this.completeSwaps.clear();
+            }
+            if (!this.account)
+                return;
+            const items = await this.rootStore.api.transactionHistory(this.account, this.historyPage++);
+            runInAction(() => {
+                for (const swap of items) {
+                    this.txsMap.set(swap.swapId, swap);
+                    if (!this.completeSwaps.includes(swap.swapId)) {
+                        this.completeSwaps.push(swap.swapId);
+                    }
+                }
+                // if (items.length < 5) {
+                //     this.moreHistory = false;
+                // }
+            });
+        } finally {
+            this.historyLock = false;
+        }
+    }
+
+    @action private async updateTxs(reset = false) {
         if (this.lock)
             return;
         this.lock = true;
@@ -65,7 +95,7 @@ export default class PendingTxStore {
                     if (updatedEntries.filter(e => e.swapId === swap).length === 0) {
                         const entry: SwapData = { ...this.txsMap.get(swap)!, swapContinueConfirmed: true };
                         this.txsMap.set(entry.swapId, entry);
-                        this.completeSwaps.push(swap);
+                        this.completeSwaps.spliceWithArray(0, 0, [swap]);
                         this.swaps.remove(swap);
                     }
                 }
@@ -112,6 +142,7 @@ export default class PendingTxStore {
         this.account = newAccount;
         if (oldAccount !== newAccount) {
             await this.updateTxs(true);
+            await this.loadHistory(true);
         }
     }
 
@@ -140,7 +171,15 @@ export default class PendingTxStore {
         return this.pendingSwaps.concat(this.swaps).map(id => this.txsMap.get(id)!);
     }
 
+    @computed get completeTxList() {
+        return this.pendingSwaps.concat(this.completeSwaps).map(id => this.txsMap.get(id)!);
+    }
+
     @computed get txListPendingLength() {
         return this.pendingSwaps.length + this.swaps.length;
+    }
+
+    @computed get hasCompleteSwaps() {
+        return this.completeSwaps.length;
     }
 }

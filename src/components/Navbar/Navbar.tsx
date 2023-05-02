@@ -36,7 +36,7 @@ const PendingTxsButton = observer(({ mobile }: { mobile: boolean }) => {
 
     return (
         <div style={{ position: 'relative' }}>
-            {pendingTxStore.txListPendingLength > 0 && (
+            {pendingTxStore.txListPendingLength + pendingTxStore.hasCompleteSwaps > 0 && (
                 <Button
                     height="40px"
                     onClick={() => runInAction(() => pendingTxStore.setPendingWindowOpen(!pendingTxStore.pendingWindowOpen))}
@@ -46,7 +46,11 @@ const PendingTxsButton = observer(({ mobile }: { mobile: boolean }) => {
                         styles.accountButton,
                     )}
                 >
-                    {pendingTxStore.txListPendingLength} pending
+                    {pendingTxStore.txListPendingLength > 0 ? (
+                        <>{pendingTxStore.txListPendingLength} pending</>
+                    ) : (
+                        <>Swap history</>
+                    )}
                 </Button>
             )}
             <PendingWindow open={pendingWindowOpen} />

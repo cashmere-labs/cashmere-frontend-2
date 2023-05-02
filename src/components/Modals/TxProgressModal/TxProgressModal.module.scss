@@ -151,3 +151,15 @@
   border-color: var(--tx-progress-inprogress-border);
   border-top-color: transparent;
 }
+
+.swapidfooter {
+  font-size: 10px;
+  max-width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding: 0 20px;
+
+  &:not(:last-child) {
+    margin-top: 10px;
+  }
+}

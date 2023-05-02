@@ -9,6 +9,8 @@
   top: var(--navbar-height);
   box-shadow: 1px 2px 2px #96969612;
   width: 300px;
+  max-height: 300px;
+  overflow-y: scroll;
 
   .item {
     padding: 1.25rem 0;
@@ -27,6 +29,12 @@
       &:not(:last-child) {
         margin-bottom: 5px;
       }
+    }
+
+    .spinner {
+      border-color: var(--tx-progress-inprogress-border);
+      border-top-color: transparent;
+      margin: 0 auto;
     }
 
     .title {

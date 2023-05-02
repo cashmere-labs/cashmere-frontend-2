@@ -96,6 +96,14 @@ export class Api {
         } })).data;
     }
 
+    async transactionHistory(account: string, page= 0): Promise<SwapData[]> {
+        return (await this.client.get('/api/transactionsList', { params: {
+            type: 'complete',
+            account,
+            page,
+        } })).data;
+    }
+
     async getUndetectedTxids(txIds: string[]): Promise<string[]> {
         return (await this.client.get('/api/getUndetectedTxids', { params: {
             txIds: txIds.join(','),

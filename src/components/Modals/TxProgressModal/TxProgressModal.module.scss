@@ -25,6 +25,7 @@
   border-top: 1px solid var(--table-divider);
   display: flex;
   width: 100%;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 1.5rem 0rem;

@@ -123,6 +123,12 @@ export const ethereum: Chain = {
 
 export const goerli: Chain = {
     ...wagmiGoerli,
+    rpcUrls: {
+        ...wagmiGoerli.rpcUrls,
+        default: {
+            http: ['https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
+        },
+    },
     iconUrl: ETHEREUM_IMAGE,
     tokenList: goerliTokenList.map(t => new Token(t)),
     badgeColors: ethereumBadgeColors,

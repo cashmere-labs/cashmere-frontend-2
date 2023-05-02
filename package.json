@@ -42,8 +42,8 @@
     "web-vitals": "2.1.4"
   },
   "scripts": {
-    "dev-vite": "vite",
-    "build-vite": "vite build",
+    "dev": "vite",
+    "build": "vite build",
     "format": "prettier --config .prettierrc './src/**/*.{ts,tsx,scss}' --write"
   },
   "eslintConfig": {

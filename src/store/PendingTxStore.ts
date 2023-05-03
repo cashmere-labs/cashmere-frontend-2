@@ -19,6 +19,7 @@ export default class PendingTxStore {
     @observable selectedTxId?: string = undefined;
     @observable provider?: Provider = undefined;
     historyPage: number = 0;
+    @observable completeSwapsCount: number = 0;
     @observable moreHistory: boolean = true;
 
     constructor(private readonly rootStore: RootStore) {
@@ -59,17 +60,18 @@ export default class PendingTxStore {
             }
             if (!this.account)
                 return;
-            const items = await this.rootStore.api.transactionHistory(this.account, this.historyPage++);
+            const res = await this.rootStore.api.transactionHistory(this.account, this.historyPage++);
             runInAction(() => {
-                for (const swap of items) {
+                this.completeSwapsCount = res.count;
+                for (const swap of res.items) {
                     this.txsMap.set(swap.swapId, swap);
                     if (!this.completeSwaps.includes(swap.swapId)) {
                         this.completeSwaps.push(swap.swapId);
                     }
                 }
-                // if (items.length < 5) {
-                //     this.moreHistory = false;
-                // }
+                if (res.items.length < 10) {
+                    this.moreHistory = false;
+                }
             });
         } finally {
             this.historyLock = false;
@@ -88,18 +90,18 @@ export default class PendingTxStore {
             }
             if (!this.account)
                 return;
-            const updatedEntries = await this.rootStore.api.pendingTransactionsList(this.account);
+            const res = await this.rootStore.api.pendingTransactionsList(this.account);
             runInAction(() => {
                 for (const swap of this.swaps) {
                     // finished and disappeared
-                    if (updatedEntries.filter(e => e.swapId === swap).length === 0) {
+                    if (res.items.filter(e => e.swapId === swap).length === 0) {
                         const entry: SwapData = { ...this.txsMap.get(swap)!, swapContinueConfirmed: true };
                         this.txsMap.set(entry.swapId, entry);
                         this.completeSwaps.spliceWithArray(0, 0, [swap]);
                         this.swaps.remove(swap);
                     }
                 }
-                for (const entry of updatedEntries) {
+                for (const entry of res.items) {
                     // new tx appeared
                     const fakeKey = buildFakeKey(entry);
                     if (this.pendingSwaps.includes(fakeKey)) {
@@ -175,11 +177,7 @@ export default class PendingTxStore {
         return this.pendingSwaps.concat(this.completeSwaps).map(id => this.txsMap.get(id)!);
     }
 
-    @computed get txListPendingLength() {
+    @computed get pendingSwapsCount() {
         return this.pendingSwaps.length + this.swaps.length;
-    }
-
-    @computed get hasCompleteSwaps() {
-        return this.completeSwaps.length;
     }
 }

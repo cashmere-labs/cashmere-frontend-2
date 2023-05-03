@@ -17,14 +17,9 @@ import { formatValue } from '../../utils/formatValue';
 import PendingWindow from './PendingWindow';
 import PendingTxStore from '../../store/PendingTxStore';
 import { reaction, runInAction } from 'mobx';
-import { chainIdToChain } from '../../constants/chains';
-import { TransactionStep } from '../../types/app';
-import Big from 'big.js';
-import UNISWAP_ICON from '../../assets/images/uniswap.svg';
-import CASHMERE_WHITE_ICON from '../../assets/images/cashmereWhite.png';
-import CASHMERE_GRAY_ICON from '../../assets/images/cashmereGray.png';
 import { useModal } from '../../hooks';
 import { QuestsModal } from '../Modals/QuestsModal/QuestsModal';
+import { MdCheckCircle, MdHourglassFull } from 'react-icons/all';
 
 const PendingTxsButton = observer(({ mobile }: { mobile: boolean }) => {
     const themeStore = useInjection(ThemeStore);
@@ -36,7 +31,7 @@ const PendingTxsButton = observer(({ mobile }: { mobile: boolean }) => {
 
     return (
         <div style={{ position: 'relative' }}>
-            {pendingTxStore.txListPendingLength + pendingTxStore.hasCompleteSwaps > 0 && (
+            {pendingTxStore.account && (
                 <Button
                     height="40px"
                     onClick={() => runInAction(() => pendingTxStore.setPendingWindowOpen(!pendingTxStore.pendingWindowOpen))}
@@ -46,11 +41,8 @@ const PendingTxsButton = observer(({ mobile }: { mobile: boolean }) => {
                         styles.accountButton,
                     )}
                 >
-                    {pendingTxStore.txListPendingLength > 0 ? (
-                        <>{pendingTxStore.txListPendingLength} pending</>
-                    ) : (
-                        <>Swap history</>
-                    )}
+                    {pendingTxStore.completeSwapsCount}<MdCheckCircle size={20} className={styles.buttonIcon} />
+                    {pendingTxStore.pendingSwapsCount}<MdHourglassFull size={20} className={styles.buttonIcon} />
                 </Button>
             )}
             <PendingWindow open={pendingWindowOpen} />

@@ -89,14 +89,14 @@ export class Api {
         return (await this.client.get('/api/stats')).data;
     }
 
-    async pendingTransactionsList(account: string): Promise<SwapData[]> {
+    async pendingTransactionsList(account: string): Promise<{ count: number, items: SwapData[] }> {
         return (await this.client.get('/api/transactionsList', { params: {
             type: 'pending',
             account,
         } })).data;
     }
 
-    async transactionHistory(account: string, page= 0): Promise<SwapData[]> {
+    async transactionHistory(account: string, page= 0): Promise<{ count: number, items: SwapData[] }> {
         return (await this.client.get('/api/transactionsList', { params: {
             type: 'complete',
             account,

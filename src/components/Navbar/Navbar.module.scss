@@ -320,3 +320,11 @@
     margin-right: 5px;
   }
 }
+
+.buttonIcon {
+  margin-left: 3px;
+
+  &:not(:last-child) {
+    margin-right: 10px;
+  }
+}

@@ -21,7 +21,6 @@ function SwapHistoryListItem({ tx, complete }: { tx: SwapData, complete?: boolea
     const srcChain = chainIdToChain.get(tx.srcChainId);
     const dstChain = chainIdToChain.get(tx.dstChainId);
     const txId = tx.swapId;
-    console.log(JSON.stringify(tx));
 
     return (
         <div key={tx.swapId} className={styles.item}>
@@ -43,10 +42,7 @@ function SwapHistoryListItem({ tx, complete }: { tx: SwapData, complete?: boolea
                 <div className={styles.remove}>
                     {/*<MdClear size={20} className={styles.remove} />*/}
                 </div>
-                <div onClick={() => {
-                    console.log(txId);
-                    pendingTxStore.setSelectedTxId(txId)
-                }}>
+                <div onClick={() => pendingTxStore.setSelectedTxId(txId)}>
                     <MdLaunch size={23} />
                 </div>
             </div>

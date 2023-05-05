@@ -2,7 +2,21 @@ import { action, makeObservable, observable } from 'mobx';
 import { AuthenticationStatus } from '@rainbow-me/rainbowkit/dist/components/RainbowKitProvider/AuthenticationContext';
 import RootStore from './RootStore';
 import store from 'store2';
-import { SiweMessage } from 'siwe';
+
+export interface SiweMessage {
+    address: string;
+    chainId?: number;
+    issuedAt: string;
+    uri: string;
+    nonce: string;
+    expirationTime?: string;
+    notBefore?: string;
+    domain: string;
+    version: '1';
+    requestId: string;
+    statement: string;
+    resources?: string[];
+}
 
 export class AuthStore {
     @observable status: AuthenticationStatus = 'loading';
@@ -65,8 +79,8 @@ export class AuthStore {
         this.updateRefreshToken(undefined);
     }
 
-    createMessage(nonce: string, address: string) {
-        return new SiweMessage({
+    createMessage(nonce: string, address: string): SiweMessage {
+        return {
             domain: window.location.host,
             address,
             statement: 'Sign in with Ethereum to the app.',
@@ -74,7 +88,36 @@ export class AuthStore {
             version: '1',
             requestId: this.nonceRequestId!,
             nonce,
-        });
+            issuedAt: new Date().toISOString()
+        };
+    }
+
+    prepareMessage(siweMessage: SiweMessage) {
+        const messageLines = [
+            `${siweMessage.domain} wants you to sign in with your Ethereum account:`,
+            `${siweMessage.address}`,
+            '',
+            `${siweMessage.statement}`,
+            '',
+            `URI: ${siweMessage.uri}`,
+            `Version: ${siweMessage.version}`,
+            `Chain ID: ${siweMessage.chainId}`,
+            `Nonce: ${siweMessage.nonce}`,
+            `Issued At: ${siweMessage.issuedAt}`,
+        ];
+        if (siweMessage.expirationTime)
+            messageLines.push(`Expiration Time: ${siweMessage.expirationTime}`);
+        if (siweMessage.notBefore)
+            messageLines.push(`Not Before: ${siweMessage.notBefore}`);
+        if (siweMessage.requestId)
+            messageLines.push(`Request ID: ${siweMessage.requestId}`);
+        if (siweMessage.resources) {
+            messageLines.push('Resources:');
+            siweMessage.resources.forEach((resource) =>
+                messageLines.push(`- ${resource}`)
+            );
+        }
+        return messageLines.join('\n');
     }
 
     async login(message: SiweMessage, signature: string) {

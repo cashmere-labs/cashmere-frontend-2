@@ -47,7 +47,7 @@ const RainbowKit = observer(({ children }: PropsWithChildren) => {
                 }
             },
             getMessageBody: ({ message }) => {
-                return message.prepareMessage();
+                return authStore.prepareMessage(message);
             },
             getNonce: async () => {
                 return (await api.getNonce(authStore.updateNonceRequestId())).nonce;

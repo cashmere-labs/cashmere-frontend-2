@@ -39,10 +39,10 @@ export default defineConfig(async () => {
             rollupOptions: {
                 output: {
                     manualChunks: {
-                        es: [ 'ethers', 'siwe' ],
+                        es: [ 'ethers' ],
                     }
                 }
             }
-        }
+        },
     };
 });

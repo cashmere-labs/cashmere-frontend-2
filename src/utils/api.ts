@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { apiAddress } from '../constants/utils';
+import RootStore from '../store/RootStore';
+import { runInAction } from 'mobx';
 
 export type Hex = `0x${string}`
 export type Hash = `0x${string}`
@@ -83,7 +85,20 @@ export interface SwapParamsResponse {
 }
 
 export class Api {
-    client = axios.create({ baseURL: `${apiAddress}/` });
+    client = axios.create({
+        baseURL: `${apiAddress}/`,
+        withCredentials: false,
+    });
+
+    constructor(
+        private readonly rootStore: RootStore
+    ) {
+        this.client.interceptors.request.use(config => {
+            if (rootStore.authStore.token && !config.headers['Authorization'])
+                config.headers['Authorization'] = `Bearer ${rootStore.authStore.token}`;
+            return config;
+        });
+    }
 
     async stats(): Promise<DaoStatsResponse> {
         return (await this.client.get('/api/stats')).data;
@@ -120,5 +135,34 @@ export class Api {
 
     async submitSwapTx(srcChainId: number, txid: Hash) {
         await this.client.post('/api/submitSwapTx', {}, { params: { srcChainId, txid } });
+    }
+
+    async getNonce(requestId: string): Promise<{ nonce: string }> {
+        return (await this.client.get('/api/auth/nonce', { params: { requestId } })).data;
+    }
+
+    async login(message: any, signature: string): Promise<{ accessToken: string, refreshToken: string }> {
+        return (await this.client.post('/api/auth/login', { message, signature })).data;
+    }
+
+    async refresh(refreshToken: string): Promise<{ accessToken: string, refreshToken: string }> {
+        return (await this.client.get('/api/auth/refresh', { headers: { Authorization: `Bearer ${refreshToken}`} })).data;
+    }
+
+    async logout(): Promise<{ accessToken: string, refreshToken: string }> {
+        return (await this.client.post('/api/auth/logout'));
+    }
+
+    async hideCompletedSwaps() {
+        await this.client.delete('/api/transactionsList');
+    }
+
+    async hideCompletedSwap(swapId: string) {
+        if (!swapId) return;
+        await this.client.delete(`/api/transactionsList/${swapId}`);
+    }
+
+    async me() {
+        return (await this.client.get('/api/auth/me')).data;
     }
 }

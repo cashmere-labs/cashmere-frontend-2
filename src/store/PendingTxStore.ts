@@ -13,21 +13,21 @@ export default class PendingTxStore {
     @observable pendingSwaps: IObservableArray<string> = observable.array();
     @observable swaps: IObservableArray<string> = observable.array();
     @observable completeSwaps: IObservableArray<string> = observable.array();
-    lock: boolean = false;
-    historyLock: boolean = false;
+    lock = false;
+    historyLock = false;
     @observable pendingWindowOpen = false;
     @observable selectedTxId?: string = undefined;
     @observable provider?: Provider = undefined;
-    historyPage: number = 0;
-    @observable completeSwapsCount: number = 0;
-    @observable moreHistory: boolean = true;
+    historyPage = 0;
+    @observable completeSwapsCount = 0;
+    @observable moreHistory = true;
 
     constructor(private readonly rootStore: RootStore) {
         makeObservable(this);
         setInterval(() => this.updateTxs(), 2000);
         setInterval(() => this.checkFailedTxs(), 10000);
 
-        let storageVersion = store.get('storageVersion', 0);
+        const storageVersion = store.get('storageVersion', 0);
         if (storageVersion === 0) {
             store.set('fakeTxs', []);
             store.set('storageVersion', 1);
@@ -38,7 +38,7 @@ export default class PendingTxStore {
         if (fakeTxs.length > 0) {
             rootStore.api.getUndetectedTxids(fakeTxs.map(tx => tx.swapInitiatedTxid)).then(undetectedTxids => {
                 fakeTxs = undetectedTxids.map(txid => {
-                    let tx = fakeTxs.filter(tx => tx.swapInitiatedTxid === txid)[0];
+                    const tx = fakeTxs.filter(tx => tx.swapInitiatedTxid === txid)[0];
                     runInAction(() => {
                         this.txsMap.set(tx.swapId, tx);
                         this.pendingSwaps.push(tx.swapId);
@@ -56,6 +56,7 @@ export default class PendingTxStore {
         this.historyLock = true;
         try {
             if (reset) {
+                this.historyPage = 0;
                 this.completeSwaps.clear();
             }
             if (!this.account)
@@ -84,7 +85,6 @@ export default class PendingTxStore {
         this.lock = true;
         try {
             if (reset) {
-                this.txsMap.clear();
                 this.pendingSwaps.clear();
                 this.swaps.clear();
             }
@@ -140,9 +140,10 @@ export default class PendingTxStore {
     }
 
     @action async updateAccount(newAccount?: string) {
+        console.log('updateAccount', newAccount);
         const oldAccount = this.account;
         this.account = newAccount;
-        if (oldAccount !== newAccount) {
+        if (oldAccount !== newAccount && newAccount) {
             await this.updateTxs(true);
             await this.loadHistory(true);
         }

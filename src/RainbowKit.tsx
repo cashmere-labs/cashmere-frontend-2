@@ -1,8 +1,11 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useMemo } from 'react';
 import { observer } from 'mobx-react-lite';
 import {
+    createAuthenticationAdapter,
     darkTheme,
-    getDefaultWallets, lightTheme,
+    getDefaultWallets,
+    lightTheme,
+    RainbowKitAuthenticationProvider,
     RainbowKitProvider,
 } from '@rainbow-me/rainbowkit';
 import { configureChains, createClient, WagmiConfig } from 'wagmi';
@@ -10,6 +13,8 @@ import { publicProvider } from 'wagmi/providers/public';
 import { useInjection } from 'inversify-react';
 import ThemeStore from './store/ThemeStore';
 import { activeChains } from './constants/chains';
+import { AuthStore } from './store/AuthStore';
+import { Api } from './utils/api';
 
 const { chains, provider } = configureChains(
     activeChains,
@@ -26,22 +31,51 @@ const wagmiClient = createClient({
     provider,
 });
 
-interface IRainbowKitProps extends PropsWithChildren {
-}
-
-const RainbowKit = observer(({ children }: IRainbowKitProps) => {
+const RainbowKit = observer(({ children }: PropsWithChildren) => {
     const themeStore = useInjection(ThemeStore);
+    const authStore = useInjection(AuthStore);
+    const api = useInjection(Api);
+
+    const authenticationAdapter = useMemo(() => (
+        createAuthenticationAdapter({
+            createMessage: ({ nonce, address }) => {
+                try {
+                    return authStore.createMessage(nonce, address);
+                } catch (e) {
+                    console.error(e);
+                    throw e;
+                }
+            },
+            getMessageBody: ({ message }) => {
+                return message.prepareMessage();
+            },
+            getNonce: async () => {
+                return (await api.getNonce(authStore.updateNonceRequestId())).nonce;
+            },
+            signOut: async () => {
+                return authStore.logout();
+            },
+            verify: async ({ message, signature }) => {
+                return authStore.login(message, signature);
+            },
+        })
+    ), [authStore, api]);
 
     return (
         <WagmiConfig client={wagmiClient}>
-            <RainbowKitProvider
-                theme={themeStore.theme === 'dark' ? darkTheme() : lightTheme()}
-                chains={chains}
+            <RainbowKitAuthenticationProvider
+                adapter={authenticationAdapter}
+                status={authStore.status}
             >
-                <>
-                    {children}
-                </>
-            </RainbowKitProvider>
+                <RainbowKitProvider
+                    theme={themeStore.theme === 'dark' ? darkTheme() : lightTheme()}
+                    chains={chains}
+                >
+                    <>
+                        {children}
+                    </>
+                </RainbowKitProvider>
+            </RainbowKitAuthenticationProvider>
         </WagmiConfig>
     );
 });

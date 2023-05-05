@@ -90,7 +90,7 @@ const VeCSMPhoneTable = observer(({ whichLocker, bodyCount, datas }: Table) => {
                   </div>
                   <div className={styles.network}>
                     <NetworkBadge
-                      label={data.network}
+                      chain={data.network}
                       className={styles.network}
                       size={miniPhone ? 22 : 26}
                       fontSize={miniPhone ? "14px" : "16px"}

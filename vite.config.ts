@@ -1,7 +1,6 @@
 import svgx from '@svgx/vite-plugin-react';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { chunkSplitPlugin } from 'vite-plugin-chunk-split';
 
 export default defineConfig(async () => {
     return {
@@ -40,7 +39,7 @@ export default defineConfig(async () => {
             rollupOptions: {
                 output: {
                     manualChunks: {
-                        es: [ 'ethers' ],
+                        es: [ 'ethers', 'siwe' ],
                     }
                 }
             }

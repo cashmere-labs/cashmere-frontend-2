@@ -68,10 +68,6 @@
         align-items: flex-end;
         margin-left: 5px;
 
-        div {
-          cursor: pointer;
-        }
-
         .remove {
           flex-grow: 1;
           padding-bottom: 5px;
@@ -79,4 +75,8 @@
       }
     }
   }
+}
+
+.action {
+  cursor: pointer;
 }

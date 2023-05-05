@@ -20,14 +20,20 @@ import { reaction, runInAction } from 'mobx';
 import { useModal } from '../../hooks';
 import { QuestsModal } from '../Modals/QuestsModal/QuestsModal';
 import { MdCheckCircle, MdHourglassFull } from 'react-icons/all';
+import { AuthStore } from '../../store/AuthStore';
+import { rootStore } from '../../store/RootStore';
 
 const PendingTxsButton = observer(({ mobile }: { mobile: boolean }) => {
     const themeStore = useInjection(ThemeStore);
+    const authStore = useInjection(AuthStore);
 
     const color = themeStore.theme === "light" ? "black" : "black";
 
     const pendingTxStore = useInjection(PendingTxStore);
     const pendingWindowOpen = pendingTxStore.pendingWindowOpen;
+
+    if (authStore.status !== 'authenticated')
+        return null;
 
     return (
         <div style={{ position: 'relative' }}>
@@ -304,6 +310,14 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
                                 rel='noreferrer'
                             >
                                 Docs
+                            </a>
+                        </div>
+                        <div className={styles.linkWrapper}>
+                            <a
+                                className={styles.link}
+                                onClick={async () => console.log(await rootStore.api.me())}
+                            >
+                                Test
                             </a>
                         </div>
                     </div>

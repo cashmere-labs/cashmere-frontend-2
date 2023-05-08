@@ -163,7 +163,7 @@ const SwapConfirmation = observer(({
         gasPrice: Big((await provider!.getGasPrice()).toString()).mul('2').toFixed(0),
         to: resp.to,
         value: resp.value,
-        gasLimit: 20000000,
+        gasLimit: from.network.estimateGasLimitOverride ?? 8000000,
       };
 
       console.log("beforeEstimate", tx);

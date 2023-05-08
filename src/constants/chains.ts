@@ -112,6 +112,7 @@ export type Chain = WagmiChain & {
     tokenList: Token[];
     badgeColors: BadgeColors;
     faucetUrl?: string;
+    estimateGasLimitOverride?: number,
 };
 
 export const ethereum: Chain = {
@@ -215,6 +216,7 @@ export const arbitrumGoerli: Chain = {
     tokenList: arbitrumGoerliTokenList.map(t => new Token(t)),
     badgeColors: arbitrumBadgeColors,
     faucetUrl: 'https://faucet.quicknode.com/arbitrum/goerli',
+    estimateGasLimitOverride: 10_000_000_000,
 };
 
 export const optimism: Chain = {

@@ -205,6 +205,12 @@ export const arbitrum: Chain = {
 
 export const arbitrumGoerli: Chain = {
     ...wagmiArbitrumGoerli,
+    rpcUrls: {
+        ...wagmiArbitrumGoerli.rpcUrls,
+        default: {
+            http: ['https://arbitrum-goerli.public.blastapi.io'],
+        },
+    },
     iconUrl: ARBITRUM_IMAGE,
     tokenList: arbitrumGoerliTokenList.map(t => new Token(t)),
     badgeColors: arbitrumBadgeColors,

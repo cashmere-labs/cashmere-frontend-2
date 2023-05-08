@@ -245,7 +245,7 @@ const SwapBox = observer(({
                     </span>
                 </div>
 
-                <Tooltip placement='top' content='ETH Goerli is deactivated due to very high gas prices'>
+                <Tooltip placement='top' content='ETH Goerli and Metis Goerli are deactivated due to very high gas prices'>
                     <Icon
                         style={{ color: 'var(--icon-dark)' }}
                         hoverPadding="6px"

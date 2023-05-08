@@ -312,14 +312,14 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
                                 Docs
                             </a>
                         </div>
-                        <div className={styles.linkWrapper}>
-                            <a
-                                className={styles.link}
-                                onClick={async () => console.log(await rootStore.api.me())}
-                            >
-                                Test
-                            </a>
-                        </div>
+                        {/*<div className={styles.linkWrapper}>*/}
+                        {/*    <a*/}
+                        {/*        className={styles.link}*/}
+                        {/*        onClick={async () => console.log(await rootStore.api.me())}*/}
+                        {/*    >*/}
+                        {/*        Test*/}
+                        {/*    </a>*/}
+                        {/*</div>*/}
                     </div>
 
                     <div className={styles.buttons}>

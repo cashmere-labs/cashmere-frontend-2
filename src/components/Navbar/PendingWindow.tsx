@@ -40,13 +40,15 @@ const SwapHistoryListItem = observer(({ tx, complete }: { tx: SwapData, complete
                 )}
             </div>
             <div className={styles.actions}>
-                <div className={styles.remove} >
-                    <div className={styles.action} onClick={async () => {
-                        await api.hideCompletedSwap(tx.swapId);
-                        await pendingTxStore.loadHistory(true);
-                    }}>
-                        <MdClear size={20} className={styles.remove} />
-                    </div>
+                <div className={styles.remove}>
+                    {complete && (
+                        <div className={styles.action} onClick={async () => {
+                            await api.hideCompletedSwap(tx.swapId);
+                            await pendingTxStore.loadHistory(true);
+                        }}>
+                            <MdClear size={20} className={styles.remove} />
+                        </div>
+                    )}
                 </div>
                 <div className={styles.action} onClick={() => pendingTxStore.setSelectedTxId(txId)}>
                     <MdLaunch size={23} />

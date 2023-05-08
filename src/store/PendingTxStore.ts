@@ -99,6 +99,7 @@ export default class PendingTxStore {
                         this.txsMap.set(entry.swapId, entry);
                         this.completeSwaps.spliceWithArray(0, 0, [swap]);
                         this.swaps.remove(swap);
+                        this.loadHistory(true);
                     }
                 }
                 for (const entry of res.items) {

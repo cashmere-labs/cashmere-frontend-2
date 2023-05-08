@@ -10,8 +10,7 @@ import { Layout } from '../../ui';
 import { useSwapSettings } from '../../components/SwapSettings/useSwapSettings';
 
 import styles from './Swap.module.scss';
-import { Chain, goerli, polygonMumbai } from '../../constants/chains';
-import { useNetwork } from 'wagmi';
+import { activeChains, Chain } from '../../constants/chains';
 import { watchNetwork } from '@wagmi/core';
 
 export type SwapState = {
@@ -28,10 +27,10 @@ const Swap = () => {
     const swapSettings = useSwapSettings();
     const [state, setState] = useState<SwapState>({
         fromAmount: '',
-        fromChain: goerli,
-        fromToken: goerli.tokenList[0],
-        toChain: polygonMumbai,
-        toToken: polygonMumbai.tokenList[0],
+        fromChain: activeChains[0],
+        fromToken: activeChains[0].tokenList[0],
+        toChain: activeChains[1],
+        toToken: activeChains[1].tokenList[0],
     });
 
     const estimateModal = useModal();

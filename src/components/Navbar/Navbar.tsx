@@ -288,7 +288,7 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
                         <div className={styles.linkWrapper}>
                             <a
                                 className={styles.link}
-                                href='https://forms.monday.com/forms/bd6ab4b322ed2db9a4f94df7706c7683?r=euc1'
+                                href='https://forms.monday.com/forms/7d8708dec61b7a1bfda8a5b98b094427?r=euc1'
                                 target='_blank' rel="noreferrer"
                             >
                                 Troubleshoot

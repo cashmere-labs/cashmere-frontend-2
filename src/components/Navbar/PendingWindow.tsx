@@ -8,7 +8,7 @@ import PendingTxStore from '../../store/PendingTxStore';
 import TimeCounter from '../TimeCounter/TimeCounter';
 import { useInViewport } from 'react-in-viewport';
 import { Spinner } from '../../ui';
-import { MdClear, MdClearAll, MdLaunch } from 'react-icons/all';
+import { MdClear, MdDelete, MdLaunch } from 'react-icons/all';
 import { Api, SwapData } from '../../utils/api';
 
 interface IPendingWindowProps {
@@ -80,7 +80,7 @@ const PendingWindow = observer(({ open }: IPendingWindowProps) => {
                         await api.hideCompletedSwaps();
                         await pendingTxStore.loadHistory(true);
                     }}>
-                        <MdClearAll size={20} />
+                        <MdDelete size={20} />
                     </div>
                 </div>
                 <div className={styles.list}>

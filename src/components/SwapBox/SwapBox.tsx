@@ -6,7 +6,7 @@ import { SwapState } from '../../pages/Swap/Swap';
 import { ReactElement, useEffect, useMemo, useRef, useState } from 'react';
 import { FaChevronRight } from 'react-icons/fa';
 import { Token } from '../../types/token';
-import { Button, Icon, Input, Select } from '../../ui';
+import { Button, Icon, Input, Select, Tooltip } from '../../ui';
 
 import { SwapNetworkSelector } from './SwapNetworkSelector';
 import { SwapSettings } from '../SwapSettings/SwapSettings';
@@ -25,6 +25,7 @@ import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { activeChains, Chain } from '../../constants/chains';
 import { QuestsModal } from '../Modals/QuestsModal/QuestsModal';
 import { Api } from '../../utils/api';
+import { MdInfoOutline } from 'react-icons/all';
 
 const SwapBox = observer(({
                               state,
@@ -244,6 +245,16 @@ const SwapBox = observer(({
                     </span>
                 </div>
 
+                <Tooltip placement='top' content='ETH Goerli is deactivated due to very high gas prices'>
+                    <Icon
+                        style={{ color: 'var(--icon-dark)' }}
+                        hoverPadding="6px"
+                        size={21}
+                        hoverable
+                    >
+                        <MdInfoOutline size={21} />
+                    </Icon>
+                </Tooltip>
                 <Icon
                     onClick={swapSettingsModal.open}
                     style={{ color: 'var(--icon-dark)' }}

@@ -160,7 +160,7 @@ const SwapConfirmation = observer(({
       const tx: TransactionRequest = {
         data: txData,
         from: accountAddress,
-        gasPrice: Big((await provider!.getGasPrice()).toString()).mul('1.25').toFixed(0),
+        gasPrice: Big((await provider!.getGasPrice()).toString()).mul('2').toFixed(0),
         to: resp.to,
         value: resp.value,
         gasLimit: 8000000,
@@ -168,7 +168,7 @@ const SwapConfirmation = observer(({
 
       console.log("beforeEstimate", tx);
       setFeeRequired(Big(resp.value).div(Big(10).pow(18)));
-      tx.gasLimit = (await provider!.estimateGas(tx)).mul(3).div(2);  // x1.5
+      tx.gasLimit = (await provider!.estimateGas(tx)).mul(2);  // x2
       setFeeRequired(Big(tx.gasLimit!.toString()).mul(tx.gasPrice!.toString()).div(Big(10).pow(18)));
       console.log("afterEstimate", tx);
       const receipt = await signer!.sendTransaction(tx);

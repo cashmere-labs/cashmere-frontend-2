@@ -310,7 +310,7 @@ export const allChains: Chain[] = [
 ];
 
 export const activeChains: Chain[] = [
-    goerli,
+    // goerli,
     polygonMumbai,
     bscTestnet,
     avalancheFuji,

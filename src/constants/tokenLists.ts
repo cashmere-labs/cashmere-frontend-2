@@ -73,7 +73,7 @@ export const bscTestnetTokenList = [
   {
     asset: '1',
     type: 'BSC',
-    address: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
+    address: '0x48f7D56c057F20668cdbaD0a9Cd6092B3dc83684',
     name: 'Wrapped BNB',
     symbol: 'WBNB',
     decimals: 18,
@@ -103,7 +103,7 @@ export const avalancheFujiTokenList = [
   {
     asset: '1',
     type: 'AVALANCHE',
-    address: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
+    address: '0xd00ae08403B9bbb9124bB305C09058E32C39A48c',
     name: 'Wrapped AVAX',
     symbol: 'WAVAX',
     decimals: 18,
@@ -133,7 +133,7 @@ export const fantomTestnetTokenList = [
   {
     asset: '1',
     type: 'FANTOM',
-    address: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
+    address: '0x231401dC8b53338d78c08f83CC4EBc74148196d0',
     name: 'Wrapped FTM',
     symbol: 'WFTM',
     decimals: 18,
@@ -163,7 +163,7 @@ export const arbitrumGoerliTokenList = [
   {
     asset: '1',
     type: 'ARBITRUM',
-    address: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
+    address: '0xe39Ab88f8A4777030A534146A9Ca3B52bd5D43A3',
     name: 'Wrapped ETH',
     symbol: 'WETH',
     decimals: 18,
@@ -193,7 +193,7 @@ export const optimismGoerliTokenList = [
   {
     asset: '1',
     type: 'OPTIMISM',
-    address: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
+    address: '0x4200000000000000000000000000000000000006',
     name: 'Wrapped ETH',
     symbol: 'WETH',
     decimals: 18,
@@ -223,7 +223,7 @@ export const baseGoerliTokenList = [
   {
     asset: '1',
     type: 'BASE',
-    address: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
+    address: '0x231401dC8b53338d78c08f83CC4EBc74148196d0',
     name: 'Wrapped ETH',
     symbol: 'WETH',
     decimals: 18,

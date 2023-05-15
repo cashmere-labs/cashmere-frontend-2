@@ -4,6 +4,8 @@ import { IObservableArray } from 'mobx/src/internal';
 import store from 'store2';
 import { getProvider, Provider } from '@wagmi/core';
 import { SwapData } from '../utils/api';
+import { io, Socket } from 'socket.io-client';
+import { apiDomain } from '../constants/utils';
 
 const buildFakeKey = (swapData: SwapData): `0x${string}` => `${swapData.swapInitiatedTxid}-${swapData.srcChainId}`;
 
@@ -11,7 +13,7 @@ export default class PendingTxStore {
     @observable account?: string = undefined;
     @observable txsMap = observable.map<string, SwapData>();
     @observable pendingSwaps: IObservableArray<string> = observable.array();
-    @observable swaps: IObservableArray<string> = observable.array();
+    @observable ongoingSwaps: IObservableArray<string> = observable.array();
     @observable completeSwaps: IObservableArray<string> = observable.array();
     lock = false;
     historyLock = false;
@@ -21,10 +23,16 @@ export default class PendingTxStore {
     historyPage = 0;
     @observable completeSwapsCount = 0;
     @observable moreHistory = true;
+    private readonly socket: Socket;
 
     constructor(private readonly rootStore: RootStore) {
         makeObservable(this);
-        setInterval(() => this.updateTxs(), 2000);
+        this.socket = io(`${apiDomain}/progress`, { path: '/api/ws/', transports: ['websocket'] });
+        this.socket.on('connect', () => {
+            this.account && this.socket.emit('setProgressAddress', { address: this.account });
+        });
+        this.socket.on('progressUpdate', swapData => this.handleProgressUpdate(swapData));
+
         setInterval(() => this.checkFailedTxs(), 10000);
 
         const storageVersion = store.get('storageVersion', 0);
@@ -79,47 +87,29 @@ export default class PendingTxStore {
         }
     }
 
-    @action private async updateTxs(reset = false) {
-        if (this.lock)
+    @action private handleProgressUpdate(swapData: SwapData) {
+        if (swapData.receiver !== this.account)
             return;
-        this.lock = true;
-        try {
-            if (reset) {
-                this.pendingSwaps.clear();
-                this.swaps.clear();
+
+        // pending swap was found
+        if (!this.txsMap.has(swapData.swapId)) {
+            const fakeKey = buildFakeKey(swapData);
+            if (this.pendingSwaps.includes(fakeKey)) {
+                this.pendingSwaps.remove(fakeKey);
+                if (this.pendingWindowOpen && this.selectedTxId === fakeKey)
+                    this.selectedTxId = swapData.swapId;
             }
-            if (!this.account)
-                return;
-            const res = await this.rootStore.api.pendingTransactionsList(this.account);
-            runInAction(() => {
-                for (const swap of this.swaps) {
-                    // finished and disappeared
-                    if (res.items.filter(e => e.swapId === swap).length === 0) {
-                        const entry: SwapData = { ...this.txsMap.get(swap)!, swapContinueConfirmed: true };
-                        this.txsMap.set(entry.swapId, entry);
-                        this.completeSwaps.spliceWithArray(0, 0, [swap]);
-                        this.swaps.remove(swap);
-                        this.loadHistory(true);
-                    }
-                }
-                for (const entry of res.items) {
-                    // new tx appeared
-                    const fakeKey = buildFakeKey(entry);
-                    if (this.pendingSwaps.includes(fakeKey)) {
-                        this.pendingSwaps.remove(fakeKey);
-                        if (this.pendingWindowOpen && this.selectedTxId === fakeKey)
-                            this.selectedTxId = entry.swapId;
-                    }
-                    this.txsMap.set(entry.swapId, entry);
-                    if (!this.swaps.includes(entry.swapId)) {
-                        this.swaps.push(entry.swapId);
-                        console.log('new real', entry, fakeKey);
-                    }
-                }
-            });
-        } finally {
-            this.lock = false;
+            if (!this.ongoingSwaps.includes(swapData.swapId)) {
+                this.ongoingSwaps.spliceWithArray(0, 0, [swapData.swapId]);
+                console.log('new real', swapData, fakeKey);
+            }
         }
+        // swap finished
+        if (swapData.swapContinueConfirmed) {
+            this.ongoingSwaps.remove(swapData.swapId);
+            this.loadHistory(true);
+        }
+        this.txsMap.set(swapData.swapId, swapData);
     }
 
     @action private async checkFailedTxs() {
@@ -141,12 +131,15 @@ export default class PendingTxStore {
     }
 
     @action async updateAccount(newAccount?: string) {
-        console.log('updateAccount', newAccount);
         const oldAccount = this.account;
         this.account = newAccount;
-        if (oldAccount !== newAccount && newAccount) {
-            await this.updateTxs(true);
-            await this.loadHistory(true);
+        if (oldAccount !== newAccount) {
+            if (newAccount) {
+                this.socket.emit('setProgressAddress', { address: newAccount });
+                this.pendingSwaps.clear();
+                this.ongoingSwaps.clear();
+                await this.loadHistory(true);
+            }
         }
     }
 
@@ -154,7 +147,7 @@ export default class PendingTxStore {
         entry.swapId = buildFakeKey(entry);
         entry.fake = true;
         this.txsMap.set(entry.swapId, entry);
-        this.pendingSwaps.push(entry.swapId);
+        this.pendingSwaps.spliceWithArray(0, 0, [entry.swapId]);
         console.log('fake', entry);
         store.add('fakeTxs', [entry]);
     }
@@ -172,14 +165,14 @@ export default class PendingTxStore {
     }
 
     @computed get txList() {
-        return this.pendingSwaps.concat(this.swaps).map(id => this.txsMap.get(id)!);
+        return this.pendingSwaps.concat(this.ongoingSwaps).map(id => this.txsMap.get(id)!);
     }
 
     @computed get completeTxList() {
-        return this.pendingSwaps.concat(this.completeSwaps).map(id => this.txsMap.get(id)!);
+        return this.completeSwaps.map(id => this.txsMap.get(id)!);
     }
 
     @computed get pendingSwapsCount() {
-        return this.pendingSwaps.length + this.swaps.length;
+        return this.pendingSwaps.length + this.ongoingSwaps.length;
     }
 }

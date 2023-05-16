@@ -1,12 +1,13 @@
 import React, { PropsWithChildren, useMemo } from 'react';
 import { observer } from 'mobx-react-lite';
 import {
+    connectorsForWallets,
     createAuthenticationAdapter,
     darkTheme,
     getDefaultWallets,
     lightTheme,
     RainbowKitAuthenticationProvider,
-    RainbowKitProvider,
+    RainbowKitProvider, WalletList,
 } from '@rainbow-me/rainbowkit';
 import { configureChains, createClient, WagmiConfig } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
@@ -15,6 +16,54 @@ import ThemeStore from './store/ThemeStore';
 import { activeChains } from './constants/chains';
 import { AuthStore } from './store/AuthStore';
 import { Api } from './utils/api';
+import { Chain } from '@wagmi/core';
+import {
+    argentWallet,
+    braveWallet,
+    coinbaseWallet,
+    injectedWallet, ledgerWallet,
+    metaMaskWallet, rabbyWallet,
+    rainbowWallet,
+    safeWallet, trustWallet, walletConnectWallet
+} from '@rainbow-me/rainbowkit/wallets';
+
+const getWallets = ({ appName, chains, projectId }: {
+    appName: string;
+    projectId?: string;
+    chains: Chain[];
+}): {
+    connectors: ReturnType<typeof connectorsForWallets>;
+    wallets: WalletList;
+} => {
+    const wallets: WalletList = [
+        {
+            groupName: 'Popular',
+            wallets: [
+                injectedWallet({ chains }),
+                safeWallet({ chains }),
+                rainbowWallet({ chains, projectId }),
+                coinbaseWallet({ appName, chains }),
+                metaMaskWallet({ chains, projectId }),
+                walletConnectWallet({ chains, projectId }),
+                braveWallet({ chains }),
+            ],
+        },
+        {
+            groupName: 'More',
+            wallets: [
+                trustWallet({ chains, projectId }),
+                ledgerWallet({ chains, projectId }),
+                rabbyWallet({ chains }),
+                argentWallet({ chains, projectId }),
+            ],
+        },
+    ];
+
+    return {
+        connectors: connectorsForWallets(wallets),
+        wallets,
+    };
+};
 
 const { chains, provider } = configureChains(
     activeChains,
@@ -23,7 +72,11 @@ const { chains, provider } = configureChains(
     ]
 );
 
-const { connectors } = getDefaultWallets({ appName: 'Cashmere Swap', chains });
+const { connectors } = getWallets({
+    appName: 'Cashmere Swap',
+    projectId: 'cashmere.exchange',
+    chains,
+});
 
 const wagmiClient = createClient({
     autoConnect: true,

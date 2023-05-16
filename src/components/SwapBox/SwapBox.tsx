@@ -78,7 +78,6 @@ const SwapBox = observer(({
         } else {
             setToBalance(new Big((await toProvider.getBalance(account.address)).toString()).div(new Big(10).pow(state.toToken.decimals)));
         }
-        // setNativeBalance(new Big((await fromProvider.getBalance(account.address)).toString()).div(Big(10).pow(18)));
     })(), [account.address, state.fromChain, state.fromToken, state.toChain, state.toToken]);
 
     const onNetworkSelect = useRef<(item: Chain | Token) => void>(
@@ -280,22 +279,22 @@ const SwapBox = observer(({
                     disableDefaultMode
                     onClick={() => {
                         networkSelectorModal.open();
-                        onNetworkSelect.current = (item: Chain | Token) => {
-                            if (item instanceof Token) {
+                        onNetworkSelect.current = (fromChain: Chain | Token) => {
+                            if (fromChain instanceof Token) {
                                 return;
                             }
                             // if (state.fromfrom !== item) {
                             //     disconnect();
                             // }
-                            const toNetwork = item === state.toChain ? activeChains.filter(n => n !== item)[0] : state.toChain;
-                            const matchingTokenFrom = item.tokenList.filter(t => t.symbol === state.fromToken.symbol)[0];
-                            const matchingTokenTo = item === state.toChain ? toNetwork.tokenList.filter(t => t.symbol === state.toToken.symbol)[0] : state.toToken;
+                            const toChain = fromChain.id === state.toChain.id ? state.fromChain : state.toChain;
+                            const matchingTokenFrom = fromChain.tokenList.filter(t => t.symbol === state.fromToken.symbol)[0];
+                            const matchingTokenTo = fromChain.id === state.toChain.id ? toChain.tokenList.filter(t => t.symbol === state.toToken.symbol)[0] : state.toToken;
                             setState({
                                 ...state,
-                                fromChain: item,
-                                toChain: toNetwork,
-                                fromToken: matchingTokenFrom || item.tokenList[0],
-                                toToken: matchingTokenTo || toNetwork.tokenList[0],
+                                fromChain,
+                                toChain,
+                                fromToken: matchingTokenFrom || fromChain.tokenList[0],
+                                toToken: matchingTokenTo || toChain.tokenList[0],
                             });
                         };
                     }}
@@ -388,22 +387,22 @@ const SwapBox = observer(({
                     hideRightBorder
                     onClick={() => {
                         networkSelectorModal.open();
-                        onNetworkSelect.current = (item: Chain | Token) => {
-                            if (item instanceof Token) {
+                        onNetworkSelect.current = (toChain: Chain | Token) => {
+                            if (toChain instanceof Token) {
                                 return;
                             }
                             // if (state.tofrom !== item) {
                             //     disconnect();
                             // }
-                            const fromNetwork = item === state.fromChain ? activeChains.filter(n => n !== item)[0] : state.fromChain;
-                            const matchingTokenFrom = item === state.fromChain ? fromNetwork.tokenList.filter(t => t.symbol === state.toToken.symbol)[0] : state.fromToken;
-                            const matchingTokenTo = item.tokenList.filter(t => t.symbol === state.toToken.symbol)[0];
+                            const fromChain = toChain.id === state.fromChain.id ? state.toChain : state.fromChain;
+                            const matchingTokenFrom = toChain.id === state.fromChain.id ? fromChain.tokenList.filter(t => t.symbol === state.toToken.symbol)[0] : state.fromToken;
+                            const matchingTokenTo = toChain.tokenList.filter(t => t.symbol === state.toToken.symbol)[0];
                             setState({
                                 ...state,
-                                fromChain: fromNetwork,
-                                toChain: item,
-                                fromToken: matchingTokenFrom || fromNetwork.tokenList[0],
-                                toToken: matchingTokenTo || item.tokenList[0],
+                                fromChain,
+                                toChain,
+                                fromToken: matchingTokenFrom || fromChain.tokenList[0],
+                                toToken: matchingTokenTo || toChain.tokenList[0],
                             });
                         };
                     }}

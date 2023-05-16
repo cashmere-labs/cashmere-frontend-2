@@ -12,6 +12,7 @@ import { useSwapSettings } from '../../components/SwapSettings/useSwapSettings';
 import styles from './Swap.module.scss';
 import { activeChains, Chain } from '../../constants/chains';
 import { watchNetwork } from '@wagmi/core';
+import { useNetwork } from 'wagmi';
 
 export type SwapState = {
     fromChain: Chain;
@@ -23,6 +24,7 @@ export type SwapState = {
 
 const Swap = () => {
     useTitle('Swap');
+    const { chain } = useNetwork();
 
     const swapSettings = useSwapSettings();
     const [state, setState] = useState<SwapState>({
@@ -36,22 +38,19 @@ const Swap = () => {
     const estimateModal = useModal();
 
     useEffect(() => {
-        const unwatch = watchNetwork(({ chain }) => {
-            if (!chain)
-                return;
-            if (chain?.id !== state.fromChain.id && !chain.unsupported) {
-                const sameToChain = chain.id === state.toChain.id;
-                setState({
-                    ...state,
-                    fromChain: chain as Chain,
-                    fromToken: (chain as Chain).tokenList[0],
-                    toChain: sameToChain ? state.fromChain : state.toChain,
-                    toToken: sameToChain ? state.fromToken : state.toToken,
-                });
-            }
-        });
-        return unwatch;
-    }, [state]);
+        if (!chain)
+            return;
+        if (chain?.id !== state.fromChain.id && !chain.unsupported) {
+            const sameToChain = chain.id === state.toChain.id;
+            setState({
+                ...state,
+                fromChain: chain as Chain,
+                fromToken: (chain as Chain).tokenList[0],
+                toChain: sameToChain ? state.fromChain : state.toChain,
+                toToken: sameToChain ? state.fromToken : state.toToken,
+            });
+        }
+    }, [chain]);
 
     return (
         <Layout>

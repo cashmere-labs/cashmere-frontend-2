@@ -60,7 +60,7 @@ const TxProgressModal = observer(({ modalController, selectedTx }: TxProgressMod
             title: `Swapping ${selectedTx?.hgsTokenSymbol} to ${selectedTx?.dstTokenSymbol}`,
             image: UNISWAP_ICON,
             poweredBy: 'Uniswap',
-            url: selectedTx?.swapContinueTxid && `${dstChain?.blockExplorers?.default.url}/tx/${selectedTx.swapContinueTxid}`,
+            url: undefined,  // selectedTx?.swapContinueTxid && `${dstChain?.blockExplorers?.default.url}/tx/${selectedTx.swapContinueTxid}`,
             progress: (() => {
                 if (selectedTx?.swapContinueTxid) {
                     if (selectedTx?.swapContinueConfirmed) return 'done';

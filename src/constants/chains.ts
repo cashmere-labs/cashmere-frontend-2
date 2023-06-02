@@ -320,7 +320,7 @@ export const allChains: Chain[] = [
 export const activeChains: Chain[] = [
     // goerli,
     polygonMumbai,
-    bscTestnet,
+    // bscTestnet,
     avalancheFuji,
     fantomTestnet,
     arbitrumGoerli,

@@ -326,7 +326,7 @@ export const activeChains: Chain[] = [
     arbitrumGoerli,
     optimismGoerli,
     baseGoerli,
-    lineaTestnet,
+    // lineaTestnet,
     polygonZkEvmTestnet,
     // zkSyncTestnet,
     // metisGoerli,

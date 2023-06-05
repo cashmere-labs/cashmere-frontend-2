@@ -51,8 +51,8 @@ const TxProgressModal = observer(({ modalController, selectedTx }: TxProgressMod
             poweredBy: 'Cashmere',
             url: selectedTx?.l0Link && `https://testnet.layerzeroscan.com/${selectedTx.l0Link}`,
             progress: (() => {
-                if (selectedTx?.swapPerformedTxid) return 'done';
-                if (!selectedTx?.fake) return 'in_progress';
+                if (!selectedTx?.fake) return 'done';
+                // if (!selectedTx?.fake) return 'in_progress';
                 return 'not_started';
             })(),
         },
@@ -62,7 +62,7 @@ const TxProgressModal = observer(({ modalController, selectedTx }: TxProgressMod
             poweredBy: 'Uniswap',
             url: selectedTx?.swapContinueTxid && `${dstChain?.blockExplorers?.default.url}/tx/${selectedTx.swapContinueTxid}`,
             progress: (() => {
-                if (selectedTx?.swapContinueTxid) {
+                if (!selectedTx?.fake) {
                     if (selectedTx?.swapContinueConfirmed) return 'done';
                     return 'in_progress';
                 }

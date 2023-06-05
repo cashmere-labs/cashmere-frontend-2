@@ -244,16 +244,16 @@ const SwapBox = observer(({
                     </span>
                 </div>
 
-                {/*<Tooltip placement='top' content='ETH Goerli and Metis Goerli are deactivated due to unstable network conditions'>*/}
-                {/*    <Icon*/}
-                {/*        style={{ color: 'var(--icon-dark)' }}*/}
-                {/*        hoverPadding="6px"*/}
-                {/*        size={21}*/}
-                {/*        hoverable*/}
-                {/*    >*/}
-                {/*        <MdInfoOutline size={21} />*/}
-                {/*    </Icon>*/}
-                {/*</Tooltip>*/}
+                <Tooltip placement='top' content='ETH Goerli is deactivated due to unstable network conditions'>
+                    <Icon
+                        style={{ color: 'var(--icon-dark)' }}
+                        hoverPadding="6px"
+                        size={21}
+                        hoverable
+                    >
+                        <MdInfoOutline size={21} />
+                    </Icon>
+                </Tooltip>
                 <Icon
                     onClick={swapSettingsModal.open}
                     style={{ color: 'var(--icon-dark)' }}

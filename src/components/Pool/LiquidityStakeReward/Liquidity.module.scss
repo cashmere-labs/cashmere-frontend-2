@@ -112,9 +112,13 @@
 
   .balance {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
     margin-bottom: 18px;
+
+    .balanceLabel {
+      font-size: 12px;
+    }
 
     @media (max-width: 600px) {
       margin-bottom: 14px;

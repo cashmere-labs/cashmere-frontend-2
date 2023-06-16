@@ -37,39 +37,39 @@ const LiquidityStakeReward = observer(({
       network={whichNetwork}
     >
       <div className={styles.line}></div>
-      <div className={styles.options}>
-        <div
-          onClick={() => {
-            setWhichComponent(0);
-          }}
-          className={whichComponent === 0 ? styles.thisOne : styles.no}
-        >
-          Liquidity
-        </div>
-        <div
-          onClick={() => {
-            setWhichComponent(1);
-          }}
-          className={whichComponent === 1 ? styles.thisOne : styles.no}
-        >
-          Stake
-        </div>
-        <div
-          onClick={() => {
-            setWhichComponent(2);
-          }}
-          className={whichComponent === 2 ? styles.thisOne : styles.no}
-        >
-          Reward
-        </div>
-      </div>
-      {whichComponent === 0 ? (
+      {/*<div className={styles.options}>*/}
+      {/*  <div*/}
+      {/*    onClick={() => {*/}
+      {/*      setWhichComponent(0);*/}
+      {/*    }}*/}
+      {/*    className={whichComponent === 0 ? styles.thisOne : styles.no}*/}
+      {/*  >*/}
+      {/*    Liquidity*/}
+      {/*  </div>*/}
+      {/*  <div*/}
+      {/*    onClick={() => {*/}
+      {/*      setWhichComponent(1);*/}
+      {/*    }}*/}
+      {/*    className={whichComponent === 1 ? styles.thisOne : styles.no}*/}
+      {/*  >*/}
+      {/*    Stake*/}
+      {/*  </div>*/}
+      {/*  <div*/}
+      {/*    onClick={() => {*/}
+      {/*      setWhichComponent(2);*/}
+      {/*    }}*/}
+      {/*    className={whichComponent === 2 ? styles.thisOne : styles.no}*/}
+      {/*  >*/}
+      {/*    Reward*/}
+      {/*  </div>*/}
+      {/*</div>*/}
+      {/*{whichComponent === 0 ? (*/}
         <Liquidity onSuccess={onSuccess} />
-      ) : whichComponent === 1 ? (
-        <Stake onSuccess={onSuccess} />
-      ) : (
-        <Reward onSuccess={onSuccess} />
-      )}
+      {/*) : whichComponent === 1 ? (*/}
+      {/*  <Stake onSuccess={onSuccess} />*/}
+      {/*) : (*/}
+      {/*  <Reward onSuccess={onSuccess} />*/}
+      {/*)}*/}
     </Modal>
   );
 });

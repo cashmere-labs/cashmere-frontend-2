@@ -8,6 +8,7 @@ import styles from "./DesktopTable.module.scss";
 import { useInjection } from 'inversify-react';
 import PoolStore from '../../../store/PoolStore';
 import { chainIdToChain } from '../../../constants/chains';
+import { StakedLP } from '../Pools/useStakedLP';
 
 interface Table {
   whichPool?: boolean;
@@ -27,22 +28,22 @@ const PoolDesktopTitle = ({ whichPool }: Title) => {
     <div className={styles.tableTitle}>
       <div className={styles.title1}>Name</div>
       <div className={styles.title2}>Network</div>
-      <div className={styles.title3}>
-        Co. Ratio{" "}
-        <Tooltip placement="top" content="Content coming here">
-          <Icon size={16}>
-            <InfoIcon />
-          </Icon>
-        </Tooltip>
+      <div className={styles.title3}>Staked LP
+
+        {/*<Tooltip placement="top" content="Content coming here">*/}
+        {/*  <Icon size={16}>*/}
+        {/*    <InfoIcon />*/}
+        {/*  </Icon>*/}
+        {/*</Tooltip>*/}
       </div>
-      <div className={styles.title4}>Staked LP</div>
+      <div className={styles.title4}>Stability{" "}</div>
       <div className={styles.title5}>
         veAPR{" "}
-        <Tooltip placement="top" content="Content coming here">
-          <Icon size={16}>
-            <InfoIcon />
-          </Icon>
-        </Tooltip>
+        {/*<Tooltip placement="top" content="Content coming here">*/}
+        {/*  <Icon size={16}>*/}
+        {/*    <InfoIcon />*/}
+        {/*  </Icon>*/}
+        {/*</Tooltip>*/}
       </div>
       <div className={styles.title6}>My APR</div>
       {whichPool === true && <div className={styles.title7}>Rewards</div>}
@@ -112,7 +113,7 @@ const Row = ({ whichPool, modal, data, index, setWhichNetwork }: Row) => {
       key={index}
       onClick={() => {
         modal.open();
-        setWhichNetwork(data.network);
+        setWhichNetwork(chainIdToChain.get(data.network));
         poolStore.setWhichPersonalModal(-1);
         poolStore.setWhichGlobalModal(index);
       }}
@@ -134,10 +135,10 @@ const Row = ({ whichPool, modal, data, index, setWhichNetwork }: Row) => {
         <div className={styles.data2}>
           <NetworkBadge chain={chainIdToChain.get(data.network)} className={styles.network} />
         </div>
-        <div className={styles.data3}>%{data.CR}</div>
-        <div className={styles.data4}>%{data.stakedLP}</div>
-        <div className={styles.data5}>{data.veAPR}%</div>
-        <div className={styles.data6}>{data.myAPR}%</div>
+        <div className={styles.data3}><StakedLP pool={data} /></div>
+        <div className={styles.data4}>-</div>
+        <div className={styles.data5}>-</div>
+        <div className={styles.data6}>-</div>
         {whichPool === true && (
           <div className={styles.data7}>
             {data.rewards}%{" "}

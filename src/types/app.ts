@@ -1,3 +1,5 @@
+import { Address } from 'wagmi';
+
 export type MapStringToString = { [key: string]: string };
 
 export type ILockData<Data> = {
@@ -34,10 +36,11 @@ export type AccountBalance = {
 export type PoolData = {
   CR: string;
   logo: string;
-  myAPR: string;
   name: string;
   network: number;
   rewards: string;
   stakedLP: string;
-  veAPR: string;
+  assetAddress: Address;
+  tokenAddress: Address;
+  crossRouterAddress: Address;
 };

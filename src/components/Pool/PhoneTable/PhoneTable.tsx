@@ -15,6 +15,7 @@ import ThemeStore from '../../../store/ThemeStore';
 import { observer } from 'mobx-react-lite';
 import PoolStore from '../../../store/PoolStore';
 import { chainIdToChain } from '../../../constants/chains';
+import { StakedLP } from '../Pools/useStakedLP';
 
 interface Table {
   whichPool?: boolean;
@@ -31,12 +32,12 @@ const PoolPhoneTitle = () => {
       <div>Name</div>
       <div>Network</div>
       <div className={styles.coRatio}>
-        Co. Ratio
-        <Tooltip placement="top" content="Content coming here">
-          <Icon size={16}>
-            <InfoIcon />
-          </Icon>
-        </Tooltip>
+        Staked LP
+        {/*<Tooltip placement="top" content="Content coming here">*/}
+        {/*  <Icon size={16}>*/}
+        {/*    <InfoIcon />*/}
+        {/*  </Icon>*/}
+        {/*</Tooltip>*/}
       </div>
     </div>
   );
@@ -81,26 +82,15 @@ const PoolPhoneTable = observer(({
         if (i < bodyCount && filter.token === null && filter.network == null) {
           return (
             <div
-              className={clsnm(
-                bodyOpenGlobal[i] === true
-                  ? styles.openIt
-                  : styles.phoneTableWrapper,
-              )}
-              style={
-                bodyOpenGlobal[i] === true
-                  ? whichPool
-                    ? { height: "231px" }
-                    : { height: "190px" }
-                  : {}
-              }
+              className={styles.phoneTableWrapper}
               key={i}
               onClick={() => {
-                if (bodyOpenGlobal[i] === true) {
-                  setWhichNetwork(data.network);
+                // if (bodyOpenGlobal[i] === true) {
+                  setWhichNetwork(chainIdToChain.get(data.network));
                   poolStore.setWhichPersonalModal(-1);
                   poolStore.setWhichGlobalModal(i);
                   modal.open();
-                }
+                // }
               }}
             >
               <div className={styles.line}></div>
@@ -124,57 +114,57 @@ const PoolPhoneTable = observer(({
                     />
                   </div>
                   <div className={styles.cRatio}>
-                    <span>{datas[i].CR} %</span>
+                    <div><StakedLP pool={data} /></div>
                   </div>
                 </div>
-                <img
-                  onClick={() =>
-                    updateMyArray(bodyOpenGlobal, setBodyOpenGlobal, i)
-                  }
-                  className={clsnm(
-                    styles.modalKey,
-                    bodyOpenGlobal[i] && styles.reverse,
-                  )}
-                  src={themeStore.theme === "light" ? DOWNBLACK : DOWNWHITE}
-                  alt="Down button"
-                ></img>
+                {/*<img*/}
+                {/*  onClick={() =>*/}
+                {/*    updateMyArray(bodyOpenGlobal, setBodyOpenGlobal, i)*/}
+                {/*  }*/}
+                {/*  className={clsnm(*/}
+                {/*    styles.modalKey,*/}
+                {/*    bodyOpenGlobal[i] && styles.reverse,*/}
+                {/*  )}*/}
+                {/*  src={themeStore.theme === "light" ? DOWNBLACK : DOWNWHITE}*/}
+                {/*  alt="Down button"*/}
+                {/*></img>*/}
               </div>
-              {bodyOpenGlobal[i] === true && (
-                <div className={styles.openDatas}>
-                  <div className={styles.openData}>
-                    <div className={styles.text1}>Staked LP</div>
-                    <div>${data.stakedLP}</div>
-                  </div>
-                  <div className={styles.openData}>
-                    <div className={styles.text1}>
-                      VEAPR{" "}
-                      <Tooltip placement="top" content="Content coming here">
-                        <Icon size={12}>
-                          <InfoIcon />
-                        </Icon>
-                      </Tooltip>
-                    </div>
-                    <div>${data.veAPR}</div>
-                  </div>
-                  <div className={styles.openData}>
-                    <div className={styles.text1}>My APR</div>
-                    <div>{data.myAPR}%</div>
-                  </div>
-                  {whichPool && (
-                    <div className={styles.openData}>
-                      <div className={styles.text1}>Rewards</div>
-                      <div className={styles.toolTip}>
-                        {data.rewards} CSM{" "}
-                        <Tooltip placement="top" content="Content coming here">
-                          <Icon size={16}>
-                            <InfoIcon />
-                          </Icon>
-                        </Tooltip>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
+              {/*{bodyOpenGlobal[i] === true && (*/}
+              {/*  <div className={styles.openDatas}>*/}
+              {/*    <div className={styles.openData}>*/}
+              {/*      <div className={styles.text1}>Staked LP</div>*/}
+              {/*      <div>{data.stakedLP}</div>*/}
+              {/*    </div>*/}
+                  {/*<div className={styles.openData}>*/}
+                  {/*  <div className={styles.text1}>*/}
+                  {/*    VEAPR{" "}*/}
+                  {/*    <Tooltip placement="top" content="Content coming here">*/}
+                  {/*      <Icon size={12}>*/}
+                  {/*        <InfoIcon />*/}
+                  {/*      </Icon>*/}
+                  {/*    </Tooltip>*/}
+                  {/*  </div>*/}
+                  {/*  <div>${data.veAPR}</div>*/}
+                  {/*</div>*/}
+                  {/*<div className={styles.openData}>*/}
+                  {/*  <div className={styles.text1}>My APR</div>*/}
+                  {/*  <div>{data.myAPR}%</div>*/}
+                  {/*</div>*/}
+                  {/*{whichPool && (*/}
+                  {/*  <div className={styles.openData}>*/}
+                  {/*    <div className={styles.text1}>Rewards</div>*/}
+                  {/*    <div className={styles.toolTip}>*/}
+                  {/*      {data.rew`ards} CSM{" "}*/}
+                  {/*      <Tooltip placement="top" content="Content coming here">*/}
+                  {/*        <Icon size={16}>*/}
+                  {/*          <InfoIcon />*/}
+                  {/*        </Icon>*/}
+                  {/*      </Tooltip>*/}
+                  {/*    </div>*/}
+                  {/*  </div>*/}
+                  {/*)}*/}
+                {/*</div>*/}
+              {/*)}*/}
             </div>
           );
         } else if (
@@ -184,25 +174,12 @@ const PoolPhoneTable = observer(({
         ) {
           return (
             <div
-              className={clsnm(
-                bodyOpenGlobal[i] === true
-                  ? styles.openIt
-                  : styles.phoneTableWrapper,
-              )}
-              style={
-                bodyOpenGlobal[i] === true
-                  ? whichPool
-                    ? { height: "231px" }
-                    : { height: "190px" }
-                  : {}
-              }
+              className={styles.phoneTableWrapper}
               key={i}
               onClick={() => {
-                if (bodyOpenGlobal[i] === true) {
                   poolStore.setWhichPersonalModal(-1);
                   poolStore.setWhichGlobalModal(i);
                   modal.open();
-                }
               }}
             >
               <div className={styles.line}></div>
@@ -226,57 +203,57 @@ const PoolPhoneTable = observer(({
                     />
                   </div>
                   <div className={styles.cRatio}>
-                    <span>{datas[i].CR} %</span>
+                    <span><StakedLP pool={data} /></span>
                   </div>
                 </div>
-                <img
-                  onClick={() =>
-                    updateMyArray(bodyOpenGlobal, setBodyOpenGlobal, i)
-                  }
-                  className={clsnm(
-                    styles.modalKey,
-                    bodyOpenGlobal[i] && styles.reverse,
-                  )}
-                  src={themeStore.theme === "light" ? DOWNBLACK : DOWNWHITE}
-                  alt="Down button"
-                ></img>
+                {/*<img*/}
+                {/*  onClick={() =>*/}
+                {/*    updateMyArray(bodyOpenGlobal, setBodyOpenGlobal, i)*/}
+                {/*  }*/}
+                {/*  className={clsnm(*/}
+                {/*    styles.modalKey,*/}
+                {/*    bodyOpenGlobal[i] && styles.reverse,*/}
+                {/*  )}*/}
+                {/*  src={themeStore.theme === "light" ? DOWNBLACK : DOWNWHITE}*/}
+                {/*  alt="Down button"*/}
+                {/*></img>*/}
               </div>
-              {bodyOpenGlobal[i] === true && (
-                <div className={styles.openDatas}>
-                  <div className={styles.openData}>
-                    <div className={styles.text1}>Staked LP</div>
-                    <div>${data.stakedLP}</div>
-                  </div>
-                  <div className={styles.openData}>
-                    <div className={styles.text1}>
-                      VEAPR{" "}
-                      <Tooltip placement="top" content="Content coming here">
-                        <Icon size={12}>
-                          <InfoIcon />
-                        </Icon>
-                      </Tooltip>
-                    </div>
-                    <div>${data.veAPR}</div>
-                  </div>
-                  <div className={styles.openData}>
-                    <div className={styles.text1}>My APR</div>
-                    <div>{data.myAPR}%</div>
-                  </div>
-                  {whichPool && (
-                    <div className={styles.openData}>
-                      <div className={styles.text1}>Rewards</div>
-                      <div className={styles.toolTip}>
-                        {data.rewards} CSM{" "}
-                        <Tooltip placement="top" content="Content coming here">
-                          <Icon size={16}>
-                            <InfoIcon />
-                          </Icon>
-                        </Tooltip>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
+              {/*{bodyOpenGlobal[i] === true && (*/}
+              {/*  <div className={styles.openDatas}>*/}
+              {/*    <div className={styles.openData}>*/}
+              {/*      <div className={styles.text1}>Staked LP</div>*/}
+              {/*      <div>${data.stakedLP}</div>*/}
+              {/*    </div>*/}
+              {/*    /!*<div className={styles.openData}>*!/*/}
+              {/*    /!*  <div className={styles.text1}>*!/*/}
+              {/*    /!*    VEAPR{" "}*!/*/}
+              {/*    /!*    <Tooltip placement="top" content="Content coming here">*!/*/}
+              {/*    /!*      <Icon size={12}>*!/*/}
+              {/*    /!*        <InfoIcon />*!/*/}
+              {/*    /!*      </Icon>*!/*/}
+              {/*    /!*    </Tooltip>*!/*/}
+              {/*    /!*  </div>*!/*/}
+              {/*    /!*  <div>${data.veAPR}</div>*!/*/}
+              {/*    /!*</div>*!/*/}
+              {/*    /!*<div className={styles.openData}>*!/*/}
+              {/*    /!*  <div className={styles.text1}>My APR</div>*!/*/}
+              {/*    /!*  <div>{data.myAPR}%</div>*!/*/}
+              {/*    /!*</div>*!/*/}
+              {/*    {whichPool && (*/}
+              {/*      <div className={styles.openData}>*/}
+              {/*        <div className={styles.text1}>Rewards</div>*/}
+              {/*        <div className={styles.toolTip}>*/}
+              {/*          {data.rewards} CSM{" "}*/}
+              {/*          <Tooltip placement="top" content="Content coming here">*/}
+              {/*            <Icon size={16}>*/}
+              {/*              <InfoIcon />*/}
+              {/*            </Icon>*/}
+              {/*          </Tooltip>*/}
+              {/*        </div>*/}
+              {/*      </div>*/}
+              {/*    )}*/}
+              {/*  </div>*/}
+              {/*)}*/}
             </div>
           );
         }
@@ -371,21 +348,21 @@ const Row = observer(({
             <div className={styles.text1}>Staked LP</div>
             <div>${data.stakedLP}</div>
           </div>
-          <div className={styles.openData}>
-            <div className={styles.text1}>
-              VEAPR{" "}
-              <Tooltip placement="top" content="Content coming here">
-                <Icon size={12}>
-                  <InfoIcon />
-                </Icon>
-              </Tooltip>
-            </div>
-            <div>${data.veAPR}</div>
-          </div>
-          <div className={styles.openData}>
-            <div className={styles.text1}>My APR</div>
-            <div>{data.myAPR}%</div>
-          </div>
+          {/*<div className={styles.openData}>*/}
+          {/*  <div className={styles.text1}>*/}
+          {/*    VEAPR{" "}*/}
+          {/*    <Tooltip placement="top" content="Content coming here">*/}
+          {/*      <Icon size={12}>*/}
+          {/*        <InfoIcon />*/}
+          {/*      </Icon>*/}
+          {/*    </Tooltip>*/}
+          {/*  </div>*/}
+          {/*  <div>${data.veAPR}</div>*/}
+          {/*</div>*/}
+          {/*<div className={styles.openData}>*/}
+          {/*  <div className={styles.text1}>My APR</div>*/}
+          {/*  <div>{data.myAPR}%</div>*/}
+          {/*</div>*/}
           {whichPool && (
             <div className={styles.openData}>
               <div className={styles.text1}>Rewards</div>

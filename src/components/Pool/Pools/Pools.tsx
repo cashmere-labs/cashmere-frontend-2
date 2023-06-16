@@ -14,12 +14,16 @@ import { useMediaQuery } from "react-responsive";
 import { Button, Modal } from "../../../ui";
 import { clsnm } from "../../../utils/clsnm";
 
-import { GlobalData, PersonalData } from "../datas";
 import styles from "./Pools.module.scss";
 import { useInjection } from 'inversify-react';
 import ThemeStore from '../../../store/ThemeStore';
 import { observer } from 'mobx-react-lite';
-import PoolStore from '../../../store/PoolStore';
+import PoolStore, { pools } from '../../../store/PoolStore';
+import { BigNumber } from 'ethers';
+import useAsyncEffect from 'use-async-effect';
+import { getAccount, getContract, getProvider } from '@wagmi/core';
+import AssetABI from '../../../abi/Asset.json';
+import Big from 'big.js';
 
 enum Page {
   "FORM",
@@ -29,9 +33,10 @@ enum Page {
 type PoolsProps = {
   filter: FilterType;
   poolTab: PoolTab;
+  deposits: Big[];
 };
 
-const Pools = observer(({ filter, poolTab }: PoolsProps) => {
+const Pools = observer(({ filter, poolTab, deposits }: PoolsProps) => {
   const poolStore = useInjection(PoolStore);
   const poolCount = poolStore.poolCount;
   const functionName = poolStore.functionName;
@@ -46,7 +51,7 @@ const Pools = observer(({ filter, poolTab }: PoolsProps) => {
     query: "(max-width: 850px)",
   });
   const themeStore = useInjection(ThemeStore);
-  const whichData = poolTab === PoolTab.MY ? PersonalData : GlobalData;
+  const whichData = poolTab === PoolTab.MY ? pools.filter((_, i) => !deposits[i].eq(0)) : pools;
 
   return (
     <div className={styles.wrapper}>
@@ -80,7 +85,7 @@ const Pools = observer(({ filter, poolTab }: PoolsProps) => {
         The base emission rate is currently 1.5 CSM per second.
       </div>
       {poolTab === PoolTab.MY
-        ? PersonalData.length > poolCount && (
+        ? pools.length > poolCount && (
             <div className={styles.more}>
               <Button
                 height="40px"
@@ -96,7 +101,7 @@ const Pools = observer(({ filter, poolTab }: PoolsProps) => {
               </Button>
             </div>
           )
-        : GlobalData.length > poolCount && (
+        : pools.length > poolCount && (
             <div className={styles.more}>
               <Button
                 height="40px"
@@ -116,7 +121,7 @@ const Pools = observer(({ filter, poolTab }: PoolsProps) => {
       {whichModal === Page.FORM ? (
         <LiquidityStakeReward
           modal={stakeModal}
-          onSuccess={() => setWhichModal(Page.SUCCESS)}
+          onSuccess={() => stakeModal.close()}
           whichNetwork={whichNetwork}
         />
       ) : (

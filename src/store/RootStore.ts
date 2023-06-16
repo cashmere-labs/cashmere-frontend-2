@@ -5,6 +5,7 @@ import VeCSMStore from './VeCSMStore';
 import { Api } from '../utils/api';
 import PendingTxStore from './PendingTxStore';
 import { AuthStore } from './AuthStore';
+import PoolStore from './PoolStore';
 
 configure({
     enforceActions: "always",
@@ -19,6 +20,7 @@ export default class RootStore {
     public veCsmStore: VeCSMStore;
     public pendingTxStore: PendingTxStore;
     public authStore: AuthStore;
+    public poolStore: PoolStore;
     public api: Api;
 
     public container: Container;
@@ -29,12 +31,14 @@ export default class RootStore {
         this.veCsmStore = new VeCSMStore(this);
         this.pendingTxStore = new PendingTxStore(this);
         this.authStore = new AuthStore(this);
+        this.poolStore = new PoolStore(this);
 
         this.container = new Container();
         this.container.bind(ThemeStore).toConstantValue(this.themeStore);
         this.container.bind(VeCSMStore).toConstantValue(this.veCsmStore);
         this.container.bind(PendingTxStore).toConstantValue(this.pendingTxStore);
         this.container.bind(AuthStore).toConstantValue(this.authStore);
+        this.container.bind(PoolStore).toConstantValue(this.poolStore);
         this.container.bind(Api).toConstantValue(this.api);
     }
 }

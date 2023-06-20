@@ -261,8 +261,8 @@ export const lineaTestnet: Chain = {
     },
     blockExplorers: {
         default: {
-            name: 'BlockScout',
-            url: 'https://explorer.goerli.linea.build/',
+            name: 'LineaScan',
+            url: 'https://goerli.lineascan.build/',
         }
     },
     testnet: true,

@@ -94,7 +94,7 @@ const Liquidity = observer(({ onSuccess }: { onSuccess: () => void }) => {
     const rightNetwork = useMemo(() => pool?.network === chain?.id, [chain?.id, pool?.network]);
 
     const insufficientFunds = useMemo(() => {
-        return bigBalance.lt(value);
+        return bigBalance.lt(toBig(value));
     }, [bigBalance, value]);
 
     const buttonLabel = useMemo(() => {

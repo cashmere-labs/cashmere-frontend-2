@@ -363,19 +363,19 @@ const Row = observer(({
           {/*  <div className={styles.text1}>My APR</div>*/}
           {/*  <div>{data.myAPR}%</div>*/}
           {/*</div>*/}
-          {whichPool && (
-            <div className={styles.openData}>
-              <div className={styles.text1}>Rewards</div>
-              <div className={styles.toolTip}>
-                {data.rewards} CSM{" "}
-                <Tooltip placement="top" content="Content coming here">
-                  <Icon size={16}>
-                    <InfoIcon />
-                  </Icon>
-                </Tooltip>
-              </div>
-            </div>
-          )}
+          {/*{whichPool && (*/}
+          {/*  <div className={styles.openData}>*/}
+          {/*    <div className={styles.text1}>Rewards</div>*/}
+          {/*    <div className={styles.toolTip}>*/}
+          {/*      {data.rewards} CSM{" "}*/}
+          {/*      <Tooltip placement="top" content="Content coming here">*/}
+          {/*        <Icon size={16}>*/}
+          {/*          <InfoIcon />*/}
+          {/*        </Icon>*/}
+          {/*      </Tooltip>*/}
+          {/*    </div>*/}
+          {/*  </div>*/}
+          {/*)}*/}
         </div>
       )}
     </div>

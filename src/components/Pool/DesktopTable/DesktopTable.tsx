@@ -141,14 +141,15 @@ const Row = ({ whichPool, modal, data, index, setWhichNetwork }: Row) => {
         <div className={styles.data6}>-</div>
         {whichPool === true && (
           <div className={styles.data7}>
-            {data.rewards}%{" "}
-            {index === 0 && (
-              <Tooltip placement="top" content="Content coming here">
-                <Icon size={20} style={{ color: "#d3b200" }}>
-                  <InfoIcon />
-                </Icon>
-              </Tooltip>
-            )}
+              -
+            {/*{data.rewards}%{" "}*/}
+            {/*{index === 0 && (*/}
+            {/*  <Tooltip placement="top" content="Content coming here">*/}
+            {/*    <Icon size={20} style={{ color: "#d3b200" }}>*/}
+            {/*      <InfoIcon />*/}
+            {/*    </Icon>*/}
+            {/*  </Tooltip>*/}
+            {/*)}*/}
           </div>
         )}
       </div>

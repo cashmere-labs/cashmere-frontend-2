@@ -1,8 +1,8 @@
 import { InfoIcon } from '../../../assets/icons';
-import { Logo } from '../../../components';
+import cashmereFaucetLogo from '../../../assets/images/logos/black.svg';
 import { useModal } from '../../../hooks';
 import { useEffect, useState } from 'react';
-import { Button, Icon, NetworkBadge, Tooltip } from '../../../ui';
+import { Icon, NetworkBadge, Tooltip } from '../../../ui';
 
 import styles from './UpperPage.module.scss';
 import { useInjection } from 'inversify-react';
@@ -104,6 +104,19 @@ const UpperPageReplaced = observer(() => {
                             <NetworkBadge chain={chain}/>
                         </a>
                     ))}
+                    <a href="https://faucet.cashmere.exchange" target="_blank" rel="noreferrer">
+                        <NetworkBadge
+                            chain={{
+                                badgeColors: {
+                                    bg: '#d8d8d8',
+                                    text: '#000000',
+                                    hoverBg: '#e8e8e8',
+                                },
+                                iconUrl: cashmereFaucetLogo,
+                                name: 'Cashmere Faucet',
+                            }}
+                        />
+                    </a>
                 </div>
             </div>
         </div>

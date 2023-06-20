@@ -6,7 +6,7 @@ import styles from "./NetworkBadge.module.scss";
 import { BadgeColors, Chain } from '../../constants/chains';
 
 export interface NetworkBadgeProps extends ComponentPropsWithoutRef<"div"> {
-  chain?: Chain;
+  chain?: Pick<Chain, 'name' | 'badgeColors' | 'iconUrl'>;
   size?: number;
   className?: string;
   style?: CSSProperties;

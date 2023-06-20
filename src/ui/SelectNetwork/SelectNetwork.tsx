@@ -54,7 +54,7 @@ const SelectNetwork = (props: SelectNetworkProps) => {
             chain={currentNetwork as Chain}
             {...props}
           />
-          <Icon size={16} className={styles.chevron}>
+          <Icon size={16} className={styles.chevron} style={{ color: (currentNetwork as Chain)?.badgeColors.text }}>
             {expand ? <FaChevronUp /> : <FaChevronDown />}
           </Icon>
         </div>

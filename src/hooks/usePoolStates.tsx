@@ -9,7 +9,7 @@ export const usePoolStates = () => {
   };
 
   const resetPoolCount = () => {
-    poolStore.setPoolCount(6);
+    poolStore.setPoolCount(12);
   };
 
   return { increasePoolCount, resetPoolCount };

@@ -94,50 +94,50 @@ const ChoosePool = observer(({
           </Button>
         </div>
         <div className={styles.options}>
-          <Select
-            containerClassName={styles.select}
-            isFullWidth
-            height={"46px"}
-            menuRenderer={() =>
-              filter.token != null ? filter.token.name : "All tokens"
-            }
-            value={filter.token}
-            setValue={() => undefined}
-            options={tokenOptions}
-            menuClassName={styles.option}
-            width={selectWidth ? `${width - 16}px` : ""}
-            optionRenderer={(close) => (
-              <>
-                <Option
-                  style={{ marginRight: "8px" }}
-                  value={"All tokens"}
-                  onClick={() => {
-                    setFilter({ ...filter, token: null });
-                    close?.();
-                  }}
-                >
-                  <Row style={{ width: "max-content" }} alignItems="center">
-                    <span style={{ color: "var(--text)" }}>All tokens</span>
-                  </Row>
-                </Option>
-                {tokenOptions.map((item, key) => (
-                  <Option
-                    style={{ marginRight: "8px" }}
-                    key={key}
-                    value={item.name}
-                    onClick={() => {
-                      setFilter({ ...filter, token: item });
-                      close?.();
-                    }}
-                  >
-                    <Row style={{ width: "max-content" }} alignItems="center">
-                      <span style={{ color: "var(--text)" }}>{item.name}</span>
-                    </Row>
-                  </Option>
-                ))}
-              </>
-            )}
-          />
+          {/*<Select*/}
+          {/*  containerClassName={styles.select}*/}
+          {/*  isFullWidth*/}
+          {/*  height={"46px"}*/}
+          {/*  menuRenderer={() =>*/}
+          {/*    filter.token != null ? filter.token.name : "All tokens"*/}
+          {/*  }*/}
+          {/*  value={filter.token}*/}
+          {/*  setValue={() => undefined}*/}
+          {/*  options={tokenOptions}*/}
+          {/*  menuClassName={styles.option}*/}
+          {/*  width={selectWidth ? `${width - 16}px` : ""}*/}
+          {/*  optionRenderer={(close) => (*/}
+          {/*    <>*/}
+          {/*      <Option*/}
+          {/*        style={{ marginRight: "8px" }}*/}
+          {/*        value={"All tokens"}*/}
+          {/*        onClick={() => {*/}
+          {/*          setFilter({ ...filter, token: null });*/}
+          {/*          close?.();*/}
+          {/*        }}*/}
+          {/*      >*/}
+          {/*        <Row style={{ width: "max-content" }} alignItems="center">*/}
+          {/*          <span style={{ color: "var(--text)" }}>All tokens</span>*/}
+          {/*        </Row>*/}
+          {/*      </Option>*/}
+          {/*      {tokenOptions.map((item, key) => (*/}
+          {/*        <Option*/}
+          {/*          style={{ marginRight: "8px" }}*/}
+          {/*          key={key}*/}
+          {/*          value={item.name}*/}
+          {/*          onClick={() => {*/}
+          {/*            setFilter({ ...filter, token: item });*/}
+          {/*            close?.();*/}
+          {/*          }}*/}
+          {/*        >*/}
+          {/*          <Row style={{ width: "max-content" }} alignItems="center">*/}
+          {/*            <span style={{ color: "var(--text)" }}>{item.name}</span>*/}
+          {/*          </Row>*/}
+          {/*        </Option>*/}
+          {/*      ))}*/}
+          {/*    </>*/}
+          {/*  )}*/}
+          {/*/>*/}
           <Select
             containerClassName={styles.select}
             isFullWidth

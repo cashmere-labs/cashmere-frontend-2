@@ -219,12 +219,12 @@ const Navbar = ({ transparent = false }: { transparent?: boolean }) => {
                 soon: false,
                 active: pathname.startsWith(PATHS.swap),
             },
-            // {
-            //     name: "Pool",
-            //     url: PATHS.pool,
-            //     soon: false,
-            //     active: pathname.startsWith(PATHS.pool),
-            // },
+            {
+                name: "Pool",
+                url: PATHS.pool,
+                soon: false,
+                active: pathname.startsWith(PATHS.pool),
+            },
             // {
             //     name: "veCSM",
             //     url: PATHS.veCSM,

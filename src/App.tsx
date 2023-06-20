@@ -1,5 +1,5 @@
 import { PATHS } from './constants/paths';
-import { DAO, ManagePage, Swap } from './pages';
+import { DAO, ManagePage, Pool, Swap } from './pages';
 import { NotFound } from './pages/NotFound/NotFound';
 import { useEffect } from 'react';
 import {
@@ -37,7 +37,7 @@ const App = observer(() => {
                 <Routes>
                     <Route path={PATHS.home} element={<Navigate to={PATHS.swap}/>}/>
                     <Route path={PATHS.swap} element={<Swap/>}/>
-                    {/*<Route path={PATHS.pool} element={<Pool/>}/>*/}
+                    <Route path={PATHS.pool} element={<Pool/>}/>
                     {/*<Route path={PATHS.veCSM} element={<VeCSM/>}/>*/}
                     <Route path={PATHS.dashboard} element={<DAO/>}/>
                     <Route path={`${PATHS.manage}/:id`} element={<ManagePage/>}/>

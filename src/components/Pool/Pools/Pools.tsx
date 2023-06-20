@@ -76,9 +76,9 @@ const Pools = observer(({ filter, poolTab }: PoolsProps) => {
           />
         )}
       </div>
-      <div className={styles.footer}>
-        The base emission rate is currently 1.5 CSM per second.
-      </div>
+      {/*<div className={styles.footer}>*/}
+      {/*  The base emission rate is currently 1.5 CSM per second.*/}
+      {/*</div>*/}
       {poolTab === PoolTab.MY
         ? PersonalData.length > poolCount && (
             <div className={styles.more}>

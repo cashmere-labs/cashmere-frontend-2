@@ -1,14 +1,13 @@
 import { useMemo, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { Button, Input, Modal, Spinner } from '../../../ui';
-import AssetABI from "../../../abi/Asset.json";
 
 import styles from './Liquidity.module.scss';
 import { useInjection } from 'inversify-react';
 import ThemeStore from '../../../store/ThemeStore';
 import { observer } from 'mobx-react-lite';
 import PoolStore, { pools } from '../../../store/PoolStore';
-import { BigNumber, constants } from 'ethers';
+import { constants } from 'ethers';
 import {
     Address,
     erc20ABI,
@@ -62,17 +61,21 @@ const Liquidity = observer(({ onSuccess }: { onSuccess: () => void }) => {
     const connectModal = useConnectModal();
     const { switchNetworkAsync } = useSwitchNetwork();
     const [ waitingConfirmation, setWaitingConfirmation ] = useState(false);
+    const [ value, setValue ] = useState('');
 
     const pool = pools[poolStore.whichGlobalModal];
-    const { data: balance, isLoading: balanceLoading } = useBalance({
+    const { data: rawBalance, isLoading: balanceLoading } = useBalance({
         address: account?.address,
         token: pool?.tokenAddress,
         chainId: pool?.network
     });
+    const balance = rawBalance?.formatted.replace(/\.0*$/, '');
+    const bigBalance = toBig(balance || '0');
     const { data: token } = useToken({
         address: pool?.tokenAddress,
         chainId: pool?.network
     });
+    const bigTokenDecimals = new Big(10).pow(token?.decimals || 0);
     const routerContract = useContract({
         address: pool?.crossRouterAddress,
         abi: [depositFunctionAbi],
@@ -91,8 +94,8 @@ const Liquidity = observer(({ onSuccess }: { onSuccess: () => void }) => {
     const rightNetwork = useMemo(() => pool?.network === chain?.id, [chain?.id, pool?.network]);
 
     const insufficientFunds = useMemo(() => {
-        return (balance?.value || toBN(0)).lt(toBN(toBig(poolStore.value).mul(new Big(10).pow(token?.decimals || 0)).toFixed(0)));
-    }, [balance?.value, poolStore.value, token?.decimals]);
+        return bigBalance.lt(value);
+    }, [bigBalance, value]);
 
     const buttonLabel = useMemo(() => {
         if (authStore.status !== 'authenticated')
@@ -115,7 +118,7 @@ const Liquidity = observer(({ onSuccess }: { onSuccess: () => void }) => {
         }
         setWaitingConfirmation(true);
         try {
-            const amount = toBig(poolStore.value).mul(new Big(10).pow(token?.decimals || 0)).toFixed(0);
+            const amount = toBig(value).mul(bigTokenDecimals).toFixed(0);
             if ((await tokenContract?.allowance(account!.address!, pool!.crossRouterAddress))?.lt(amount)) {
                 const tx = await tokenContract?.approve(pool!.crossRouterAddress, constants.MaxUint256);
                 await tx?.wait();
@@ -127,6 +130,8 @@ const Liquidity = observer(({ onSuccess }: { onSuccess: () => void }) => {
         }
         onSuccess();
     };
+
+    const zeroBalance = bigBalance.lte(0);
 
     return (
         <div className={styles.wrapper}>
@@ -152,8 +157,8 @@ const Liquidity = observer(({ onSuccess }: { onSuccess: () => void }) => {
                         width={isPhoneOrPC ? '46px' : '65px'}
                         height="34px"
                         color={themeStore.theme === 'light' ? 'transparentWhite' : 'transparentBlack'}
-                        disabled={(balance?.value || BigNumber.from(0)).lt(0)}
-                        onClick={() => poolStore.setValue(formatBalance((balance!.value!.div(4)).toString(), 4, token?.decimals))}
+                        disabled={zeroBalance}
+                        onClick={() => setValue(formatBalance(bigBalance.div(4), 4, 0))}
                     >
                         25%
                     </Button>{' '}
@@ -161,8 +166,8 @@ const Liquidity = observer(({ onSuccess }: { onSuccess: () => void }) => {
                         width={isPhoneOrPC ? '46px' : '65px'}
                         height="34px"
                         color={themeStore.theme === 'light' ? 'transparentWhite' : 'transparentBlack'}
-                        disabled={(balance?.value || BigNumber.from(0)).lt(0)}
-                        onClick={() => poolStore.setValue(formatBalance((balance!.value!.div(2)).toString(), 4, token?.decimals))}
+                        disabled={zeroBalance}
+                        onClick={() => setValue(formatBalance(bigBalance.div(2), 4, 0))}
                     >
                         50%
                     </Button>{' '}
@@ -170,8 +175,8 @@ const Liquidity = observer(({ onSuccess }: { onSuccess: () => void }) => {
                         width={isPhoneOrPC ? '46px' : '65px'}
                         height="34px"
                         color={themeStore.theme === 'light' ? 'transparentWhite' : 'transparentBlack'}
-                        disabled={(balance?.value || BigNumber.from(0)).lt(0)}
-                        onClick={() => poolStore.setValue(formatBalance((balance!.value!.mul(3).div(4)).toString(), 4, token?.decimals))}
+                        disabled={zeroBalance}
+                        onClick={() => setValue(formatBalance(bigBalance.mul(3).div(4), 4, 0))}
                     >
                         75%
                     </Button>
@@ -179,13 +184,13 @@ const Liquidity = observer(({ onSuccess }: { onSuccess: () => void }) => {
                         width={isPhoneOrPC ? '46px' : '65px'}
                         height="34px"
                         color={themeStore.theme === 'light' ? 'transparentWhite' : 'transparentBlack'}
-                        disabled={(balance?.value || BigNumber.from(0)).lt(0)}
-                        onClick={() => poolStore.setValue(formatBalance((balance!.value!).toString(), token?.decimals))}
+                        disabled={zeroBalance}
+                        onClick={() => setValue(formatBalance(bigBalance, 4, 0))}
                     >
                         MAX
                     </Button>
                 </div>
-                <div className={styles['balanceLabel']}>BALANCE: {balance?.formatted || 0}</div>
+                <div className={styles['balanceLabel']}>BALANCE: {balance || '0'}</div>
             </div>
             <div className={styles.inputBox}>
                 <div className={styles.pattern}>
@@ -200,8 +205,8 @@ const Liquidity = observer(({ onSuccess }: { onSuccess: () => void }) => {
                     extendLeft
                     placeholder="Amount"
                     height={isPhoneOrPC ? '59px' : '71px'}
-                    value={poolStore.value}
-                    onChange={(e) => poolStore.setValue(e.target.value.toString())}
+                    value={value}
+                    onChange={(e) => setValue(e.target.value.replace(/[^\d.]/, '').replace('..', '.'))}
                 />
             </div>
             {/*<div className={styles.depositingAmount}>*/}
@@ -257,7 +262,7 @@ const Liquidity = observer(({ onSuccess }: { onSuccess: () => void }) => {
                     height={isPhoneOrPC ? '34px' : '56px'}
                     fontWeight="fw600"
                     color={themeStore.theme === 'light' ? 'black' : 'white'}
-                    disabled={insufficientFunds || rightNetwork && toBN(poolStore.value).isZero()}
+                    disabled={insufficientFunds || rightNetwork && toBig(value).eq(0)}
                     onClick={buttonAction}
                 >
                     {buttonLabel}

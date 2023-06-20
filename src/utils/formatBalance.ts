@@ -17,8 +17,10 @@ export const formatBalance = (
       .formatUnits(balance as BigNumberish, tokenDecimal)
       .toString();
 
-    const [int, decimal] = _balance.split(".");
-    const returned = [int, decimal.slice(0, decimals)].join(".");
+    const parts = _balance.split(".");
+    if (parts[1])
+      parts[1] = parts[1].slice(0, decimals);
+    const returned = parts.join(".");
     return returned;
   } catch (err) {
     console.log(err);

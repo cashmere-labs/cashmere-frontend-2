@@ -144,11 +144,10 @@ const SwapConfirmation = observer(({
         signature: signature!,
       });
       const txData = aggRouter.interface.encodeFunctionData(
-          aggRouter.interface.functions["startSwap((address,uint256,address,bytes,uint16,uint16,address,uint16,address,uint256,bytes))"],
+          aggRouter.interface.functions["startSwap((address,uint256,uint16,uint16,address,uint16,address,uint256,bytes))"],
           [{
             srcToken: resp.args.srcToken,
             srcAmount: resp.args.srcAmount,
-            router1Inch: ethers.constants.AddressZero,
             lwsPoolId: resp.args.lwsPoolId,
             hgsPoolId: resp.args.hgsPoolId,
             dstToken: resp.args.dstToken,

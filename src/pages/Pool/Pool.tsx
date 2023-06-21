@@ -48,10 +48,10 @@ const Pool = () => {
       const contract = getContract({
         address: pool.assetAddress,
         abi: AssetABI,
-        signerOrProvider: getProvider(),
+        signerOrProvider: getProvider({ chainId: pool.network }),
       });
       array[i] = new Big(await contract.balanceOf(getAccount().address)).div('1e18');
-      setDeposits(array);
+      setDeposits(array.concat());
     }));
   }, []);
 

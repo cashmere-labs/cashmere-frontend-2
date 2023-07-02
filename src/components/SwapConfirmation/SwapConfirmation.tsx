@@ -22,7 +22,7 @@ import CashmereAggregatorUniswapABI from "../../abi/CashmereAggregatorUniswap.js
 import { useInjection } from 'inversify-react';
 import ThemeStore from '../../store/ThemeStore';
 import { observer } from 'mobx-react-lite';
-import { Chain } from '../../constants/chains';
+import { Chain, lineaTestnet } from '../../constants/chains';
 import { erc20ABI, useAccount, useContract, useProvider, useSigner, useSignTypedData } from 'wagmi';
 import PendingTxStore from '../../store/PendingTxStore';
 import { ErrorCode } from '@ethersproject/logger/src.ts';
@@ -157,10 +157,13 @@ const SwapConfirmation = observer(({
             signature: signature!,
           }]
       );
+      let gasPrice = Big((await provider!.getGasPrice()).toString());
+      if (from.network.id !== lineaTestnet.id)
+        gasPrice = gasPrice.mul('4');
       const tx: TransactionRequest = {
         data: txData,
         from: accountAddress,
-        gasPrice: Big((await provider!.getGasPrice()).toString()).mul('4').toFixed(0),
+        gasPrice: gasPrice.toFixed(0),
         to: resp.to,
         value: resp.value,
         gasLimit: from.network.estimateGasLimitOverride ?? 8000000,

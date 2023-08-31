@@ -314,7 +314,7 @@ export const allChains: Chain[] = [
     lineaTestnet,
     polygonZkEvmTestnet,
     // zkSyncTestnet,
-    metisGoerli,
+    // metisGoerli,
 ];
 
 export const activeChains: Chain[] = [

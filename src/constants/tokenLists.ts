@@ -19,15 +19,15 @@ export const mumbaiTokenList = [
     decimals: 18,
     iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270/logo.png",
   },
-  // {
-  //   asset: '2',
-  //   type: 'MUMBAI',
-  //   address: '0x9F2bdc7c63D9CAD3Af1C5902d7fbCa297E0fc2Df',
-  //   name: 'USDC',
-  //   symbol: 'USDC',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
-  // },
+  {
+    asset: '2',
+    type: 'MUMBAI',
+    address: '0x9F2bdc7c63D9CAD3Af1C5902d7fbCa297E0fc2Df',
+    name: 'USDC',
+    symbol: 'USDC',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
+  },
 ];
 
 export const goerliTokenList = [
@@ -49,15 +49,15 @@ export const goerliTokenList = [
     decimals: 18,
     iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
   },
-  // {
-  //   asset: '2',
-  //   type: 'GOERLI',
-  //   address: '0x9B2660A7BEcd0Bf3d90401D1C214d2CD36317da5',
-  //   name: 'USDC',
-  //   symbol: 'USDC',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
-  // },
+  {
+    asset: '2',
+    type: 'GOERLI',
+    address: '0x9B2660A7BEcd0Bf3d90401D1C214d2CD36317da5',
+    name: 'USDC',
+    symbol: 'USDC',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
+  },
 ];
 
 export const bscTestnetTokenList = [
@@ -79,15 +79,15 @@ export const bscTestnetTokenList = [
     decimals: 18,
     iconUrl: "https://assets-cdn.trustwallet.com/blockchains/smartchain/assets/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c/logo.png",
   },
-  // {
-  //   asset: '2',
-  //   type: 'BSC',
-  //   address: '0x4325BB533E44c369ed9A154bDe923DF0Bbef129C',
-  //   name: 'USDC',
-  //   symbol: 'USDC',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
-  // },
+  {
+    asset: '2',
+    type: 'BSC',
+    address: '0x4325BB533E44c369ed9A154bDe923DF0Bbef129C',
+    name: 'USDC',
+    symbol: 'USDC',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
+  },
 ];
 
 export const avalancheFujiTokenList = [
@@ -109,15 +109,15 @@ export const avalancheFujiTokenList = [
     decimals: 18,
     iconUrl: "https://assets-cdn.trustwallet.com/blockchains/avalanchec/assets/0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7/logo.png",
   },
-  // {
-  //   asset: '2',
-  //   type: 'AVALANCHE',
-  //   address: '0x231401dC8b53338d78c08f83CC4EBc74148196d0',
-  //   name: 'USDC',
-  //   symbol: 'USDC',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
-  // },
+  {
+    asset: '2',
+    type: 'AVALANCHE',
+    address: '0x231401dC8b53338d78c08f83CC4EBc74148196d0',
+    name: 'USDC',
+    symbol: 'USDC',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
+  },
 ];
 
 export const fantomTestnetTokenList = [
@@ -139,15 +139,15 @@ export const fantomTestnetTokenList = [
     decimals: 18,
     iconUrl: "https://assets-cdn.trustwallet.com/blockchains/fantom/assets/0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83/logo.png",
   },
-  // {
-  //   asset: '2',
-  //   type: 'FANTOM',
-  //   address: '0x0Fdf019338d4229A160011d0aA87485c756a24f0',
-  //   name: 'USDC',
-  //   symbol: 'USDC',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
-  // },
+  {
+    asset: '2',
+    type: 'FANTOM',
+    address: '0x0Fdf019338d4229A160011d0aA87485c756a24f0',
+    name: 'USDC',
+    symbol: 'USDC',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
+  },
 ];
 
 export const arbitrumGoerliTokenList = [
@@ -169,15 +169,15 @@ export const arbitrumGoerliTokenList = [
     decimals: 18,
     iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
   },
-  // {
-  //   asset: '2',
-  //   type: 'ARBITRUM',
-  //   address: '0x747E19a0A0D074598BB5FB758591bFF8dE517312',
-  //   name: 'USDC',
-  //   symbol: 'USDC',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
-  // },
+  {
+    asset: '2',
+    type: 'ARBITRUM',
+    address: '0x747E19a0A0D074598BB5FB758591bFF8dE517312',
+    name: 'USDC',
+    symbol: 'USDC',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
+  },
 ];
 
 export const optimismGoerliTokenList = [
@@ -199,15 +199,15 @@ export const optimismGoerliTokenList = [
     decimals: 18,
     iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
   },
-  // {
-  //   asset: '2',
-  //   type: 'OPTIMISM',
-  //   address: '0x12AAef2833E39d556d9D913574a8B021D8e954c0',
-  //   name: 'USDC',
-  //   symbol: 'USDC',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
-  // },
+  {
+    asset: '2',
+    type: 'OPTIMISM',
+    address: '0x12AAef2833E39d556d9D913574a8B021D8e954c0',
+    name: 'USDC',
+    symbol: 'USDC',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
+  },
 ];
 
 export const baseGoerliTokenList = [
@@ -229,15 +229,15 @@ export const baseGoerliTokenList = [
     decimals: 18,
     iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
   },
-  // {
-  //   asset: '2',
-  //   type: 'BASE',
-  //   address: '0x290B54A504A3b0cB21888e3E405AFC1b2946598C',
-  //   name: 'USDC',
-  //   symbol: 'USDC',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
-  // },
+  {
+    asset: '2',
+    type: 'BASE',
+    address: '0x290B54A504A3b0cB21888e3E405AFC1b2946598C',
+    name: 'USDC',
+    symbol: 'USDC',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
+  },
 ];
 
 export const lineaTestnetTokenList = [
@@ -259,15 +259,15 @@ export const lineaTestnetTokenList = [
     decimals: 18,
     iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
   },
-  // {
-  //   asset: '2',
-  //   type: 'LINEA',
-  //   address: '0xF484ca938Af7165d0A8D99746939b1B60A26F0af',
-  //   name: 'USDC',
-  //   symbol: 'USDC',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
-  // },
+  {
+    asset: '2',
+    type: 'LINEA',
+    address: '0xF484ca938Af7165d0A8D99746939b1B60A26F0af',
+    name: 'USDC',
+    symbol: 'USDC',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
+  },
 ];
 
 export const polygonZkEvmTestnetTokenList = [
@@ -289,15 +289,15 @@ export const polygonZkEvmTestnetTokenList = [
     decimals: 18,
     iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
   },
-  // {
-  //   asset: '2',
-  //   type: 'POLYGONZK',
-  //   address: '0x557278364B136a8D7686016b1930c8C7136d8af9',
-  //   name: 'USDC',
-  //   symbol: 'USDC',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
-  // },
+  {
+    asset: '2',
+    type: 'POLYGONZK',
+    address: '0x557278364B136a8D7686016b1930c8C7136d8af9',
+    name: 'USDC',
+    symbol: 'USDC',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
+  },
 ];
 
 // export const zkSyncTestnetTokenList = [
@@ -349,13 +349,13 @@ export const metisGoerliTokenList = [
     decimals: 18,
     iconUrl: METIS_IMAGE,
   },
-  // {
-  //   asset: '2',
-  //   type: 'METIS',
-  //   address: '0x8EdB69919835e98b5a4f751FAdB78d66C880475C',
-  //   name: 'USDC',
-  //   symbol: 'USDC',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
-  // },
+  {
+    asset: '2',
+    type: 'METIS',
+    address: '0x8EdB69919835e98b5a4f751FAdB78d66C880475C',
+    name: 'USDC',
+    symbol: 'USDC',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png",
+  },
 ];

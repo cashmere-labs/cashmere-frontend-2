@@ -17,8 +17,10 @@ import Big from "big.js";
 import { BigNumber, constants, ethers } from "ethers";
 // import { ContractContext as CashmereRouter2L0Context } from "../../abi/CashmereRouter2L0";
 // import CashmereRouter2L0ABI from "../../abi/CashmereRouter2L0.abi.json";
-import { ContractContext as CashmereAggregatorUniswapContext } from "../../abi/CashmereAggregatorUniswap";
-import CashmereAggregatorUniswapABI from "../../abi/CashmereAggregatorUniswap.json";
+// import { ContractContext as CashmereAggregatorUniswapContext } from "../../abi/CashmereAggregatorUniswap";
+// import CashmereAggregatorUniswapABI from "../../abi/CashmereAggregatorUniswap.json";
+import { ContractContext as CrossRouterContext } from "../../abi/CrossRouter";
+import CrossRouterABI from "../../abi/CrossRouter.json";
 import { useInjection } from 'inversify-react';
 import ThemeStore from '../../store/ThemeStore';
 import { observer } from 'mobx-react-lite';
@@ -131,30 +133,36 @@ const SwapConfirmation = observer(({
       //       BigNumber.from(resp.args.hgsEstimate).mul("9").div("10"),
       //     ]
       // ))));
-      const aggRouter: CashmereAggregatorUniswapContext = new ethers.Contract(resp.to, CashmereAggregatorUniswapABI, signer!) as unknown as CashmereAggregatorUniswapContext;
+      const crossRouter: CrossRouterContext = new ethers.Contract(resp.to, CrossRouterABI, signer!) as unknown as CrossRouterContext;
       console.log({
-        srcToken: resp.args.srcToken,
-        srcAmount: resp.args.srcAmount,
-        lwsPoolId: resp.args.lwsPoolId,
-        hgsPoolId: resp.args.hgsPoolId,
-        dstToken: resp.args.dstToken,
-        dstChain: resp.args.dstChain,
-        dstAggregatorAddress: resp.args.dstAggregatorAddress,
-        minHgsAmount: BigNumber.from(resp.args.minHgsAmount).mul("9").div('10'),
-        signature: signature!,
+        // srcToken: resp.args.srcToken,
+        amount: resp.args.srcAmount,
+        srcPoolId: resp.args.lwsPoolId,
+        dstPoolId: resp.args.hgsPoolId,
+        // dstToken: resp.args.dstToken,
+        dstChainId: resp.args.dstChain,
+        // dstAggregatorAddress: resp.args.dstAggregatorAddress,
+        minAmount: BigNumber.from(resp.args.minHgsAmount).mul("9").div('10'),
+        payload: '0x00',
+        to: accountAddress!,
+        refundAddress: accountAddress!,
+        // signature: signature!,
       });
-      const txData = aggRouter.interface.encodeFunctionData(
-          aggRouter.interface.functions["startSwap((address,uint256,uint16,uint16,address,uint16,address,uint256,bytes))"],
+      const txData = crossRouter.interface.encodeFunctionData(
+          crossRouter.interface.functions["swap((uint16,uint16,uint16,address,uint256,uint256,address,bytes))"],
           [{
-            srcToken: resp.args.srcToken,
-            srcAmount: resp.args.srcAmount,
-            lwsPoolId: resp.args.lwsPoolId,
-            hgsPoolId: resp.args.hgsPoolId,
-            dstToken: resp.args.dstToken,
-            dstChain: resp.args.dstChain,
-            dstAggregatorAddress: resp.args.dstAggregatorAddress,
-            minHgsAmount: BigNumber.from(resp.args.minHgsAmount).mul("9").div('10'),
-            signature: signature!,
+            // srcToken: resp.args.srcToken,
+            amount: resp.args.srcAmount,
+            srcPoolId: resp.args.lwsPoolId,
+            dstPoolId: resp.args.hgsPoolId,
+            // dstToken: resp.args.dstToken,
+            dstChainId: resp.args.dstChain,
+            // dstAggregatorAddress: resp.args.dstAggregatorAddress,
+            minAmount: BigNumber.from(resp.args.minHgsAmount).mul("9").div('10'),
+            payload: '0x00',
+            to: accountAddress!,
+            refundAddress: accountAddress!,
+            // signature: signature!,
           }]
       );
       let gasPrice = Big((await provider!.getGasPrice()).toString());

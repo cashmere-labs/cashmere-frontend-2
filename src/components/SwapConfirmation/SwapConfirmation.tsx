@@ -21,6 +21,8 @@ import { BigNumber, constants, ethers } from "ethers";
 // import CashmereAggregatorUniswapABI from "../../abi/CashmereAggregatorUniswap.json";
 import { ContractContext as CrossRouterContext } from "../../abi/CrossRouter";
 import CrossRouterABI from "../../abi/CrossRouter.json";
+import { ContractContext as AggregatorContext } from "../../abi/CashmereAggregatorAxelarUniswap";
+import AggregatorABI from "../../abi/CashmereAggregatorAxelarUniswap.json";
 import { useInjection } from 'inversify-react';
 import ThemeStore from '../../store/ThemeStore';
 import { observer } from 'mobx-react-lite';
@@ -97,31 +99,31 @@ const SwapConfirmation = observer(({
         }
       }
 
-      const signature = await signTypedDataAsync({
-        domain: {
-          name: "Cashmere Swap",
-          version: "0.0.2",
-          chainId: from.network.id,
-          verifyingContract: resp.to,
-        },
-        types: {
-          Parameters: [
-            { name: 'receiver', type: 'address' },
-            { name: 'lwsPoolId', type: 'uint16' },
-            { name: 'hgsPoolId', type: 'uint16' },
-            { name: 'dstToken', type: 'address' },
-            { name: 'minHgsAmount', type: 'uint256' },
-          ]
-        },
-        value: {
-            receiver: accountAddress!,
-            lwsPoolId: parseInt(resp.args.lwsPoolId),
-            hgsPoolId: parseInt(resp.args.hgsPoolId),
-            dstToken: resp.args.dstToken,
-            minHgsAmount: BigNumber.from(resp.args.minHgsAmount).mul("9").div("10")
-        }
-      });
-      console.log(signature);
+      // const signature = await signTypedDataAsync({
+      //   domain: {
+      //     name: "Cashmere Swap",
+      //     version: "0.0.2",
+      //     chainId: from.network.id,
+      //     verifyingContract: resp.to,
+      //   },
+      //   types: {
+      //     Parameters: [
+      //       { name: 'receiver', type: 'address' },
+      //       { name: 'lwsPoolId', type: 'uint16' },
+      //       { name: 'hgsPoolId', type: 'uint16' },
+      //       { name: 'dstToken', type: 'address' },
+      //       { name: 'minHgsAmount', type: 'uint256' },
+      //     ]
+      //   },
+      //   value: {
+      //       receiver: accountAddress!,
+      //       lwsPoolId: parseInt(resp.args.lwsPoolId),
+      //       hgsPoolId: parseInt(resp.args.hgsPoolId),
+      //       dstToken: resp.args.dstToken,
+      //       minHgsAmount: BigNumber.from(resp.args.minHgsAmount).mul("9").div("10")
+      //   }
+      // });
+      // console.log(signature);
 
       // const signature = await signer?._signTypedData(ethers.utils.arrayify(ethers.utils.keccak256(ethers.utils.defaultAbiCoder.encode(
       //     ["address", "address", "address", "address", "uint256"],
@@ -134,6 +136,7 @@ const SwapConfirmation = observer(({
       //     ]
       // ))));
       const crossRouter: CrossRouterContext = new ethers.Contract(resp.to, CrossRouterABI, signer!) as unknown as CrossRouterContext;
+      const aggregator: AggregatorContext = new ethers.Contract(resp.to, AggregatorABI, signer!) as unknown as AggregatorContext;
       console.log({
         // srcToken: resp.args.srcToken,
         amount: resp.args.srcAmount,
@@ -148,23 +151,52 @@ const SwapConfirmation = observer(({
         refundAddress: accountAddress!,
         // signature: signature!,
       });
-      const txData = crossRouter.interface.encodeFunctionData(
-          crossRouter.interface.functions["swap((uint16,uint16,uint16,address,uint256,uint256,address,bytes))"],
-          [{
-            // srcToken: resp.args.srcToken,
-            amount: resp.args.srcAmount,
-            srcPoolId: resp.args.lwsPoolId,
-            dstPoolId: resp.args.hgsPoolId,
-            // dstToken: resp.args.dstToken,
-            dstChainId: resp.args.dstChain,
-            // dstAggregatorAddress: resp.args.dstAggregatorAddress,
-            minAmount: BigNumber.from(resp.args.minHgsAmount).mul("9").div('10'),
-            payload: '0x00',
-            to: accountAddress!,
-            refundAddress: accountAddress!,
-            // signature: signature!,
-          }]
-      );
+      let txData;
+      if (resp.toAggregator) {
+        console.log('to aggregator', {
+          srcToken: from.token.address,
+          srcAmount: resp.args.srcAmount,
+          router1Inch: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+          data: '0x00',
+          lwsPoolId: resp.args.lwsPoolId,
+          hgsPoolId: resp.args.hgsPoolId,
+          dstToken: resp.args.dstToken,
+          dstChain: resp.args.dstChain,
+          hgsMinAmount: BigNumber.from(resp.args.minHgsAmount).mul("9").div('10'),
+        });
+        txData = aggregator.interface.encodeFunctionData(
+            aggregator.interface.functions['startSwap((address,uint256,address,bytes,uint16,uint16,address,uint16,uint256))'],
+            [{
+              srcToken: from.token.address,
+              srcAmount: resp.args.srcAmount,
+              router1Inch: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+              data: '0x00',
+              lwsPoolId: resp.args.lwsPoolId,
+              hgsPoolId: resp.args.hgsPoolId,
+              dstToken: resp.args.dstToken,
+              dstChain: resp.args.dstChain,
+              minHgsAmount: BigNumber.from(resp.args.minHgsAmount).mul("9").div('10'),
+            }]
+        );
+      } else {
+        txData = crossRouter.interface.encodeFunctionData(
+            crossRouter.interface.functions["swap((uint16,uint16,uint16,address,uint256,uint256,address,bytes))"],
+            [{
+              // srcToken: resp.args.srcToken,
+              amount: resp.args.srcAmount,
+              srcPoolId: resp.args.lwsPoolId,
+              dstPoolId: resp.args.hgsPoolId,
+              // dstToken: resp.args.dstToken,
+              dstChainId: resp.args.dstChain,
+              // dstAggregatorAddress: resp.args.dstAggregatorAddress,
+              minAmount: BigNumber.from(resp.args.minHgsAmount).mul("9").div('10'),
+              payload: '0x00',
+              to: accountAddress!,
+              refundAddress: accountAddress!,
+              // signature: signature!,
+            }]
+        );
+      }
       let gasPrice = Big((await provider!.getGasPrice()).toString());
       if (from.network.id !== lineaTestnet.id)
         gasPrice = gasPrice.mul('4');
@@ -201,15 +233,15 @@ const SwapConfirmation = observer(({
       //     clearInterval(l0Interval);
       //   }
       // }, 1000);
-    } catch (e) {
-      console.error(JSON.parse(JSON.stringify(e)));
-      const codes = [(e as any).code, (e as any).error?.code, (e as any).error?.error?.code];
-      for (const code of codes) {
-        if ([ErrorCode.INSUFFICIENT_FUNDS, -32603, -32000].includes(code)) {
-          setInsufficientFunds(true);
-          break;
-        }
-      }
+    // } catch (e) {
+    //   console.error(JSON.parse(JSON.stringify(e)));
+    //   const codes = [(e as any).code, (e as any).error?.code, (e as any).error?.error?.code];
+    //   for (const code of codes) {
+    //     if ([ErrorCode.INSUFFICIENT_FUNDS, -32603, -32000].includes(code)) {
+    //       setInsufficientFunds(true);
+    //       break;
+    //     }
+    //   }
     } finally {
       setWaitingConfirmation(false);
     }

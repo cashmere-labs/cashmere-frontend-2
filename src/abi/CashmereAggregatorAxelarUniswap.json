@@ -1,0 +1,669 @@
+[
+  {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [],
+    "name": "AlreadyInitialized",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InsufficientValue",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidLwsGws",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidSender",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ReetrantCall",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [],
+    "name": "AggregatorInfosUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "id",
+        "type": "bytes32"
+      }
+    ],
+    "name": "NewPendingSwap",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "previousAdminRole",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "newAdminRole",
+        "type": "bytes32"
+      }
+    ],
+    "name": "RoleAdminChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      }
+    ],
+    "name": "RoleGranted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      }
+    ],
+    "name": "RoleRevoked",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "id",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      }
+    ],
+    "name": "SwapContinued",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "DEFAULT_ADMIN_ROLE",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "srcChainId",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint16",
+        "name": "hgsPoolId",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "swapId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "receiver",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IERC20",
+        "name": "dstToken",
+        "type": "address"
+      }
+    ],
+    "name": "finishSwap",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "chainId",
+        "type": "uint16"
+      }
+    ],
+    "name": "getAggregatorInfos",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "srcAggregatorAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint16",
+            "name": "l0ChainId",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint256",
+            "name": "chainId",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct ICashmereAggregatorAxelar.AggregatorInfo",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getAssetRouter",
+    "outputs": [
+      {
+        "internalType": "contract ICrossRouter",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getBridge",
+    "outputs": [
+      {
+        "internalType": "contract IBridgeAxelar",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getInitialized",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getRoleAdmin",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "swapId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getSentSwaps",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "id",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "contract IERC20",
+            "name": "lwsToken",
+            "type": "address"
+          },
+          {
+            "internalType": "uint16",
+            "name": "lwsPoolId",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint16",
+            "name": "hgsPoolId",
+            "type": "uint16"
+          },
+          {
+            "internalType": "contract IERC20",
+            "name": "dstToken",
+            "type": "address"
+          },
+          {
+            "internalType": "uint16",
+            "name": "dstChainId",
+            "type": "uint16"
+          },
+          {
+            "internalType": "address",
+            "name": "receiver",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "minHgsAmount",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct ICashmereAggregatorAxelar.SentSwap",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "chainId",
+        "type": "uint16"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "swapId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getSwapReceived",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getUniswap",
+    "outputs": [
+      {
+        "internalType": "contract IUniswapV2Router02",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getWrappedNativeToken",
+    "outputs": [
+      {
+        "internalType": "contract IWrappedNativeToken",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "grantRole",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "hasRole",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract ICrossRouter",
+        "name": "assetRouter",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IBridgeAxelar",
+        "name": "bridge",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IUniswapV2Router02",
+        "name": "uniswap",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IWrappedNativeToken",
+        "name": "wrappedNativeToken",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "admin",
+        "type": "address"
+      }
+    ],
+    "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "renounceRole",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "revokeRole",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "srcAggregatorAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint16",
+            "name": "l0ChainId",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint256",
+            "name": "chainId",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct ICashmereAggregatorAxelar.AggregatorInfo[]",
+        "name": "infos",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "setAggregatorInfos",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "contract IERC20",
+            "name": "srcToken",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "srcAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "router1Inch",
+            "type": "address"
+          },
+          {
+            "internalType": "bytes",
+            "name": "data",
+            "type": "bytes"
+          },
+          {
+            "internalType": "uint16",
+            "name": "lwsPoolId",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint16",
+            "name": "hgsPoolId",
+            "type": "uint16"
+          },
+          {
+            "internalType": "contract IERC20",
+            "name": "dstToken",
+            "type": "address"
+          },
+          {
+            "internalType": "uint16",
+            "name": "dstChain",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint256",
+            "name": "minHgsAmount",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct ICashmereAggregatorAxelar.SwapParams",
+        "name": "params",
+        "type": "tuple"
+      }
+    ],
+    "name": "startSwap",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes4",
+        "name": "interfaceId",
+        "type": "bytes4"
+      }
+    ],
+    "name": "supportsInterface",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract ICrossRouter",
+        "name": "assetRouter",
+        "type": "address"
+      }
+    ],
+    "name": "updateAssetRouter",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IBridgeAxelar",
+        "name": "bridge",
+        "type": "address"
+      }
+    ],
+    "name": "updateBridge",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IERC20",
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdrawTokens",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "stateMutability": "payable",
+    "type": "receive"
+  }
+]

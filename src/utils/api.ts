@@ -75,10 +75,11 @@ export interface SwapParamsResponse {
         hgsPoolId: string;
         dstToken: Address;
         dstChain: string;
-        dstAggregatorAddress: string;
+        to: string;
         minHgsAmount: string;
     };
     to: Address;
+    toAggregator: boolean;
     value: string;
     swapData: SwapData;
 }

@@ -190,8 +190,11 @@ const SwapConfirmation = observer(({
               dstChainId: resp.args.dstChain,
               // dstAggregatorAddress: resp.args.dstAggregatorAddress,
               minAmount: BigNumber.from(resp.args.minHgsAmount).mul("9").div('10'),
-              payload: '0x00',
-              to: accountAddress!,
+              payload: ethers.utils.solidityPack(
+                  ['address', 'address'],
+                  [resp.args.dstToken, accountAddress!],
+              ),
+              to: resp.args.to,
               refundAddress: accountAddress!,
               // signature: signature!,
             }]
@@ -233,15 +236,15 @@ const SwapConfirmation = observer(({
       //     clearInterval(l0Interval);
       //   }
       // }, 1000);
-    // } catch (e) {
-    //   console.error(JSON.parse(JSON.stringify(e)));
-    //   const codes = [(e as any).code, (e as any).error?.code, (e as any).error?.error?.code];
-    //   for (const code of codes) {
-    //     if ([ErrorCode.INSUFFICIENT_FUNDS, -32603, -32000].includes(code)) {
-    //       setInsufficientFunds(true);
-    //       break;
-    //     }
-    //   }
+    } catch (e) {
+      console.error(JSON.parse(JSON.stringify(e)));
+      const codes = [(e as any).code, (e as any).error?.code, (e as any).error?.error?.code];
+      for (const code of codes) {
+        if ([ErrorCode.INSUFFICIENT_FUNDS, -32603, -32000].includes(code)) {
+          setInsufficientFunds(true);
+          break;
+        }
+      }
     } finally {
       setWaitingConfirmation(false);
     }

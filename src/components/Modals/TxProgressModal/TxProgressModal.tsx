@@ -49,7 +49,7 @@ const TxProgressModal = observer(({ modalController, selectedTx }: TxProgressMod
             title: `Swapping ${selectedTx?.lwsTokenSymbol} on ${srcChain?.name} to ${selectedTx?.hgsTokenSymbol} on ${dstChain?.name}`,
             image: themeStore.theme === 'dark' ? CASHMERE_WHITE_ICON : CASHMERE_GRAY_ICON,
             poweredBy: 'Cashmere',
-            url: selectedTx?.l0Link && `https://testnet.layerzeroscan.com/${selectedTx.l0Link}`,
+            url: selectedTx?.l0Link && `https://testnet.axelarscan.io/${selectedTx.l0Link}`,
             progress: (() => {
                 if (!selectedTx?.fake) return 'done';
                 // if (!selectedTx?.fake) return 'in_progress';

@@ -146,7 +146,7 @@ export const polygon: Chain = {
 export const polygonMumbai: Chain = {
     ...wagmiPolygonMumbai,
     rpcUrls: {
-        ...wagmiGoerli.rpcUrls,
+        ...wagmiPolygonMumbai.rpcUrls,
         default: {
             http: ['https://rpc.ankr.com/polygon_mumbai'],
         },

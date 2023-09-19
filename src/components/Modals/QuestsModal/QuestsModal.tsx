@@ -39,10 +39,21 @@ const QuestsModal = observer(({ modal }: IQuestsModalProps) => {
                 <h2 className={styles.title}>Testnet Quests</h2>
             </div>
             <div className={styles.body}>
-                <QuestsButton href='https://galxe.com/cashmerelabs/campaign/GC7CnUeuBQ'>Galxe Quests - New</QuestsButton>
-                <QuestsButton href='https://zora.co/collect/oeth:0xbebed7039dbce2ef39e9048d0f92290c62b95414'>Mainnet Early Goat NFT</QuestsButton>
-                <QuestsButton href='https://layer3.xyz/quests/cashmere-labs'>Layer3 Quests - New</QuestsButton>
-                <QuestsButton href='https://zealy.io/c/cashmerelabs/questboard'>Crew3 Quests - New</QuestsButton>
+                {+new Date() > 1689173400000 ? (
+                    <>
+                        <QuestsButton href='https://galxe.com/cashmerelabs/campaign/GC7CnUeuBQ'>Galxe Quests - New</QuestsButton>
+                        <QuestsButton href='https://zora.co/collect/oeth:0xbebed7039dbce2ef39e9048d0f92290c62b95414'>Mainnet Early Goat NFT</QuestsButton>
+                        <QuestsButton href='https://layer3.xyz/quests/cashmere-labs'>Layer3 Quests - New</QuestsButton>
+                        <QuestsButton href='https://zealy.io/c/cashmerelabs/questboard'>Crew3 Quests - New</QuestsButton>
+                    </>
+                ) : (
+                    <>
+                        <QuestsButton href='https://galxe.com/cashmerelabs/campaign/GCeY5U6ntK'>Galxe Quests</QuestsButton>
+                        <QuestsButton href='https://zora.co/collect/0x3a40312a1c376aecf855ef784371d1fb1aa2d25d'>Testnet Early Adopter NFT</QuestsButton>
+                        <QuestsButton href='https://layer3.xyz/quests/cashmere-1'>Layer3 Quests</QuestsButton>
+                        <QuestsButton href='https://zealy.io/c/cashmerelabs/questboard'>Crew3 Quests</QuestsButton>
+                    </>
+                )}
                 <QuestsButton href='https://guild.xyz/cashmerelabs'>Guild.xyz</QuestsButton>
             </div>
         </Modal>

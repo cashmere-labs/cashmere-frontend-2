@@ -148,7 +148,7 @@ export const polygonMumbai: Chain = {
     rpcUrls: {
         ...wagmiGoerli.rpcUrls,
         default: {
-            http: ['https://rpc-mumbai.maticvigil.com'],
+            http: ['https://rpc.ankr.com/polygon_mumbai'],
         },
     },
     iconUrl: POLYGON_IMAGE,

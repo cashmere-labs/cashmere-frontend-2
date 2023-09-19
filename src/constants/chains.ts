@@ -145,6 +145,12 @@ export const polygon: Chain = {
 
 export const polygonMumbai: Chain = {
     ...wagmiPolygonMumbai,
+    rpcUrls: {
+        ...wagmiGoerli.rpcUrls,
+        default: {
+            http: ['https://rpc-mumbai.maticvigil.com'],
+        },
+    },
     iconUrl: POLYGON_IMAGE,
     tokenList: mumbaiTokenList.map(t => new Token(t)),
     badgeColors: polygonBadgeColors,

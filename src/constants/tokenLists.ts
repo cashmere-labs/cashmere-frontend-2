@@ -1,24 +1,24 @@
 import METIS_IMAGE from '../assets/images/networks/metis.png';
 
 export const mumbaiTokenList = [
-  // {
-  //   asset: '0',
-  //   type: 'MUMBAI',
-  //   address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-  //   name: 'MATIC',
-  //   symbol: 'MATIC',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270/logo.png",
-  // },
-  // {
-  //   asset: '1',
-  //   type: 'MUMBAI',
-  //   address: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889',
-  //   name: 'Wrapped MATIC',
-  //   symbol: 'WMATIC',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270/logo.png",
-  // },
+  {
+    asset: '0',
+    type: 'MUMBAI',
+    address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+    name: 'MATIC',
+    symbol: 'MATIC',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270/logo.png",
+  },
+  {
+    asset: '1',
+    type: 'MUMBAI',
+    address: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889',
+    name: 'Wrapped MATIC',
+    symbol: 'WMATIC',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270/logo.png",
+  },
   {
     asset: '2',
     type: 'MUMBAI',
@@ -31,24 +31,24 @@ export const mumbaiTokenList = [
 ];
 
 export const goerliTokenList = [
-  // {
-  //   asset: '0',
-  //   type: 'GOERLI',
-  //   address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-  //   name: 'ETH',
-  //   symbol: 'ETH',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
-  // },
-  // {
-  //   asset: '1',
-  //   type: 'GOERLI',
-  //   address: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
-  //   name: 'Wrapped ETH',
-  //   symbol: 'WETH',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
-  // },
+  {
+    asset: '0',
+    type: 'GOERLI',
+    address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+    name: 'ETH',
+    symbol: 'ETH',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
+  {
+    asset: '1',
+    type: 'GOERLI',
+    address: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
+    name: 'Wrapped ETH',
+    symbol: 'WETH',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
   {
     asset: '2',
     type: 'GOERLI',
@@ -61,24 +61,24 @@ export const goerliTokenList = [
 ];
 
 export const bscTestnetTokenList = [
-  // {
-  //   asset: '0',
-  //   type: 'BSC',
-  //   address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-  //   name: 'BNB',
-  //   symbol: 'BNB',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/smartchain/assets/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c/logo.png",
-  // },
-  // {
-  //   asset: '1',
-  //   type: 'BSC',
-  //   address: '0x48f7D56c057F20668cdbaD0a9Cd6092B3dc83684',
-  //   name: 'Wrapped BNB',
-  //   symbol: 'WBNB',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/smartchain/assets/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c/logo.png",
-  // },
+  {
+    asset: '0',
+    type: 'BSC',
+    address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+    name: 'BNB',
+    symbol: 'BNB',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/smartchain/assets/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c/logo.png",
+  },
+  {
+    asset: '1',
+    type: 'BSC',
+    address: '0x48f7D56c057F20668cdbaD0a9Cd6092B3dc83684',
+    name: 'Wrapped BNB',
+    symbol: 'WBNB',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/smartchain/assets/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c/logo.png",
+  },
   {
     asset: '2',
     type: 'BSC',
@@ -91,24 +91,24 @@ export const bscTestnetTokenList = [
 ];
 
 export const avalancheFujiTokenList = [
-  // {
-  //   asset: '0',
-  //   type: 'AVALANCHE',
-  //   address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-  //   name: 'AVAX',
-  //   symbol: 'AVAX',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/avalanchec/assets/0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7/logo.png",
-  // },
-  // {
-  //   asset: '1',
-  //   type: 'AVALANCHE',
-  //   address: '0xd00ae08403B9bbb9124bB305C09058E32C39A48c',
-  //   name: 'Wrapped AVAX',
-  //   symbol: 'WAVAX',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/avalanchec/assets/0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7/logo.png",
-  // },
+  {
+    asset: '0',
+    type: 'AVALANCHE',
+    address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+    name: 'AVAX',
+    symbol: 'AVAX',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/avalanchec/assets/0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7/logo.png",
+  },
+  {
+    asset: '1',
+    type: 'AVALANCHE',
+    address: '0xd00ae08403B9bbb9124bB305C09058E32C39A48c',
+    name: 'Wrapped AVAX',
+    symbol: 'WAVAX',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/avalanchec/assets/0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7/logo.png",
+  },
   {
     asset: '2',
     type: 'AVALANCHE',
@@ -121,24 +121,24 @@ export const avalancheFujiTokenList = [
 ];
 
 export const fantomTestnetTokenList = [
-  // {
-  //   asset: '0',
-  //   type: 'FANTOM',
-  //   address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-  //   name: 'FTM',
-  //   symbol: 'FTM',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/fantom/assets/0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83/logo.png",
-  // },
-  // {
-  //   asset: '1',
-  //   type: 'FANTOM',
-  //   address: '0x231401dC8b53338d78c08f83CC4EBc74148196d0',
-  //   name: 'Wrapped FTM',
-  //   symbol: 'WFTM',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/fantom/assets/0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83/logo.png",
-  // },
+  {
+    asset: '0',
+    type: 'FANTOM',
+    address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+    name: 'FTM',
+    symbol: 'FTM',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/fantom/assets/0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83/logo.png",
+  },
+  {
+    asset: '1',
+    type: 'FANTOM',
+    address: '0x231401dC8b53338d78c08f83CC4EBc74148196d0',
+    name: 'Wrapped FTM',
+    symbol: 'WFTM',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/fantom/assets/0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83/logo.png",
+  },
   {
     asset: '2',
     type: 'FANTOM',
@@ -151,24 +151,24 @@ export const fantomTestnetTokenList = [
 ];
 
 export const arbitrumGoerliTokenList = [
-  // {
-  //   asset: '0',
-  //   type: 'ARBITRUM',
-  //   address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-  //   name: 'ETH',
-  //   symbol: 'ETH',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
-  // },
-  // {
-  //   asset: '1',
-  //   type: 'ARBITRUM',
-  //   address: '0xe39Ab88f8A4777030A534146A9Ca3B52bd5D43A3',
-  //   name: 'Wrapped ETH',
-  //   symbol: 'WETH',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
-  // },
+  {
+    asset: '0',
+    type: 'ARBITRUM',
+    address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+    name: 'ETH',
+    symbol: 'ETH',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
+  {
+    asset: '1',
+    type: 'ARBITRUM',
+    address: '0xe39Ab88f8A4777030A534146A9Ca3B52bd5D43A3',
+    name: 'Wrapped ETH',
+    symbol: 'WETH',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
   {
     asset: '2',
     type: 'ARBITRUM',
@@ -181,24 +181,24 @@ export const arbitrumGoerliTokenList = [
 ];
 
 export const optimismGoerliTokenList = [
-  // {
-  //   asset: '0',
-  //   type: 'OPTIMISM',
-  //   address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-  //   name: 'ETH',
-  //   symbol: 'ETH',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
-  // },
-  // {
-  //   asset: '1',
-  //   type: 'OPTIMISM',
-  //   address: '0x4200000000000000000000000000000000000006',
-  //   name: 'Wrapped ETH',
-  //   symbol: 'WETH',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
-  // },
+  {
+    asset: '0',
+    type: 'OPTIMISM',
+    address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+    name: 'ETH',
+    symbol: 'ETH',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
+  {
+    asset: '1',
+    type: 'OPTIMISM',
+    address: '0x4200000000000000000000000000000000000006',
+    name: 'Wrapped ETH',
+    symbol: 'WETH',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
   {
     asset: '2',
     type: 'OPTIMISM',
@@ -211,24 +211,24 @@ export const optimismGoerliTokenList = [
 ];
 
 export const baseGoerliTokenList = [
-  // {
-  //   asset: '0',
-  //   type: 'BASE',
-  //   address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-  //   name: 'ETH',
-  //   symbol: 'ETH',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
-  // },
-  // {
-  //   asset: '1',
-  //   type: 'BASE',
-  //   address: '0x231401dC8b53338d78c08f83CC4EBc74148196d0',
-  //   name: 'Wrapped ETH',
-  //   symbol: 'WETH',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
-  // },
+  {
+    asset: '0',
+    type: 'BASE',
+    address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+    name: 'ETH',
+    symbol: 'ETH',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
+  {
+    asset: '1',
+    type: 'BASE',
+    address: '0x231401dC8b53338d78c08f83CC4EBc74148196d0',
+    name: 'Wrapped ETH',
+    symbol: 'WETH',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
   {
     asset: '2',
     type: 'BASE',
@@ -241,24 +241,24 @@ export const baseGoerliTokenList = [
 ];
 
 export const lineaTestnetTokenList = [
-  // {
-  //   asset: '0',
-  //   type: 'LINEA',
-  //   address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-  //   name: 'ETH',
-  //   symbol: 'ETH',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
-  // },
-  // {
-  //   asset: '1',
-  //   type: 'LINEA',
-  //   address: '0xC5aB03962938Fa544D16F4667ED76788894fFca4',
-  //   name: 'Wrapped ETH',
-  //   symbol: 'WETH',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
-  // },
+  {
+    asset: '0',
+    type: 'LINEA',
+    address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+    name: 'ETH',
+    symbol: 'ETH',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
+  {
+    asset: '1',
+    type: 'LINEA',
+    address: '0xC5aB03962938Fa544D16F4667ED76788894fFca4',
+    name: 'Wrapped ETH',
+    symbol: 'WETH',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
   {
     asset: '2',
     type: 'LINEA',
@@ -271,24 +271,24 @@ export const lineaTestnetTokenList = [
 ];
 
 export const polygonZkEvmTestnetTokenList = [
-  // {
-  //   asset: '0',
-  //   type: 'POLYGONZK',
-  //   address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-  //   name: 'ETH',
-  //   symbol: 'ETH',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
-  // },
-  // {
-  //   asset: '1',
-  //   type: 'POLYGONZK',
-  //   address: '0x2ad78787CCaf7FA8FAe8953FD78ab9163f81DcC8',
-  //   name: 'Wrapped ETH',
-  //   symbol: 'WETH',
-  //   decimals: 18,
-  //   iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
-  // },
+  {
+    asset: '0',
+    type: 'POLYGONZK',
+    address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+    name: 'ETH',
+    symbol: 'ETH',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
+  {
+    asset: '1',
+    type: 'POLYGONZK',
+    address: '0x2ad78787CCaf7FA8FAe8953FD78ab9163f81DcC8',
+    name: 'Wrapped ETH',
+    symbol: 'WETH',
+    decimals: 18,
+    iconUrl: "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
+  },
   {
     asset: '2',
     type: 'POLYGONZK',
@@ -331,24 +331,24 @@ export const polygonZkEvmTestnetTokenList = [
 // ];
 
 export const metisGoerliTokenList = [
-  // {
-  //   asset: '0',
-  //   type: 'METIS',
-  //   address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-  //   name: 'METIS',
-  //   symbol: 'METIS',
-  //   decimals: 18,
-  //   iconUrl: METIS_IMAGE,
-  // },
-  // {
-  //   asset: '1',
-  //   type: 'METIS',
-  //   address: '0x577dDC8c1bb948cdcF123Cd1f453Be80875Ec1F3',
-  //   name: 'Wrapped METIS',
-  //   symbol: 'WMETIS',
-  //   decimals: 18,
-  //   iconUrl: METIS_IMAGE,
-  // },
+  {
+    asset: '0',
+    type: 'METIS',
+    address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+    name: 'METIS',
+    symbol: 'METIS',
+    decimals: 18,
+    iconUrl: METIS_IMAGE,
+  },
+  {
+    asset: '1',
+    type: 'METIS',
+    address: '0x577dDC8c1bb948cdcF123Cd1f453Be80875Ec1F3',
+    name: 'Wrapped METIS',
+    symbol: 'WMETIS',
+    decimals: 18,
+    iconUrl: METIS_IMAGE,
+  },
   {
     asset: '2',
     type: 'METIS',

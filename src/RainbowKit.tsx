@@ -40,23 +40,23 @@ const getWallets = ({ appName, chains, projectId }: {
             groupName: 'Popular',
             wallets: [
                 injectedWallet({ chains }),
-                // safeWallet({ chains }),
-                // rainbowWallet({ chains, projectId }),
-                // coinbaseWallet({ appName, chains }),
-                // metaMaskWallet({ chains, projectId }),
-                // walletConnectWallet({ chains, projectId }),
-                // braveWallet({ chains }),
+                safeWallet({ chains }),
+                rainbowWallet({ chains, projectId }),
+                coinbaseWallet({ appName, chains }),
+                metaMaskWallet({ chains, projectId }),
+                walletConnectWallet({ chains, projectId }),
+                braveWallet({ chains }),
             ],
         },
-        // {
-        //     groupName: 'More',
-        //     wallets: [
-        //         trustWallet({ chains, projectId }),
-        //         ledgerWallet({ chains, projectId }),
-        //         rabbyWallet({ chains }),
-        //         argentWallet({ chains, projectId }),
-        //     ],
-        // },
+        {
+            groupName: 'More',
+            wallets: [
+                trustWallet({ chains, projectId }),
+                ledgerWallet({ chains, projectId }),
+                rabbyWallet({ chains }),
+                argentWallet({ chains, projectId }),
+            ],
+        },
     ];
 
     return {

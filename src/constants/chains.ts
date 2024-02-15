@@ -324,18 +324,18 @@ export const allChains: Chain[] = [
 ];
 
 export const activeChains: Chain[] = [
-    goerli,
+    // goerli,
     polygonMumbai,
     bscTestnet,
     avalancheFuji,
     fantomTestnet,
-    arbitrumGoerli,
-    optimismGoerli,
+    // arbitrumGoerli,
+    // optimismGoerli,
     baseGoerli,
-    lineaTestnet,
+    // lineaTestnet,
     polygonZkEvmTestnet,
     // zkSyncTestnet,
-    metisGoerli,
+    // metisGoerli,
 ];
 
 export const chainIdToChain: Map<number, Chain> = allChains.reduce((prev, c) => {
